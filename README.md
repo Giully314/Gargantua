@@ -2,8 +2,8 @@
 A 2d game engine for my personal game that i want to develop.
 This is my first real project in C++ and my first engine.
 Note on c++20: i want to use c++20 because i like the way the c++ is evolving. 
-(04/01/2022) Unfortunately i can't use modules because visual studio has real big problems with intellisense and other bugs between modules; premake has other bugs that 
-make impossible to import another module (i don't know why). I'm really sorry about this because i'm excited about how code structure changes with modules. 
+(04/01/2022) Unfortunately i can't use modules because visual studio has real big problems with intellisense; premake has other bugs that 
+make impossible to import another module (i don't know why, maybe changes some config). I'm really sorry about this because i'm excited about how code structure changes with modules. 
 
 Note: i wanted to use only opengl and glfw since the beginning of the project so most of the class are not abstract (for the API definition); the only platform supported is 
 Windows with opengl and glfw. 
