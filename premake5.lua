@@ -2,7 +2,7 @@ workspace "Gargantua"
 	architecture "x86_64"
 	configurations {"Debug", "Release"}
 	
-	toolset	'MSC'
+	toolset	'msc'
 	staticruntime 'On'
 
 	startproject "Sandbox"
@@ -10,5 +10,6 @@ workspace "Gargantua"
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 
+include "Gargantua/vendor/glfw"
 include "Gargantua"
 include "Sandbox"

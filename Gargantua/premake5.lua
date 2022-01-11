@@ -13,9 +13,10 @@ project "Gargantua"
 	includedirs 
 	{
 		"src",
+		"%{wks.location}/Gargantua/vendor/glfw/include"
 	}
 
-	links {"opengl32.lib"}
+	links {"glfw", "opengl32.lib"}
 
 
 	filter "configurations:Debug"
