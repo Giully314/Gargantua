@@ -16,3 +16,5 @@ https://www.gamedeveloper.com/programming/writing-a-game-engine-from-scratch---p
 Game engine architecture by Jason Gregory.  
 Memory management: https://gist.github.com/simonrenger/d1da2a10d11f8a971fc6f1b574ab3e99  
 Talk about task oriented multi threading: https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine  
+https://gafferongames.com/categories/game-physics/  
+
