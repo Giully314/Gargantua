@@ -27,8 +27,8 @@ namespace Gargantua
 
 
 	////************ INPUT ***************
-	//using key_t = std::uint16_t;
-	//using mouse_t = std::uint8_t;
+	using key_t = std::uint16_t;
+	using mouse_t = std::uint8_t;
 	////**********************************
 
 
@@ -38,15 +38,6 @@ namespace Gargantua
 	//using event_callback = std::function<void(const Event::Event&)>;
 	////**********************************
 
-
-	////************ LOGGER **************
-	////Associate a formatted string with the types passed.
-	//template <typename ...Args>
-	//using format_view_t = std::string_view;
-
-	//using code_location_t = std::source_location;
-
-	////**********************************
 
 
 	/*

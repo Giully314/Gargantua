@@ -1,11 +1,12 @@
 #pragma once 
 
-
-#include <functional>
-
 #include "Gargantua/Core/Application.hpp"
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Time/Stopwatch.hpp"
+#include "Gargantua/Event/EventHandler.hpp"
+
+#include <functional>
+
 
 
 namespace Gargantua
@@ -25,8 +26,11 @@ namespace Gargantua
 
 
 	private:
+		bool should_close;
+
 		//Current application in execution.
-		UniqueRes<Core::Application> app;
-		Time::Stopwatch stopwatch;
+		UniqueRes<Core::Application> app;	
+		UniqueRes<Time::Stopwatch> stopwatch;
+
 	};
 } //namespace Gargantua
