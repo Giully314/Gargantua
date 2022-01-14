@@ -18,13 +18,15 @@ project "Gargantua"
 
 	links {"glfw", "opengl32.lib"}
 
+	--defines {"GRG_LOGGER_ON"}
 
 	filter "configurations:Debug"
 		defines "GRG_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 
 	filter "configurations:Release"
 		defines "GRG_RELEASE"
+		runtime "Release"
 		optimize "On"
-		--buildoptions "/MT"

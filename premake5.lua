@@ -3,7 +3,6 @@ workspace "Gargantua"
 	configurations {"Debug", "Release"}
 	
 	toolset	'msc'
-	staticruntime 'On'
 
 	startproject "Sandbox"
 
