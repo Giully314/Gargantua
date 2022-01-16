@@ -12,9 +12,35 @@ TheCerno game engine series.
 Godot engine source code.  
 Spring RTS source code.  
 Ogre engine source code.  
+https://github.com/cocos-creator/engine-native
+
+Input:  
+https://sites.psu.edu/ist446/2015/04/16/so-you-want-to-make-a-game-engine-part-6-input-need-input/
+
+https://ourmachinery.com/post/   
 https://www.gamedeveloper.com/programming/writing-a-game-engine-from-scratch---part-1-messaging  
 Game engine architecture by Jason Gregory.  
+
+
 Memory management: https://gist.github.com/simonrenger/d1da2a10d11f8a971fc6f1b574ab3e99  
-Talk about task oriented multi threading: https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine  
+
+Talk about task oriented multi threading: 
+https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine  
+https://www.gdcvault.com/play/1012189/Don-t-Dread  
+https://vkguide.dev/docs/extra-chapter/multithreading/ (useful additional resources)  
+GCAP 2016: Parallel Game Engine Design - Brooke Hodgman: https://www.youtube.com/watch?v=JpmK0zu4Mts   
+CppCon 2016: Jason Jurecka “Game engine using STD C++ 11": https://youtu.be/8AjRD6mU96s   
+
+
+
 https://gafferongames.com/categories/game-physics/  
 
+Mathieu Ropert “This Videogame Programmer Used the STL and You Will Never Guess What Happened Next”: https://youtu.be/6hC9IxqdDDw   
+
+Custom Containers and iterators:
+https://www.internalpointers.com/post/writing-custom-iterators-modern-cpp   
+
+
+Graphics:
+How 3D video games do graphics: https://www.youtube.com/watch?v=bGe-d09Nc_M  
+https://github.com/ssloy/tinyrenderer   
