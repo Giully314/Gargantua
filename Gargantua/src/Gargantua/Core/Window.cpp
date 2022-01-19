@@ -5,15 +5,14 @@ namespace Gargantua
 {
 	namespace Core
 	{
-		Window::Window() : Window("", 1, 1, nullptr)
+		Window::Window() : Window("", 1, 1)
 		{
 
 		}
 
-		Window::Window(std::string title, natural_t width, natural_t height, Event::EventHandler* event_handler) :
+		Window::Window(std::string title, natural_t width, natural_t height) :
 			properties(title, width, height), window(nullptr)
 		{
-			SetEventHandler(event_handler);
 			Init();
 		}
 
@@ -26,15 +25,14 @@ namespace Gargantua
 
 		void Window::Update()
 		{
+			GRG_CORE_DEBUG("Window Update. Window size {} {}", properties.width, properties.height);
 			glfwPollEvents();
 			glfwSwapBuffers(window);
-			GRG_CORE_DEBUG("window size: {} {}", properties.width, properties.height);
 		}
 
 
 		void Window::Init()
 		{
-
 			int status = glfwInit();
 
 			if (!status)
@@ -57,16 +55,10 @@ namespace Gargantua
 
 
 			//This must be called after setting window the current context
-			/*if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 			{
 				GRG_CORE_ERROR("Failed to initialize GLAD");
 				throw;
-			}*/
-
-
-			if (properties.event_handler)
-			{
-				SetCallbacks();
 			}
 		}
 
@@ -81,12 +73,25 @@ namespace Gargantua
 		}
 
 
-		void Window::SetCallbacks()
+		void Window::ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
 		{
+			properties.event_list_sys = event_list_sys;
+			event_list_sys->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
+				{
+					const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
+					properties.width = we.new_width;
+					properties.height = we.new_height;
+				});
+		}
+
+		void Window::RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys)
+		{
+			properties.event_reg_sys = event_reg_sys;
+
 			glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height)
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-					props.RegisterWindowEvent<Event::WindowResizeEvent>(width, height);
+					props.event_reg_sys->RegisterEvent<Event::WindowResizeEvent>(width, height);
 				});
 
 
@@ -94,7 +99,7 @@ namespace Gargantua
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-					props.RegisterWindowEvent<Event::WindowCloseEvent>(true);
+					props.event_reg_sys->RegisterEvent<Event::WindowCloseEvent>(true);
 				});
 
 
@@ -105,13 +110,13 @@ namespace Gargantua
 					switch (action)
 					{
 					case GLFW_PRESS:
-						props.RegisterWindowEvent<Event::KeyPressedEvent>(key);
+						props.event_reg_sys->RegisterEvent<Event::KeyPressedEvent>(key);
 						break;
 					case GLFW_RELEASE:
-						props.RegisterWindowEvent<Event::KeyReleasedEvent>(key);
+						props.event_reg_sys->RegisterEvent<Event::KeyReleasedEvent>(key);
 						break;
 					case GLFW_REPEAT:
-						props.RegisterWindowEvent<Event::KeyPressedEvent>(key);
+						props.event_reg_sys->RegisterEvent<Event::KeyPressedEvent>(key);
 						break;
 					}
 				});
@@ -121,7 +126,7 @@ namespace Gargantua
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-					props.RegisterWindowEvent<Event::MouseCursorEvent>((float)xpos, (float)ypos);
+					props.event_reg_sys->RegisterEvent<Event::MouseCursorEvent>((float)xpos, (float)ypos);
 				});
 
 
@@ -132,23 +137,15 @@ namespace Gargantua
 					switch (action)
 					{
 					case GLFW_PRESS:
-						props.RegisterWindowEvent<Event::MouseButtonPressedEvent>(button);
+						props.event_reg_sys->RegisterEvent<Event::MouseButtonPressedEvent>(button);
 						break;
 					case GLFW_RELEASE:
-						props.RegisterWindowEvent<Event::MouseButtonReleasedEvent>(button);
+						props.event_reg_sys->RegisterEvent<Event::MouseButtonReleasedEvent>(button);
 						break;
 					}
 				});
-
-
-			Event::EventHandler& event_handler = *(properties.event_handler);
-
-			event_handler.RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
-				{
-					const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
-					properties.width = we.new_width;
-					properties.height = we.new_height;
-				});
 		}
+
+
 	}
 }
