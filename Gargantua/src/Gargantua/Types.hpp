@@ -1,22 +1,14 @@
 #pragma once
 #include <cstdint>
-#include <string_view>
-#include <functional>
 #include <memory>
 #include <utility>
-#include <source_location>
+#include <string>
 
 //Define uniform types  to use across the engine.
 
 
 namespace Gargantua
 {
-	namespace Event
-	{
-		struct Event;
-	}
-
-
 	using real_t = float;
 	using natural_t = std::uint32_t;
 	using integer_t = std::int32_t;
@@ -26,18 +18,15 @@ namespace Gargantua
 	using integer64_t = std::int64_t;
 
 
-	////************ INPUT ***************
+	//************ INPUT ***************
 	using key_t = std::uint16_t;
 	using mouse_t = std::uint8_t;
-	////**********************************
+	//**********************************
 
 
-	////************ EVENT ***************
-	////USE ONLY INSIDE EVENT CLASS FOR EVENT NAME.
-	//using event_name_t = std::string_view;
-	//using event_callback = std::function<void(const Event::Event&)>;
-	////**********************************
-
+	//************ EVENT ***************
+	using event_name_t = std::string;
+	//**********************************
 
 
 	/*
@@ -70,4 +59,11 @@ namespace Gargantua
 	//Better to avoid use this for performance. 
 	template <typename T>
 	using WeakRes = std::weak_ptr<T>;
+
+
+	//A simple pointer to a resource. The object using this MUST not perform construction or destruction
+	//associated to this pointer.
+	template <typename T>
+	using NonOwnedRes = T*;
+
 } //namespace Gargantua
