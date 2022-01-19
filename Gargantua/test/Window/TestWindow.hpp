@@ -15,12 +15,9 @@ namespace Gargantua
 		
 			void RunTest()
 			{
-				window = CreateUniqueRes<Core::Window>("Test", 480, 360, nullptr);
+				window = CreateUniqueRes<Core::Window>("Test", 480, 360);
 
-				while (true)
-				{
-					window->Update();
-				}
+				window->Update();
 			}
 
 		private:
