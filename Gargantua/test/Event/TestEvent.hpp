@@ -2,7 +2,7 @@
 
 #include "Gargantua/Core/EngineLogger.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"
-#include "Gargantua/Event/EventHandler.hpp"
+#include "Gargantua/Event/EventSystem.hpp"
 
 #include <string>
 #include <functional>
@@ -34,19 +34,26 @@ namespace Gargantua
 			
 			void RunTest()
 			{
-				auto id1 = event_handler.RegisterListener<TestEvent1>(BIND_FN(TestEvent::OnTestEvent1));
-				auto id2 = event_handler.RegisterListener<TestEvent2>(BIND_FN(TestEvent::OnTestEvent2));
+				auto ers = event_system.GetEventRegisterSystem();
+				auto els = event_system.GetEventListenerSystem();
 
-				event_handler.RegisterEvent<TestEvent1>();
-				event_handler.RegisterEvent<TestEvent2>();
+				ers->RegisterEvent<TestEvent1>();
+				ers->RegisterEvent<TestEvent1>();
+				ers->RegisterEvent<TestEvent2>();
 
-				event_handler.ProcessEvents();
 
-				event_handler.UnregisterListener<TestEvent1>(id1);
-				event_handler.UnregisterListener<TestEvent2>(id2);
+				els->RegisterListener<TestEvent1>([](const Event::BaseEvent& e)
+					{
+						GRG_CORE_DEBUG("Inside Lambda for TestEvent1");
+					});
 
-				event_handler.RegisterBlockingEvent<TestEvent1>();
-				event_handler.RegisterBlockingEvent<TestEvent2>();
+				els->RegisterListener<TestEvent2>([](const Event::BaseEvent& e)
+					{
+						GRG_CORE_DEBUG("Inside Lambda for TestEvent2");
+					});
+
+				event_system.ProcessEvents();
+				event_system.ProcessEvents();
 			}
 
 
@@ -63,7 +70,7 @@ namespace Gargantua
 			}
 
 		private:
-			Event::EventHandler event_handler;
+			Event::EventSystem event_system;
 		};
 	} //namespace Test
 } //namespace Gargantua
