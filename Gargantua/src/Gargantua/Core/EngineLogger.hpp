@@ -23,12 +23,15 @@ namespace Gargantua
 		class EngineLogger
 		{
 		public:
-			static void Start();
+			EngineLogger();
+			~EngineLogger();
 
 			static UniqueRes<Log::Logger<Streams::ConsoleStream>>& Get() { return logger; }
 
 		private:
 			static UniqueRes<Log::Logger<Streams::ConsoleStream>> logger;
+			void Init();
+			void Shutdown();
 		};
 	} //namespace Core
 } //namespace Gargantua
