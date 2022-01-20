@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Gargantua/Core/EngineLogger.hpp"
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Concepts/Event.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"
