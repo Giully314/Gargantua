@@ -29,6 +29,12 @@ namespace Gargantua
 			inline void SetX(real_t x) { this->x = x; }
 			inline void SetY(real_t y) { this->y = y; }
 
+			inline void SetCoords(real_t x, real_t y)
+			{
+				this->x = x;
+				this->y = y;
+			}
+
 		private:
 			real_t x;
 			real_t y;
