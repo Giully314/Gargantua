@@ -13,20 +13,21 @@ project "Gargantua"
 	includedirs 
 	{
 		"src",
-		"%{wks.location}/Gargantua/vendor/glfw/include"
+		"%{wks.location}/Gargantua/vendor/glfw/include",
+		"%{wks.location}/Gargantua/vendor/Glad/include"
 	}
 
-	links {"glfw", "opengl32.lib"}
+	links {"Glad", "glfw", "opengl32.lib"}
 
 	--defines {"GRG_LOGGER_ON"}
 
 	filter "configurations:Debug"
-		defines "GRG_DEBUG"
+		defines "GRG_MODE_DEBUG"
 		runtime "Debug"
 		symbols "On"
 
 
 	filter "configurations:Release"
-		defines "GRG_RELEASE"
+		defines "GRG_MODE_RELEASE"
 		runtime "Release"
 		optimize "On"
