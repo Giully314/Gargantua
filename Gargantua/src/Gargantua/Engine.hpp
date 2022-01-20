@@ -3,7 +3,10 @@
 #include "Gargantua/Core/Application.hpp"
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Time/Stopwatch.hpp"
-#include "Gargantua/Event/EventHandler.hpp"
+#include "Gargantua/Core/EngineLogger.hpp"
+#include "Gargantua/Core/EventSystem.hpp"
+#include "Gargantua/Core/Window.hpp"
+#include "Gargantua/Core/InputState.hpp"
 
 #include <functional>
 
@@ -31,6 +34,9 @@ namespace Gargantua
 		//Current application in execution.
 		UniqueRes<Core::Application> app;	
 		UniqueRes<Time::Stopwatch> stopwatch;
-
+		UniqueRes<Core::EngineLogger> engine_logger;
+		UniqueRes<Core::EventSystem> event_system;
+		UniqueRes<Core::Window> window;
+		UniqueRes<Core::InputState> input_state;
 	};
 } //namespace Gargantua
