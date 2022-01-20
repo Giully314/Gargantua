@@ -2,7 +2,7 @@
 
 #include "Gargantua/Core/EngineLogger.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"
-#include "Gargantua/Event/EventSystem.hpp"
+#include "Gargantua/Core/EventSystem.hpp"
 
 #include <string>
 #include <functional>
@@ -70,7 +70,7 @@ namespace Gargantua
 			}
 
 		private:
-			Event::EventSystem event_system;
+			Core::EventSystem event_system;
 		};
 	} //namespace Test
 } //namespace Gargantua
