@@ -12,7 +12,12 @@ TheCerno game engine series.
 Godot engine source code.  
 Spring RTS source code.  
 Ogre engine source code.  
-https://github.com/cocos-creator/engine-native
+https://github.com/cocos-creator/engine-native  
+
+
+Software architecture and design:
+Large scale C++ volume 1 by John Lakos.
+
 
 Input:  
 https://sites.psu.edu/ist446/2015/04/16/so-you-want-to-make-a-game-engine-part-6-input-need-input/
