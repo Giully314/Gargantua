@@ -12,8 +12,14 @@ namespace Gargantua
 		{
 		public:
 			virtual ~GargantuaTest() = default;
-			virtual void Create() = 0;
-			virtual void Destroy() = 0;
+			virtual void Create()
+			{
+
+			}
+			virtual void Destroy()
+			{
+
+			}
 			virtual void RunTest() = 0;
 		};
 
