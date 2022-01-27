@@ -30,6 +30,11 @@ namespace Gargantua
 			//Note: the event type should be static const. Good to use strings with length less than 15.
 			static const event_name_t EventName;
 
+			BaseEvent() = default;
+
+			BaseEvent(BaseEvent&&) noexcept = default;
+			BaseEvent& operator=(BaseEvent&&) noexcept = default;
+
 			virtual ~BaseEvent();
 
 			virtual const event_name_t& GetEventName() const noexcept { return EventName; }
