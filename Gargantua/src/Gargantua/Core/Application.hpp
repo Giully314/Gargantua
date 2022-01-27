@@ -2,7 +2,7 @@
 
 
 #include "Gargantua/Time/TimeStep.hpp"
-
+#include "Gargantua/Core/Pipeline.hpp"
 
 namespace Gargantua
 {
@@ -22,7 +22,7 @@ namespace Gargantua
 			Application(Application&&) = delete;
 			Application& operator=(Application&&) = delete;
 
-			virtual ~Application() = default;
+			virtual ~Application();
 
 
 			/*
@@ -41,16 +41,19 @@ namespace Gargantua
 
 			/*
 			Reset the application. Is safe to call this function before Shutdown? 
-			Think about it
+			Think about it. Maybe this method is useless.
 			*/
-			virtual void Reset() = 0;
+			//virtual void Reset() = 0;
 
 
 			/*
 			Execute should perform a single "tick" of the app. A tick is a single update of the app with
-			a delta time.
+			a delta time. This function should call Execute from pipeline.
 			*/
 			virtual void Execute(const Time::TimeStep&) = 0;
+
+		protected:
+			Pipeline pipeline;
 		};
 
 
