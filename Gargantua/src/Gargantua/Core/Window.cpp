@@ -31,6 +31,21 @@ namespace Gargantua
 		}
 
 
+		void Window::SetVSync(bool value)
+		{
+			if (value)
+			{
+				glfwSwapInterval(1);
+			}
+			else
+			{
+				glfwSwapInterval(0);
+			}
+
+			properties.vsync = value;
+		}
+
+
 		void Window::Init()
 		{
 			int status = glfwInit();

@@ -27,7 +27,7 @@ namespace Gargantua
 		{
 			WindowProperties(std::string title_, natural_t width_, natural_t height_) :
 				title(std::move(title_)), width(width_), height(height_), event_reg_sys(nullptr),
-				event_list_sys(nullptr)
+				event_list_sys(nullptr), vsync(false)
 			{
 
 			}
@@ -38,6 +38,7 @@ namespace Gargantua
 			natural_t height;
 			NonOwnedRes<Event::EventRegisterSystem> event_reg_sys;
 			NonOwnedRes<Event::EventListenerSystem> event_list_sys;
+			bool vsync;
 		};
 
 
@@ -66,6 +67,14 @@ namespace Gargantua
 			//Pass the event register system to register the events associated to this window.
 			void RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys);
 
+
+			void SetVSync(bool value);
+			
+			inline bool IsVSync() const noexcept 
+			{
+				return properties.vsync;
+			}
+
 			//Update the window, swap buffers.
 			void Update();
 
@@ -89,6 +98,9 @@ namespace Gargantua
 			{
 				return properties.title;
 			}
+
+
+			inline GLFWwindow* GetNativeWindow() const noexcept { return window; }
 
 		private:
 			WindowProperties properties;
