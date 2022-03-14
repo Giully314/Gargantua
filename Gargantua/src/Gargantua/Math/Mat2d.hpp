@@ -1,4 +1,20 @@
 #pragma once
+/*
+Gargantua/Math/Mat2d.hpp
+
+
+PURPOSE: Matrix 2x2.
+
+
+CLASSES:
+	Mat2d: matrix 2x2 with row representation.
+
+DESCRIPTION:
+	The internal format used is row-major order. Consider that this is only relevant in terms of 
+	HOW operations are executed and not what they mean. 
+*/
+
+#include "Gargantua/Types.hpp"
 
 #include "Gargantua/Math/Vec2d.hpp"
 
@@ -16,39 +32,42 @@ namespace Gargantua
 		{
 		public:
 			using value_type = T;
+			using col_t = Vec2d<T>; //column type
+			using row_t = Vec2d<T>; //row type
 
 			Mat2d() = default;
 
-			Mat2d(const Vec2d<T> row1, const Vec2d<T> row2)
+			Mat2d(row_t row0, row_t row1)
 			{
-				m[0] = std::move(row1);
-				m[1] = std::move(row2);
+				m[0] = std::move(row0);
+				m[1] = std::move(row1);
 			}
 
-			Mat2d(const T a, const T b, const T c, const T d) : m{ Vec2d<T>{a, b}, Vec2d<T>{c, d} }
+			Mat2d(const value_type a, const value_type b, const value_type c, const value_type d) : 
+				m{ row_t{a, b}, row_t{c, d} }
 			{
 				
 			}
 			
 
-			T& operator()(const std::size_t i, const std::size_t j)
+			value_type& operator()(const natural_t i, const natural_t j)
 			{
 				return m[i][j];
 			}
 
-			T operator()(const std::size_t i, const std::size_t j) const
+			value_type operator()(const natural_t i, const natural_t j) const
 			{
 				return m[i][j];
 			}
 
 
 			//return row i
-			Vec2d<T>& operator()(const std::size_t i)
+			row_t& operator()(const natural_t i)
 			{
 				return m[i];
 			}
 
-			const Vec2d<T>& operator()(const std::size_t i) const
+			const row_t& operator()(const natural_t i) const
 			{
 				return m[i];
 			}
@@ -62,12 +81,6 @@ namespace Gargantua
 				return *this;
 			}
 
-			inline friend Mat2d operator+(Mat2d lhs, const Mat2d& rhs)
-			{
-				lhs += rhs;
-				return lhs;
-			}
-
 
 			inline Mat2d& operator-=(const Mat2d& rhs)
 			{
@@ -76,25 +89,14 @@ namespace Gargantua
 				return *this;
 			}
 
-			inline friend Mat2d operator-(Mat2d lhs, const Mat2d& rhs)
-			{
-				lhs -= rhs;
-				return lhs;
-			}
 
-
-			inline Mat2d& operator*=(const T c)
+			inline Mat2d& operator*=(const value_type c)
 			{
 				m[0] *= c;
 				m[1] *= c;
 				return *this;
 			}
 
-			inline friend Mat2d operator*(Mat2d lhs, const T c)
-			{
-				lhs *= c;
-				return lhs;
-			}
 
 			inline Mat2d& operator*=(const Mat2d& rhs)
 			{
@@ -111,33 +113,15 @@ namespace Gargantua
 				return *this;
 			}
 
-			inline friend Mat2d operator*(Mat2d lhs, const Mat2d& rhs)
-			{
-				lhs *= rhs;
-				return lhs;
-			}
 
-			inline friend Vec2d<T> operator*(const Mat2d& lhs, const Vec2d<T>& rhs)
-			{
-				T x = lhs.m[0].Dot(rhs);
-				T y = lhs.m[1].Dot(rhs);
-				return Vec2d<T>{x, y};
-			}
-
-
-
-			inline Mat2d& operator/=(const T c)
+			inline Mat2d& operator/=(const value_type c)
 			{
 				m[0] /= c;
 				m[1] /= c;
 				return *this;
 			}
 
-			inline friend Mat2d operator/(Mat2d lhs, const T c)
-			{
-				lhs /= c;
-				return lhs;
-			}
+		
 
 
 			inline void Zero()
@@ -148,16 +132,16 @@ namespace Gargantua
 
 			inline void Identity()
 			{
-				m[0].x = T{ 1 };
-				m[0].y = T{ 0 };
+				m[0].x = value_type{ 1 };
+				m[0].y = value_type{ 0 };
 
-				m[1].x = T{ 0 };
-				m[1].y = T{ 1 };
+				m[1].x = value_type{ 0 };
+				m[1].y = value_type{ 1 };
 			}
 
 
 
-			T Determinant() const
+			value_type Determinant() const
 			{
 				return m[0].x * m[1].y - m[0].y * m[1].x;
 			}
@@ -165,7 +149,7 @@ namespace Gargantua
 
 			Mat2d Inverse() const
 			{
-				T d = Determinant();
+				value_type d = Determinant();
 				return Mat2d{ m[1][1] / d, -m[0][1] / d,
 							-m[1][0] / d,  m[0][0] / d};
 			}
@@ -173,16 +157,85 @@ namespace Gargantua
 
 			std::string ToString()
 			{
-				return std::format("( ({} {}), ({} {}) )", m[0][0], m[0][1], m[1][0], m[1][1]);
+				return std::format("{}\n{}", m[0].ToString(), m[1].ToString());
 			}
 
 		private:
-			Vec2d<T> m[2];
+			row_t m[2];
 		};
 
 
+		/**************** TYPE ALIAS ************************/
 		using Mat2df = Mat2d<real_t>;
 		using mat2di = Mat2d<integer_t>;
+		/**************** TYPE ALIAS ************************/
 
+
+
+		/*****************************************************************/
+		//                  INLINE OPERATORS 
+		/*****************************************************************/
+		template <typename T>
+		inline bool operator==(const Mat2d<T>& lhs, const Mat2d<T>& rhs)
+		{
+			return lhs(0) == rhs(0) && lhs(1) == rhs(1);
+		}
+
+
+		template <typename T>
+		inline bool operator!=(const Mat2d<T>& lhs, const Mat2d<T>& rhs)
+		{
+			return !(lhs == rhs);
+		}
+
+
+		template <typename T>
+		inline Mat2d<T> operator+(Mat2d<T> lhs, const Mat2d<T>& rhs)
+		{
+			lhs += rhs;
+			return lhs;
+		}
+
+
+		template <typename T>
+		inline Mat2d<T> operator-(Mat2d<T> lhs, const Mat2d<T>& rhs)
+		{
+			lhs -= rhs;
+			return lhs;
+		}
+
+		
+		template <typename T>
+		inline Mat2d<T> operator*(Mat2d<T> lhs, const T c)
+		{
+			lhs *= c;
+			return lhs;
+		}
+
+
+		template <typename T>
+		inline Mat2d<T> operator/(Mat2d<T> lhs, const T c)
+		{
+			lhs /= c;
+			return lhs;
+		}
+
+
+		template <typename T>
+		inline Mat2d<T> operator*(Mat2d<T> lhs, const Mat2d<T>& rhs)
+		{
+			lhs *= rhs;
+			return lhs;
+		}
+
+
+		template <typename T, typename U>
+		inline Vec2d<std::common_type_t<T, U>> operator*(const Mat2d<T>& lhs, const Vec2d<U>& rhs)
+		{
+			using com_t = std::common_type_t<T, U>;
+			com_t x = lhs(0).Dot(rhs);
+			com_t y = lhs(1).Dot(rhs);
+			return Vec2d<com_t>{x, y};
+		}
 	} //namespace Math
 } //namespace Gargantua
