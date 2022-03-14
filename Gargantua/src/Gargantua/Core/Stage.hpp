@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Gargantua/Time/TimeStep.hpp"
+#include "Gargantua/Event/EventRegisterSystem.hpp"
+#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Types.hpp"
 
 #include <string>
 
@@ -40,9 +43,29 @@ namespace Gargantua
 			
 
 			/*
-			Execute the stage.
+			Execute the stage. Update the internal state or execute "logic" operations.
 			*/
 			virtual void Execute(const Time::TimeStep& ts) = 0;
+
+			/*
+			Render into the GUI. (Like ImGui). Could be empty.
+			NOTE: This function is not meant to be a render call. This function should be implemented
+			only for GUI interface in development process.
+			For the "real" rendering part, there should exists a RenderStage for example.
+			*/
+			virtual void RenderGUI() = 0;
+
+
+			virtual void RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys)
+			{
+
+			}
+
+
+			virtual void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
+			{
+
+			}
 
 
 			inline std::string_view GetName() const noexcept { return stage_name; }
