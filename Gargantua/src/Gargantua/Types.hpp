@@ -9,6 +9,8 @@
 
 namespace Gargantua
 {
+	using byte_t = std::uint8_t;
+
 	using real_t = float;
 	using natural_t = std::uint32_t;
 	using integer_t = std::int32_t;
@@ -66,4 +68,20 @@ namespace Gargantua
 	template <typename T>
 	using NonOwnedRes = T*;
 
+
+	//Inherite private from this class to disable copy (and get errors at compile time).
+	struct NonCopyable
+	{
+		NonCopyable() = default;
+		NonCopyable(const NonCopyable&) = delete;
+		NonCopyable& operator=(const NonCopyable&) = delete;
+	};
+
+
+	struct NonMovable
+	{
+		NonMovable() = default;
+		NonMovable(const NonMovable&) = delete;
+		NonMovable& operator=(const NonMovable&) = delete;
+	};
 } //namespace Gargantua
