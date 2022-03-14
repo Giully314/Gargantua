@@ -10,5 +10,8 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 
 include "Gargantua/vendor/glfw"
+include "Gargantua/vendor/Glad"
+include "Gargantua/vendor/imgui"
+include "Gargantua/vendor/stb_image"
 include "Gargantua"
 include "Sandbox"

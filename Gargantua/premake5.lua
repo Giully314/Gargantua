@@ -10,14 +10,17 @@ project "Gargantua"
 
 	files {"src/**.hpp", "src/**.cpp", "test/**.hpp", "test/**.cpp"}
 
+	--include dirs extern to project do not work. i don't know if is is a bug from visual studio or premake.
 	includedirs 
 	{
 		"src",
 		"%{wks.location}/Gargantua/vendor/glfw/include",
-		"%{wks.location}/Gargantua/vendor/Glad/include"
+		"%{wks.location}/Gargantua/vendor/Glad/include",
+		"%{wks.location}/Gargantua/vendor/imgui",
+		"%{wks.location}/Gargantua/vendor/stb_image",
 	}
 
-	links {"Glad", "glfw", "opengl32.lib"}
+	links {"ImGui", "Glad", "glfw", "opengl32.lib", "stb_image"}
 
 	--defines {"GRG_LOGGER_ON"}
 
