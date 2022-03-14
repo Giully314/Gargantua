@@ -3,6 +3,8 @@
 
 #include "Gargantua/Time/TimeStep.hpp"
 #include "Gargantua/Core/Pipeline.hpp"
+#include "Gargantua/Core/EventSystem.hpp"
+//#include "Gargantua/Core/ImGuiStage.hpp"
 
 namespace Gargantua
 {
@@ -28,6 +30,7 @@ namespace Gargantua
 			/*
 			This function is called at the start of the Run method from Engine.
 			Note that this function doesn't replace the role of constructor.
+			This function could be used to initialize the stages, register listeners and events and so on.
 			*/
 			virtual void Start() = 0;
 			
@@ -47,13 +50,20 @@ namespace Gargantua
 
 
 			/*
-			Execute should perform a single "tick" of the app. A tick is a single update of the app with
-			a delta time. This function should call Execute from pipeline.
+			Loop through the pipeline and execute every stage. 
 			*/
-			virtual void Execute(const Time::TimeStep&) = 0;
+			void Execute(const Time::TimeStep&);
+
+
+			/*
+			Call RenderGUI for every stage.
+			*/
+			void RenderGUI();
+
 
 		protected:
 			Pipeline pipeline;
+			EventSystem app_event_system;
 		};
 
 
