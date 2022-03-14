@@ -51,6 +51,21 @@ namespace Gargantua
 			*/
 			void Execute(const Time::TimeStep& ts);
 
+			/*
+			Call RenderGUI for every stage.
+			*/
+			void RenderGUI();
+
+
+			//************** Iterators ************************
+			std::list<UniqueRes<Stage>>::iterator begin() noexcept { return stages.begin(); }
+			std::list<UniqueRes<Stage>>::iterator end() noexcept { return stages.end(); }
+
+			std::list<UniqueRes<Stage>>::const_iterator cbegin() const noexcept { return stages.cbegin(); }
+			std::list<UniqueRes<Stage>>::const_iterator cend() const noexcept { return stages.cend(); }
+
+			//TODO: add views and filters
+
 		private:
 			std::list<UniqueRes<Stage>> stages;
 		};

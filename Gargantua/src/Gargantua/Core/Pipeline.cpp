@@ -75,5 +75,14 @@ namespace Gargantua
 				});
 		}
 
+
+		void Pipeline::RenderGUI()
+		{
+			std::ranges::for_each(stages, [&](UniqueRes<Stage>& s)
+				{
+					s->RenderGUI();
+				});
+		}
+
 	} //namespace Core
 } //namespace Gargantua
