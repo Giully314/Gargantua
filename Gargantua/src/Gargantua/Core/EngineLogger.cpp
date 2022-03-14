@@ -27,14 +27,14 @@ namespace Gargantua
 				logger->SetLevel(Log::Level::debug);
 				logger->SetLoggerName("Engine");
 
-				GRG_CORE_DEBUG("Init Engine Logger");
+				GRG_CORE_INFO("Init Engine Logger");
 			}
 		}
 
 
 		void EngineLogger::Shutdown()
 		{
-			GRG_CORE_DEBUG("Shutdown Engine Logger");
+			GRG_CORE_INFO("Shutdown Engine Logger");
 		}
 	} //namespace Core
 } //namespace Gargantua
