@@ -25,14 +25,12 @@ namespace Gargantua
 			template <Concepts::Event T>
 			void RegisterEvent(UniqueRes<T> event)
 			{
-				GRG_CORE_DEBUG("Register event {}", T::EventName);
 				event_queue.push_back(std::move(event));
 			}
 
 			template <Concepts::Event T, typename ...Args>
 			void RegisterEvent(Args&& ...args)
 			{
-				GRG_CORE_DEBUG("Register event {}", T::EventName);
 				event_queue.push_back(CreateUniqueRes<T>(std::forward<Args>(args)...));
 			}
 			

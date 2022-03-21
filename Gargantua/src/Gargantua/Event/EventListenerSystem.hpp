@@ -36,7 +36,6 @@ namespace Gargantua
 			template <Concepts::Event T>
 			natural_t RegisterListener(event_callback_t f)
 			{
-				GRG_CORE_DEBUG("Register event listener for {}", T::EventName);
 				natural_t id = sqg.Get();
 				callbacks[T::EventName].push_back(std::make_pair( id, std::move(f) ));
 				return id;
@@ -51,7 +50,6 @@ namespace Gargantua
 			template <Concepts::Event T>
 			void UnregisterListener(natural_t id)
 			{
-				GRG_CORE_DEBUG("Unregister event listener for {}", T::EventName);
 				auto& v = callbacks[T::EventName];
 				const auto ret = std::ranges::remove_if(v, [&](auto& listener) {
 					return id == listener.first;
