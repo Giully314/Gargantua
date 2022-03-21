@@ -5,7 +5,7 @@ Gargantua/Renderer/Shader.cpp
 
 #include "Shader.hpp"
 
-#include "Gargantua/Core/ResourceSystem.hpp"
+#include "Gargantua/Systems/ResourceSystem.hpp"
 #include "Gargantua/Core/EngineLogger.hpp"
 
 #include <string>
@@ -18,7 +18,7 @@ namespace Gargantua
 		{
 			GRG_CORE_DEBUG("Compile shader {}", path);
 
-			std::string src = Core::ResourceSystem::ReadFile(path);
+			std::string src = Systems::ResourceSystem::ReadFile(path);
 			const char* p = src.data();
 
 			glShaderSource(id, 1, &p, NULL);
