@@ -1,10 +1,22 @@
 #pragma once
+/*
+Gargantua/Core/Application.hpp
 
+PURPOSE: Define the skeleton of an application.
+
+CLASSES:
+	Application: Base class for the application concept.
+
+
+DESCRIPTION:
+	
+
+*/
+
+#include "Gargantua/Core/Pipeline.hpp"
+#include "Gargantua/Core/EngineSystems.hpp"
 
 #include "Gargantua/Time/TimeStep.hpp"
-#include "Gargantua/Core/Pipeline.hpp"
-#include "Gargantua/Core/EventSystem.hpp"
-//#include "Gargantua/Core/ImGuiStage.hpp"
 
 namespace Gargantua
 {
@@ -61,9 +73,15 @@ namespace Gargantua
 			void RenderGUI();
 
 
+			inline EngineSystems& GetEngineSystems() noexcept 
+			{
+				return systems;
+			}
+
+
 		protected:
 			Pipeline pipeline;
-			EventSystem app_event_system;
+			EngineSystems systems;
 		};
 
 
