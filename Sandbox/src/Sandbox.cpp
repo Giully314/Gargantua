@@ -7,6 +7,8 @@
 #include "Gargantua/Core/EngineLogger.hpp"
 #include "Gargantua/Core/Application.hpp"
 #include "Gargantua/Core/Stage.hpp"
+#include "Gargantua/Core/EngineSystems.hpp"
+
 
 #include "Gargantua/Time/TimeStep.hpp"
 
@@ -16,16 +18,17 @@
 #include "Gargantua/Renderer/Shader.hpp"
 #include "Gargantua/Renderer/Program.hpp"
 #include "Gargantua/Renderer/Types.hpp"
+#include "Gargantua/Renderer/OrthoCamera.hpp"
+#include "Gargantua/Renderer/OrthoCameraController.hpp"
+
 
 #include "Gargantua/Math/Vec4d.hpp"
-
-
-#include "Math/TestMat4d.hpp"
 
 
 #include <imgui.h>
 
 #include <iostream>
+#include <numbers>
 
 using namespace Gargantua;
 
@@ -33,11 +36,11 @@ using namespace Gargantua;
 class TestStage : public Gargantua::Core::Stage
 {
 public:
-	TestStage() : Gargantua::Core::Stage("TestStage")
+	TestStage(Core::EngineSystems systems_) : Gargantua::Core::Stage("TestStage"), camera(-1, -1, 1, 1), systems(std::move(systems_))
 	{
 		float vertices[] =
 		{
-			 0.5f,  0.5f, 0.0f,
+			 0.0f,  0.5f, 0.0f,
 			 0.5f, -0.5f, 0.0f,
 			-0.5f, -0.5f, 0.0f,
 			-0.5f,  0.5f, 0.0f,
@@ -45,8 +48,8 @@ public:
 
 		unsigned short elements[] =
 		{
-			0, 1, 3,
-			1, 2, 3
+			0, 1, 2
+			/*1, 2, 3*/
 		};
 
 		color[0] = 1.0f;
@@ -59,7 +62,7 @@ public:
 		vb.Load(vertices, 12, 3, Renderer::BufferElementType::float_t, Renderer::DrawMode::static_draw);
 
 		eb.Create();
-		eb.Load(elements, 6, Renderer::BufferElementType::unsigned_short_t, Renderer::DrawMode::static_draw);
+		eb.Load(elements, 3, Renderer::BufferElementType::unsigned_short_t, Renderer::DrawMode::static_draw);
 
 		va.Create();
 
@@ -77,7 +80,9 @@ public:
 		program.Create();
 		program.Link(&vert_shad, &frag_shad);
 
-
+		//camera.SetPosition(Math::Vec3df{ 0.5f, 0.5f, 6.0f });
+		/*camera.SetRotation(90.0f);*/
+		controller.SetCamera(&camera);
 	}
 
 	~TestStage()
@@ -93,21 +98,21 @@ public:
 
 	void Start() override
 	{
-		va.Bind();
 		program.Bind();
-		program.SetUniformFloat4("my_color", color);
+		program.SetUniform4f("my_color", color);
+		program.Unbind();
+		systems.renderer_sys->BeginScene(&camera);
 	}
 
 	void End() override
 	{
-		va.Unbind();
-		program.Unbind();
+		//systems.renderer_sys->EndScene();
 	}
 
 	void Execute(const Gargantua::Time::TimeStep& ts) override 
 	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		glDrawElements(GL_TRIANGLES, eb.GetCount(), (GLenum)eb.GetInfo().type, nullptr);
+		controller.Update(ts);
+		systems.renderer_sys->Submit(&va, &eb, &program, Renderer::RenderTopology::TRIANGLES);
 	}
 
 
@@ -129,6 +134,9 @@ private:
 	Renderer::Shader frag_shad;
 	Renderer::Program program;
 	Math::Vec4df color;
+	Renderer::OrthoCamera camera;
+	Renderer::OrthoCameraController controller;
+	Core::EngineSystems systems;
 };
 
 
@@ -138,8 +146,8 @@ class Sandbox : public Gargantua::Core::Application
 public:
 	void Start() override 
 	{
-		Core::EngineLogger::Get()->SetLevel(Log::Level::info);
-		pipeline.AddStage<TestStage>();
+		//Core::EngineLogger::Get()->SetLevel(Log::Level::info);
+		pipeline.AddStage<TestStage>(systems);
 	}
 	void Shutdown() override { }
 };
@@ -150,11 +158,8 @@ int main()
 {
 	using namespace Gargantua;
 	
-	/*Gargantua::Engine e{ []() {return new Sandbox{}; } };
-	e.Run();*/
-
-	Test::TestMat4d test;
-	test.RunTest();
+	Gargantua::Engine e{ []() {return new Sandbox{}; } };
+	e.Run();
 
 	return 0;
 }
