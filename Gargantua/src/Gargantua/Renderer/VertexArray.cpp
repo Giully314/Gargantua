@@ -23,7 +23,6 @@ namespace Gargantua
 
 		void VertexArray::AddElementBuffer(const ElementBuffer& eb)
 		{
-			count = eb.GetCount();
 			glBindVertexArray(id);
 			eb.Bind();
 		}

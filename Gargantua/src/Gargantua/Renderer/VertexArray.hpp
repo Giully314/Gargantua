@@ -60,7 +60,6 @@ namespace Gargantua
 
 		private:
 			GLuint id = 0;
-			natural_t count = 0; 
 		};
 	} //namespace Renderer 
 } //namespace Gargantua
