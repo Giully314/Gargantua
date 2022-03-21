@@ -1,4 +1,19 @@
 #pragma once
+/*
+Gargantua/Core/EngineLogger.hpp
+
+PURPOSE: Log information.
+
+
+
+
+DESCRIPTION:
+	Singleton class logger for the Engine part. How to avoid application side access this class?
+
+TODO:
+	Move into Systems and make a LoggingSystem?
+*/
+
 
 /*
 Why i define this macro here instaed of inside premake file? Because people who works at visual studio
@@ -16,10 +31,6 @@ namespace Gargantua
 {
 	namespace Core
 	{
-		/*
-		Singleton class logger for the Engine part. How to avoid application side access this class? 
-		*/
-
 		class EngineLogger
 		{
 		public:
