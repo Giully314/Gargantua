@@ -1,4 +1,17 @@
 #pragma once
+/*
+Gargantua/Core/Stage.hpp
+
+PURPOSE: Basic building block of an Application.
+
+CLASSES:
+	Stage: Abstract class the defines the basic operations of a Stage in a Pipeline.
+
+
+DESCRIPTION:
+	
+
+*/
 
 #include "Gargantua/Time/TimeStep.hpp"
 #include "Gargantua/Event/EventRegisterSystem.hpp"
@@ -28,7 +41,7 @@ namespace Gargantua
 			Stage(Stage&&) noexcept = default;
 			Stage& operator=(Stage&&) noexcept = default;
 
-			virtual ~Stage();
+			virtual ~Stage() = default;
 
 
 			/*
