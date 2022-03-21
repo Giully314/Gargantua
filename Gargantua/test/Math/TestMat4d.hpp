@@ -45,7 +45,7 @@ namespace Gargantua
 					std::cout << "LET'S GO prodotto giusto" << std::endl;
 				}
 
-				Vec4df i0{ 1, 2, 3, 4 };
+				/*Vec4df i0{ 1, 2, 3, 4 };
 				Vec4df i1{ 5, 6, 7, 8 };
 				Vec4df i2{ 11, 17, 1, 3 };
 				Vec4df i3{ 7, 0, 17, 5 };
@@ -59,7 +59,16 @@ namespace Gargantua
 
 				auto inv = m.Inverse();
 
-				std::cout << inv.ToString() << std::endl;
+				std::cout << inv.ToString() << std::endl;*/
+
+				Vec4df i0{ 3, 1, 2, 5 };
+				Vec4df i1{ 1, 7, 7, 0 };
+				Vec4df i2{ 0, 3, 8, 4 };
+				Vec4df i3{ 9, 1, 0, 6 };
+
+				Mat4df m{ i0, i1, i2, i3 };
+
+				std::cout << m.Inverse().ToString() << std::endl;
 			}
 		};
 	}
