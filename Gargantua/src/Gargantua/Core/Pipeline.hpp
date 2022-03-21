@@ -1,4 +1,37 @@
 #pragma once
+/*
+Gargantua/Core/Pipeline.hpp
+
+PURPOSE: Simulate a pipeline of execution.
+
+CLASSES:
+	Pipeline: Manages the stages to be executed in a specific order.
+
+
+DESCRIPTION:
+	This class simulate a pipeline of stages to be executed inside the Application class.
+	The purpose of this approach is to allow the user to decompose the Application into different 
+	stages and focus only on one thing at time.
+
+
+USAGE:
+	Pipeline p;
+
+	p.AddStage<PhysicStage>(parameters);
+	p.AddStage<AnimationStage>(parameters);
+
+	p.Execute(timestep);
+
+	p.RenderGUI(); //For debug purpose, use a GUI to display the stage.
+
+
+TODO:
+	Make the pipeline parallel. This means that the user can specify if 2 or more stages can be 
+	executed in parallel. This allows more flexibility, performance for multithreading and 
+	decomposition of tasks.
+*/
+
+
 
 #include "Gargantua/Types.hpp"
 
@@ -8,6 +41,7 @@
 #include <concepts>
 #include <string_view>
 #include <list>
+
 
 
 namespace Gargantua

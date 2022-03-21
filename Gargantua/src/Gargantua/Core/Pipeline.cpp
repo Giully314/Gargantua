@@ -1,3 +1,7 @@
+/*
+Gargantua/Core/Pipeline.cpp
+*/
+
 #include "Pipeline.hpp"
 
 #include <algorithm>
