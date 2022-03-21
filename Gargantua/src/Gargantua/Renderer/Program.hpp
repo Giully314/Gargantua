@@ -34,6 +34,7 @@ USAGE:
 #include "Gargantua/Math/Vec2d.hpp"
 #include "Gargantua/Math/Vec3d.hpp"
 #include "Gargantua/Math/Vec4d.hpp"
+#include "Gargantua/Math/Mat4d.hpp"
 
 #include <string_view>
 
@@ -71,49 +72,56 @@ namespace Gargantua
 			void Link(NonOwnedRes<Shader> vert_shader, NonOwnedRes<Shader> frag_shader);
 
 
-			void SetUniformFloat(std::string_view name, real_t v)
+			void SetUniform1f(std::string_view name, real_t v)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform1f(location, v);
 			}
 
 
-			void SetUniformFloat2(std::string_view name, real_t v0, real_t v1)
+			void SetUniform2f(std::string_view name, real_t v0, real_t v1)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform2f(location, v0, v1);
 			}
 
-			void SetUniformFloat4(std::string_view name, const Math::Vec2df& v)
+			void SetUniform2f(std::string_view name, const Math::Vec2df& v)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform2f(location, v[0], v[1]);
 			}
 
 
-			void SetUniformFloat3(std::string_view name, real_t v0, real_t v1, real_t v2)
+			void SetUniform3f(std::string_view name, real_t v0, real_t v1, real_t v2)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform3f(location, v0, v1, v2);
 			}
 
-			void SetUniformFloat3(std::string_view name, const Math::Vec3df& v)
+			void SetUniform3f(std::string_view name, const Math::Vec3df& v)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform3f(location, v[0], v[1], v[2]);
 			}
 
 
-			void SetUniformFloat4(std::string_view name, real_t v0, real_t v1, real_t v2, real_t v3)
+			void SetUniform4f(std::string_view name, real_t v0, real_t v1, real_t v2, real_t v3)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform4f(location, v0, v1, v2, v3);
 			}
 
-			void SetUniformFloat4(std::string_view name, const Math::Vec4df& v)
+			void SetUniform4f(std::string_view name, const Math::Vec4df& v)
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform4f(location, v[0], v[1], v[2], v[3]);
+			}
+
+
+			void SetUniformMatrix4f(std::string_view name, const Math::Mat4df& m)
+			{
+				GLint location = glGetUniformLocation(id, name.data());
+				glUniformMatrix4fv(location, 1, GL_TRUE, m.GetAddress());
 			}
 
 
