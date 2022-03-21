@@ -1,4 +1,19 @@
 #pragma once
+/*
+Gargantua/Core/Window.hpp
+
+PURPOSE: Manage a window.
+
+CLASSES:
+	WindowProperties: pack of parameters associated to the Window.
+	Window: Wrapper for GLFW window.
+
+
+DESCRIPTION:
+	This component serves as wrapper for handling glad initialization, 
+	glfw initialization, shutodown, window events and the update of the window.
+*/
+
 
 #include "../vendor/Glad/include/glad/glad.h"
 #include "../vendor/glfw/include/GLFW/glfw3.h"
@@ -42,7 +57,6 @@ namespace Gargantua
 		};
 
 
-		//TODO: Set VSync
 		class Window
 		{
 		public:
@@ -61,10 +75,9 @@ namespace Gargantua
 			Window& operator=(Window&&) = default;
 
 
-			//Pass the event listener system to register the listeners associated to this window.
+			
 			void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys);
 
-			//Pass the event register system to register the events associated to this window.
 			void RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys);
 
 
@@ -105,17 +118,6 @@ namespace Gargantua
 		private:
 			WindowProperties properties;
 			GLFWwindow* window;
-
-			/*
-			Initialize glfw, Glad and create the current window.
-			*/
-			void Init();
-			
-			
-			/*
-			Close the current window and shutdown glfw.
-			*/
-			void Shutdown();
 		};
 	} //namespace Core
 } //namespace Gargantua

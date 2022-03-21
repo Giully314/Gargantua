@@ -1,3 +1,6 @@
+/*
+Gargantua/Core/Window.cpp
+*/
 #include "Window.hpp"
 
 
@@ -12,41 +15,6 @@ namespace Gargantua
 
 		Window::Window(std::string title, natural_t width, natural_t height) :
 			properties(title, width, height), window(nullptr)
-		{
-			Init();
-		}
-
-
-		Window::~Window()
-		{
-			Shutdown();
-		}
-
-
-		void Window::Update()
-		{
-			GRG_CORE_DEBUG("Window Update. Window size {} {}", properties.width, properties.height);
-			glfwPollEvents();
-			glfwSwapBuffers(window);
-		}
-
-
-		void Window::SetVSync(bool value)
-		{
-			if (value)
-			{
-				glfwSwapInterval(1);
-			}
-			else
-			{
-				glfwSwapInterval(0);
-			}
-
-			properties.vsync = value;
-		}
-
-
-		void Window::Init()
 		{
 			int status = glfwInit();
 
@@ -78,7 +46,7 @@ namespace Gargantua
 		}
 
 
-		void Window::Shutdown()
+		Window::~Window()
 		{
 			if (window)
 			{
@@ -86,6 +54,30 @@ namespace Gargantua
 			}
 			glfwTerminate();
 		}
+
+
+		void Window::Update()
+		{
+			/*GRG_CORE_DEBUG("Window Update. Window size {} {}", properties.width, properties.height);*/
+			glfwPollEvents();
+			glfwSwapBuffers(window);
+		}
+
+
+		void Window::SetVSync(bool value)
+		{
+			if (value)
+			{
+				glfwSwapInterval(1);
+			}
+			else
+			{
+				glfwSwapInterval(0);
+			}
+
+			properties.vsync = value;
+		}
+
 
 
 		void Window::ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
@@ -160,7 +152,5 @@ namespace Gargantua
 					}
 				});
 		}
-
-
-	}
-}
+	} //namespace Core
+} //namespace Gargantua
