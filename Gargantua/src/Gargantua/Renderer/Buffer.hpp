@@ -6,6 +6,7 @@ PURPOSE: Wrapper class for OpenGL Buffer object.
 
 
 CLASSES:
+	BufferInfo: Pack buffer informations.
 	Buffer: Base class for Vertex buffer and Element buffer.
 
 
@@ -67,6 +68,12 @@ namespace Gargantua
 			const BufferInfo& GetInfo() const noexcept 
 			{
 				return info;
+			}
+
+
+			GLenum GetGLType() const noexcept 
+			{
+				return (GLenum)(info.type);
 			}
 
 		protected:
