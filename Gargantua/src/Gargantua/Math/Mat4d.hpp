@@ -40,6 +40,15 @@ namespace Gargantua
 
 			Mat4d() = default;
 
+			//Initialize the diagonal of the matrix with the value d
+			Mat4d(const T& d)
+			{
+				m[0][0] = d;
+				m[1][1] = d;
+				m[2][2] = d;
+				m[3][3] = d;
+			}
+
 			Mat4d(row_t row0, row_t row1, row_t row2, row_t row3)
 			{
 				m[0] = std::move(row0);
@@ -230,6 +239,17 @@ namespace Gargantua
 				inverse /= d;
 
 				return inverse;
+			}
+
+
+			const value_type* GetAddress() const
+			{
+				return &(m[0].x);
+			}
+
+			value_type* GetAddress() 
+			{
+				return &(m[0].x);
 			}
 
 

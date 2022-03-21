@@ -37,6 +37,13 @@ namespace Gargantua
 
 			Mat2d() = default;
 
+			//Initialize the diagonal of the matrix with the value d
+			Mat2d(const T& d)
+			{
+				m[0][0] = d;
+				m[1][1] = d;
+			}
+
 			Mat2d(row_t row0, row_t row1)
 			{
 				m[0] = std::move(row0);

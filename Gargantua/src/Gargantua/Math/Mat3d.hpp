@@ -39,6 +39,14 @@ namespace Gargantua
 
 			Mat3d() = default;
 
+			//Initialize the diagonal of the matrix with the value d
+			Mat3d(const T& d)
+			{
+				m[0][0] = d;
+				m[1][1] = d;
+				m[2][2] = d;
+			}
+
 			Mat3d(row_t row0, row_t row1, row_t row2)
 			{
 				m[0] = std::move(row0);
