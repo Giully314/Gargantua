@@ -62,5 +62,14 @@ namespace Gargantua
 				return 0;
 			}
 		};
+
+
+
+		enum class RenderTopology : GLenum
+		{
+			POINTS = GL_POINTS,
+			LINES = GL_LINES,
+			TRIANGLES = GL_TRIANGLES,
+		};
 	} //namespace Renderer 
 } //namespace Gargantua
