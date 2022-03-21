@@ -1,3 +1,13 @@
+/*
+Gargantua/Engine.cpp
+
+
+OVERVIEW:
+	The 2 core functions are the constructor and the Run method.
+	The implementation is straightforward; look at the comments for more info.
+
+*/
+
 #include "Engine.hpp"
 
 #include "Gargantua/Time/TimeStep.hpp"
@@ -10,20 +20,28 @@ namespace Gargantua
 	Engine::Engine(std::function<Core::Application* (void)> create_app) : should_close(false)
 	{
 		engine_logger = CreateUniqueRes<Core::EngineLogger>();
-		engine_event_system = CreateUniqueRes<Core::EventSystem>();
-		window = CreateUniqueRes<Core::Window>("GargantuaEngine", 1080, 720);
-		input_state = CreateUniqueRes<Core::InputState>();
-		stopwatch = CreateUniqueRes<Time::Stopwatch>();
 
-		auto event_list_sys = engine_event_system->GetEventListenerSystem();
-		auto event_reg_sys = engine_event_system->GetEventRegisterSystem();
+		window = CreateUniqueRes<Core::Window>("GargantuaEngine", 1080, 720);
+		
+		stopwatch = CreateUniqueRes<Time::Stopwatch>();
+		
+		//Creation of the systems.
+		engine_event_sys =	CreateSharedRes<Systems::EventSystem>();
+		app_event_sys =	CreateSharedRes<Systems::EventSystem>();
+		input_sys =	CreateSharedRes<Systems::InputSystem>();
+		renderer_sys =	CreateSharedRes<Systems::RendererSystem>();
+
+
+		//Register components to the engine event systems.
+		auto event_list_sys = engine_event_sys->GetEventListenerSystem();
+		auto event_reg_sys = engine_event_sys->GetEventRegisterSystem();
 
 		window->ListenToEvents(event_list_sys);
 		window->RegisterEvents(event_reg_sys);
 
-		input_state->ListenToEvents(event_list_sys);
+		input_sys->ListenToEvents(event_list_sys);
 
-		//Listen to WindowCloseEvent to shutdown the application
+		
 		event_list_sys->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
 			{
 				const auto& we = static_cast<const Event::WindowCloseEvent&>(e);
@@ -31,24 +49,16 @@ namespace Gargantua
 			});
 
 
-////#ifdef GRG_MODE_DEBUG
-//		//Only for debug purpose
-//		event_list_sys->RegisterListener<Event::KeyPressedEvent>([this](const Event::BaseEvent& e)
-//			{
-//				const auto& k = static_cast<const Event::KeyPressedEvent&>(e);
-//				GRG_CORE_DEBUG("Key pressed: {}", k.key_code);
-//			});
-//
-//		event_list_sys->RegisterListener<Event::KeyReleasedEvent>([this](const Event::BaseEvent& e)
-//			{
-//				const auto& k = static_cast<const Event::KeyReleasedEvent&>(e);
-//				GRG_CORE_DEBUG("Key released: {}", k.key_code);
-//			});
-////#endif
-
+		//Init after window has registered events.
 		gui_stage = CreateUniqueRes<Core::ImGuiStage>(window.get());
 
+		//Create the app using the function passed by the user.
 		app = UniqueRes<Core::Application>(create_app());
+
+		auto& systems = app->GetEngineSystems();
+		systems.engine_event_sys = engine_event_sys;
+		systems.app_event_sys = app_event_sys;
+		systems.renderer_sys = renderer_sys;
 	}
 
 
@@ -63,9 +73,11 @@ namespace Gargantua
 
 	-Start the application.
 	-Calculate current TimeStep and update the internal Stopwatch.
-	-EngineEventHandler deals with all events created in the previous frame (engine events).
-	-ApplicationEventHandler deals with all events created in the previous frame (game events).
+	-engine_event_sys deals with all events created in the previous frame (engine events).
+	-app_event_sys deals with all events created in the previous frame (app events).
+	-Clear the window.
 	-Call Application::Execute(timestep).
+	-Render frame.
 	-UpdateWindow.
 
 	-Shutdown the application.
@@ -83,15 +95,23 @@ namespace Gargantua
 		while (!should_close)
 		{
 			Time::TimeStep ts = stopwatch->Tick();
-			GRG_CORE_DEBUG("Time elapsed: {}", ts.GetInMilliSec());
+			//GRG_CORE_DEBUG("Time elapsed: {}", ts.GetInMilliSec());
 			t += ts.GetInMilliSec();
 
 			if (t >= single_frame)
 			{
 				t -= single_frame;
-				engine_event_system->ProcessEvents();
+				
+				engine_event_sys->ProcessEvents();
+				app_event_sys->ProcessEvents();
+
+				renderer_sys->Clear();
 
 				app->Execute(ts);
+
+				//physics_sys.UpdateState();
+
+				renderer_sys->RenderFrame();
 
 				gui_stage->Start();
 				app->RenderGUI();

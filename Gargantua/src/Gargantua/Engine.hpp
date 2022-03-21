@@ -1,4 +1,20 @@
 #pragma once 
+/*
+Gargantua/Engine.hpp
+
+PURPOSE: Engine. Make the all systems to work together.
+
+CLASSES: 
+	Engine: The whole brain.
+
+
+DESCRIPTION:
+	This class is more than simple glue code for the systems and other components; 
+	it's like the central nervous system. 
+	Entry point of the engine.
+	Controls the initialization of every system and component.
+	Provide the game loop.
+*/
 
 #include "Gargantua/Types.hpp"
 
@@ -6,10 +22,13 @@
 
 #include "Gargantua/Core/Application.hpp"
 #include "Gargantua/Core/EngineLogger.hpp"
-#include "Gargantua/Core/EventSystem.hpp"
 #include "Gargantua/Core/Window.hpp"
-#include "Gargantua/Core/InputState.hpp"
 #include "Gargantua/Core/ImGuiStage.hpp"
+#include "Gargantua/Core/EngineSystems.hpp"
+
+#include "Gargantua/Systems/EventSystem.hpp"
+#include "Gargantua/Systems/InputSystem.hpp"
+#include "Gargantua/Systems/RendererSystem.hpp"
 
 #include <functional>
 
@@ -17,10 +36,6 @@
 
 namespace Gargantua
 {
-	/*
-	This class is the entry point of the engine. Initialize all the basic systems (logger, threadpool, ecc), provides basic operations,
-	handles application loop and so on.
-	*/
 	class Engine
 	{
 	public:
@@ -42,11 +57,15 @@ namespace Gargantua
 
 		//Current application in execution.
 		UniqueRes<Core::Application> app;	
-		UniqueRes<Time::Stopwatch> stopwatch;
 		UniqueRes<Core::EngineLogger> engine_logger;
-		UniqueRes<Core::EventSystem> engine_event_system;
 		UniqueRes<Core::Window> window;
-		UniqueRes<Core::InputState> input_state;
+		
+		UniqueRes<Time::Stopwatch> stopwatch;
+
+		SharedRes<Systems::EventSystem> engine_event_sys;
+		SharedRes<Systems::EventSystem> app_event_sys;
+		SharedRes<Systems::InputSystem> input_sys;
+		SharedRes<Systems::RendererSystem> renderer_sys;
 
 		UniqueRes<Core::ImGuiStage> gui_stage;
 	};
