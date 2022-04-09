@@ -69,59 +69,66 @@ namespace Gargantua
 			}
 
 
-			void Link(NonOwnedRes<Shader> vert_shader, NonOwnedRes<Shader> frag_shader);
+			void Link(const Shader& vert_shader, const Shader& frag_shader);
 
 
-			void SetUniform1f(std::string_view name, real_t v)
+			inline void SetUniform1f(std::string_view name, real_t v) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform1f(location, v);
 			}
 
 
-			void SetUniform2f(std::string_view name, real_t v0, real_t v1)
+			inline void SetUniform2f(std::string_view name, real_t v0, real_t v1) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform2f(location, v0, v1);
 			}
 
-			void SetUniform2f(std::string_view name, const Math::Vec2df& v)
+			inline void SetUniform2f(std::string_view name, const Math::Vec2df& v) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform2f(location, v[0], v[1]);
 			}
 
 
-			void SetUniform3f(std::string_view name, real_t v0, real_t v1, real_t v2)
+			inline void SetUniform3f(std::string_view name, real_t v0, real_t v1, real_t v2) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform3f(location, v0, v1, v2);
 			}
 
-			void SetUniform3f(std::string_view name, const Math::Vec3df& v)
+			inline void SetUniform3f(std::string_view name, const Math::Vec3df& v) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform3f(location, v[0], v[1], v[2]);
 			}
 
 
-			void SetUniform4f(std::string_view name, real_t v0, real_t v1, real_t v2, real_t v3)
+			inline void SetUniform4f(std::string_view name, real_t v0, real_t v1, real_t v2, real_t v3) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform4f(location, v0, v1, v2, v3);
 			}
 
-			void SetUniform4f(std::string_view name, const Math::Vec4df& v)
+			inline void SetUniform4f(std::string_view name, const Math::Vec4df& v) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform4f(location, v[0], v[1], v[2], v[3]);
 			}
 
 
-			void SetUniformMatrix4f(std::string_view name, const Math::Mat4df& m)
+			inline void SetUniformMatrix4f(std::string_view name, const Math::Mat4df& m) const
 			{
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniformMatrix4fv(location, 1, GL_TRUE, m.GetAddress());
+			}
+
+
+			inline void SetUniform1i(std::string_view name, integer_t v) const
+			{
+				GLint location = glGetUniformLocation(id, name.data());
+				glUniform1i(location, v);
 			}
 
 
