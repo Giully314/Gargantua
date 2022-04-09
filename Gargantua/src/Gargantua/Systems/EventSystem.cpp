@@ -25,6 +25,7 @@ namespace Gargantua
 			for (auto& e : events)
 			{
 				const auto& event_name = e->GetEventName();
+				//GRG_CORE_INFO("Processing event {}", event_name);
 				auto callbacks = event_list_hdl->GetEventListeners(event_name);
 				for (auto& callback : callbacks)
 				{
