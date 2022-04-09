@@ -22,7 +22,7 @@ namespace Gargantua
 
 		void OrthoCameraController::Update(const Time::TimeStep& ts)
 		{
-			const real_t time = ts.GetInSec();
+			const real_t time = (real_t)ts.GetInSec();
 
 			if (Systems::InputSystem::IsPressed(Input::Key::W))
 			{

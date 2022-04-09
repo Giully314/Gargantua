@@ -26,7 +26,13 @@ namespace Gargantua
 		class OrthoCamera
 		{
 		public:
+			
+			
+			//left, bottom, right, top, near, far.
 			OrthoCamera(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f);
+			
+			
+			//left, bottom, right, top.
 			OrthoCamera(real_t l, real_t b, real_t r, real_t t);
 
 

@@ -48,7 +48,7 @@ namespace Gargantua
 			Math::Vec3df position;
 			real_t rotation = 0.0f;
 
-			real_t velocity = 0.5f;
+			real_t velocity = 1.0f;
 			real_t angular_velocity = 50;
 		};
 	} //namespace Renderer

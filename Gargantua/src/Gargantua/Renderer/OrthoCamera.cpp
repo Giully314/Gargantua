@@ -29,7 +29,7 @@ namespace Gargantua
 
 		void OrthoCamera::UpdateCameraMatrix()
 		{
-			Math::Mat4df transform = Math::Transform::Translate(position) * Math::Transform::RotateZ((real_t)Math::Angles::ToRad(rotation));
+			Math::Mat4df transform = Math::Transform3d::Translate(position) * Math::Transform3d::RotateZ((real_t)Math::Angles::ToRad(rotation));
 			view = transform.Inverse();
 
 			proj_view = projection * view;
