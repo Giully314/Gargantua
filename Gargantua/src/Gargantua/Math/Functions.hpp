@@ -7,7 +7,8 @@ PURPOSE: Mathematical functions for different purposes.
 
 CLASSES:
 	Projection: Provide functions for projections.
-
+	Transform3d: Provide functions for 3d transformations.
+	Angles: Conversion between angles.
 
 DESCRIPTION:
 
@@ -19,6 +20,7 @@ DESCRIPTION:
 
 #include <cmath>
 #include <numbers>
+#include <type_traits>
 
 namespace Gargantua
 {
@@ -67,7 +69,7 @@ namespace Gargantua
 		};
 
 
-		struct Transform
+		struct Transform3d
 		{
 			template <typename T>
 			static Mat4d<T> Translate(const Vec3d<T>& v)
@@ -88,16 +90,7 @@ namespace Gargantua
 				return translation;
 			}
 
-			//Rotate first around x then y then z.
-			template <typename T>
-			static Mat4d<T> Rotate(const Vec3d<T>& v)
-			{
-				Mat4d<T> rotation;
-
-				return rotation;
-			}
-
-
+			/*Angle in radians*/
 			template <typename T>
 			static Mat4d<T> RotateZ(const T a)
 			{
@@ -117,20 +110,51 @@ namespace Gargantua
 
 				return rotation;
 			}
+
+
+			template <typename T>
+			static Mat4d<T> Scale(const T c)
+			{
+				Mat4d<T> scale{c};
+
+				scale(3, 3) = static_cast<T>(1);
+
+				return scale;
+			}
+
+			template <typename T>
+			static Mat4d<T> Scale(const Vec3d<T>& v)
+			{
+				Mat4d<T> scale;
+
+				scale(0, 0) = v[0];
+
+				scale(1, 1) = v[1];
+				
+				scale(2, 2) = v[2];
+
+				scale(3, 3) = static_cast<T>(1);
+
+				return scale;
+			}
 		};
 
 
 
 		struct Angles
 		{
-			static real64_t ToRad(const real64_t a)
+			template <typename T>
+			requires std::is_arithmetic_v<T>
+			static T ToRad(const T a)
 			{
-				return a * std::numbers::pi / 180.0;
+				return static_cast<T>(a * std::numbers::pi / 180.0);
 			}
 
-			static real64_t ToDeg(const real64_t a)
+			template <typename T>
+				requires std::is_arithmetic_v<T>
+			static T ToDeg(const T a)
 			{
-				return a * 180.0 / std::numbers::pi;
+				return static_cast<T>(a * 180.0 / std::numbers::pi);
 			}
 		};
 
