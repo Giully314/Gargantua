@@ -12,6 +12,8 @@ CLASSES:
 
 #include "Gargantua/Types.hpp"
 
+#include "Gargantua/Math/Vec2d.hpp"
+
 #include <type_traits>
 #include <cmath>
 #include <string>
@@ -31,6 +33,11 @@ namespace Gargantua
 			Vec3d() = default;
 
 			Vec3d(const T x_, const T y_, const T z_) : x(x_), y(y_), z(z_)
+			{
+
+			}
+
+			Vec3d(const Vec2d<T>& v, const T z_) : x(v.x), y(v.y), z(z_)
 			{
 
 			}

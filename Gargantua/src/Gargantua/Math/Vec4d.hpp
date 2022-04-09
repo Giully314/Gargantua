@@ -20,6 +20,9 @@ DESCRIPTION:
 
 #include "Gargantua/Types.hpp"
 
+#include "Gargantua/Math/Vec2d.hpp"
+#include "Gargantua/Math/Vec3d.hpp"
+
 #include <type_traits>
 #include <cmath>
 #include <string>
@@ -39,6 +42,16 @@ namespace Gargantua
 			Vec4d() = default;
 
 			Vec4d(const T x_, const T y_, const T z_, const T w_) : x(x_), y(y_), z(z_), w(w_)
+			{
+
+			}
+
+			Vec4d(const Vec2d<T>& v, const T z_, const T w_) : x(v.x), y(v.y), z(z_), w(w_)
+			{
+
+			}
+
+			Vec4d(const Vec3d<T>& v, const T w_) : x(v.x), y(v.y), z(v.z), w(w_)
 			{
 
 			}
