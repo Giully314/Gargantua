@@ -15,6 +15,14 @@ DESCRIPTION:
 	VertexArray is a collection of VertexBuffer. There is no layout because this implementation
 	support only (for now) VertexBuffer of one type of element.
 
+TODO:
+	add an header file for both shader program and vertex array to specify, using define directives,
+	location, texture and normals.
+	For example:
+
+	#define LOCATION 0
+	#define TEXTURE 1
+
 */
 
 #include <glad/glad.h>
