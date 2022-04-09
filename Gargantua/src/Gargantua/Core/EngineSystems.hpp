@@ -19,6 +19,8 @@ DESCRIPTION:
 #include "Gargantua/Systems/EventSystem.hpp"
 #include "Gargantua/Systems/InputSystem.hpp"
 #include "Gargantua/Systems/RendererSystem.hpp"
+#include "Gargantua/Systems/Renderer2dSystem.hpp"
+#include "Gargantua/Systems/ShaderSystem.hpp"
 
 
 namespace Gargantua
@@ -27,10 +29,11 @@ namespace Gargantua
 	{
 		struct EngineSystems
 		{
-			//Or maybe is better SharedRes?
 			SharedRes<Systems::EventSystem> engine_event_sys;
 			SharedRes<Systems::EventSystem> app_event_sys;
 			SharedRes<Systems::RendererSystem> renderer_sys;
+			SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
+			SharedRes<Systems::ShaderSystem> shader_sys;
 		};
 	} //namespace Core 
 } //namespace Gargantua
