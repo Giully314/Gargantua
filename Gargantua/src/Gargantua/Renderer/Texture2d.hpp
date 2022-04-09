@@ -33,6 +33,9 @@ namespace Gargantua
 		class Texture2d : private NonCopyable
 		{
 		public:
+			//temporary.
+			friend class FrameBuffer;
+
 			inline void Create()
 			{
 				glGenTextures(1, &id);
@@ -45,21 +48,45 @@ namespace Gargantua
 			}
 
 
-			inline void Bind(natural_t slot = 0)
+			inline void Bind(natural_t slot = 0) const
 			{
 				glActiveTexture(GL_TEXTURE0 + slot);
 				glBindTexture(GL_TEXTURE_2D, id);
 			}
 
-			inline void Unbind()
+			inline void Unbind() const
 			{
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 
 
+			/*
+			Initialize the content of a texture with a file.
+			*/
+			bool Load(std::string_view file_name);
 
-			void Load(std::string_view file_name);
+			/*
+			Initialize an empty texture with the given dimensions.
+			*/
+			void Empty(natural_t width, natural_t height);
 
+			/*
+			Set a single color for the whole texture.
+			*/
+			void SetColor(void* data);
+			void SetColor(natural_t x_offset, natural_t y_offset, natural_t width, natural_t height, void* data);
+			//void SetColor(natural_t x, natural_t y, void* data);
+
+
+			natural_t GetWidth() const noexcept
+			{
+				return width;
+			}
+
+			natural_t GetHeight() const noexcept
+			{
+				return height;
+			}
 
 
 		private:
