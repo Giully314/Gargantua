@@ -11,6 +11,8 @@ CLASSES:
 DESCRIPTION:
 	
 
+TODO: add something to allow the stages to communicate?
+
 */
 
 #include "Gargantua/Time/TimeStep.hpp"
