@@ -17,19 +17,26 @@ OVERVIEW:
 
 namespace Gargantua
 {
-	Engine::Engine(std::function<Core::Application* (void)> create_app) : should_close(false)
+	Engine::Engine(std::function<Core::Application* (void)> create_app) : Engine(std::move(create_app), 1080, 720)
+	{
+		
+	}
+
+	Engine::Engine(std::function<Core::Application* (void)> create_app, natural_t width, natural_t height) : should_close(false)
 	{
 		engine_logger = CreateUniqueRes<Core::EngineLogger>();
 
-		window = CreateUniqueRes<Core::Window>("GargantuaEngine", 1080, 720);
-		
+		window = CreateUniqueRes<Core::Window>("GargantuaEngine", width, height);
+
 		stopwatch = CreateUniqueRes<Time::Stopwatch>();
-		
+
 		//Creation of the systems.
-		engine_event_sys =	CreateSharedRes<Systems::EventSystem>();
-		app_event_sys =	CreateSharedRes<Systems::EventSystem>();
-		input_sys =	CreateSharedRes<Systems::InputSystem>();
-		renderer_sys =	CreateSharedRes<Systems::RendererSystem>();
+		engine_event_sys = CreateSharedRes<Systems::EventSystem>();
+		app_event_sys = CreateSharedRes<Systems::EventSystem>();
+		input_sys = CreateSharedRes<Systems::InputSystem>();
+		renderer_sys = CreateSharedRes<Systems::RendererSystem>(width, height);
+		renderer2d_sys = CreateSharedRes<Systems::Renderer2dSystem>(width, height);
+		shader_sys = CreateSharedRes<Systems::ShaderSystem>();
 
 
 		//Register components to the engine event systems.
@@ -41,7 +48,8 @@ namespace Gargantua
 
 		input_sys->ListenToEvents(event_list_sys);
 
-		
+		renderer_sys->ListenToEvents(event_list_sys);
+
 		event_list_sys->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
 			{
 				const auto& we = static_cast<const Event::WindowCloseEvent&>(e);
@@ -59,6 +67,8 @@ namespace Gargantua
 		systems.engine_event_sys = engine_event_sys;
 		systems.app_event_sys = app_event_sys;
 		systems.renderer_sys = renderer_sys;
+		systems.renderer2d_sys = renderer2d_sys;
+		systems.shader_sys = shader_sys;
 	}
 
 
@@ -105,13 +115,13 @@ namespace Gargantua
 				engine_event_sys->ProcessEvents();
 				app_event_sys->ProcessEvents();
 
-				renderer_sys->Clear();
 
 				app->Execute(ts);
 
+				//Lazy renderer and physics
 				//physics_sys.UpdateState();
+				//renderer_sys->RenderFrame();
 
-				renderer_sys->RenderFrame();
 
 				gui_stage->Start();
 				app->RenderGUI();

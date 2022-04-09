@@ -25,10 +25,13 @@ DESCRIPTION:
 #include "Gargantua/Core/Window.hpp"
 #include "Gargantua/Core/ImGuiStage.hpp"
 #include "Gargantua/Core/EngineSystems.hpp"
+#include "Gargantua/Core/Scene2d.hpp"
 
 #include "Gargantua/Systems/EventSystem.hpp"
 #include "Gargantua/Systems/InputSystem.hpp"
 #include "Gargantua/Systems/RendererSystem.hpp"
+#include "Gargantua/Systems/Renderer2dSystem.hpp"
+#include "Gargantua/Systems/ShaderSystem.hpp"
 
 #include <functional>
 
@@ -40,6 +43,8 @@ namespace Gargantua
 	{
 	public:
 		Engine(std::function<Core::Application*(void)> create_app);
+		Engine(std::function<Core::Application*(void)> create_app, natural_t width, natural_t height);
+
 		~Engine();
 
 
@@ -66,6 +71,10 @@ namespace Gargantua
 		SharedRes<Systems::EventSystem> app_event_sys;
 		SharedRes<Systems::InputSystem> input_sys;
 		SharedRes<Systems::RendererSystem> renderer_sys;
+		SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
+		SharedRes<Systems::ShaderSystem> shader_sys;
+
+		//SharedRes<Core::Scene2d> scene2d;
 
 		UniqueRes<Core::ImGuiStage> gui_stage;
 	};
