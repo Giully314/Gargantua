@@ -44,7 +44,7 @@ namespace Gargantua
 		};
 
 
-		struct Utility
+		struct Conversion
 		{
 			static size_t ElementTypeSize(BufferElementType t)
 			{
