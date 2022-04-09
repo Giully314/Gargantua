@@ -11,6 +11,8 @@ namespace Gargantua
 {
 	using byte_t = std::uint8_t;
 
+	using natural16_t = std::uint16_t;
+
 	using real_t = float;
 	using natural_t = std::uint32_t;
 	using integer_t = std::int32_t;
@@ -58,13 +60,15 @@ namespace Gargantua
 	}
 
 
-	//Better to avoid use this for performance. 
+	//I don't know if this could be useful inside the engine.
 	template <typename T>
 	using WeakRes = std::weak_ptr<T>;
 
 
 	//A simple pointer to a resource. The object using this MUST not perform construction or destruction
 	//associated to this pointer.
+	//Another case of usage is for passing a UniqueRes or a SharedRes. The interface of a function
+	//could just take a NonOwnedRes and the user can pass a UniqueRes or a SharedRes.
 	template <typename T>
 	using NonOwnedRes = T*;
 
