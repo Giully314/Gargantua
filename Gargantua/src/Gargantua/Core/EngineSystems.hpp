@@ -9,7 +9,7 @@ CLASSES:
 
 
 DESCRIPTION:
-	The systems are managed by the engine class; this fact is reinforced by the NonOwnedRes concept.
+	The systems are managed by the engine class; this fact is reinforced by the SharedRes concept.
 	So the application has the flexibility to interact with the "low level" part of the engine
 	but MUST not access the lifetime of a system.
 */

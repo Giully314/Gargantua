@@ -8,12 +8,6 @@ namespace Gargantua
 {
 	namespace Core
 	{
-		Application::~Application()
-		{
-
-		}
-
-
 		void Application::Execute(const Time::TimeStep& ts)
 		{
 			pipeline.Execute(ts);

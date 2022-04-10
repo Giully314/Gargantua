@@ -3,11 +3,13 @@
 PURPOSE: Stage setup for imgui.
 
 CLASSES:
-	ImGuiStage: 
+	ImGuiStage: Stage for ImGui operations.
 
 DESCRIPTION:
+	Stage for preparation of the imgui context at every application update.
 
 USAGE:
+
 
 */
 

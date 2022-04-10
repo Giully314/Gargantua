@@ -4,20 +4,24 @@ Gargantua/Core/EngineLogger.hpp
 
 PURPOSE: Log information.
 
-
-
+CLASSES:
+	EngineLogger: Logger used by the Engine.
 
 DESCRIPTION:
-	Singleton class logger for the Engine part. How to avoid application side access this class?
+	Singleton class logger for the Engine part.
+
+USAGE:
+	GRG_CORE_ERROR("Error inside {}, message: {}", func_name, error_msg);
 
 TODO:
 	Move into Systems and make a LoggingSystem?
+	How to avoid application side access this class? Is important?
 */
 
 
 /*
-Why i define this macro here instaed of inside premake file? Because people who works at visual studio
-are incompetent. Visual studio doesn't recognize macro definition inside the properties.
+Why i define this macro here instaed of inside premake file? 
+Visual studio doesn't recognize macro definition inside the properties.
 This is a known thing but who cares to fix it when you can waste people's time.
 https://developercommunity.visualstudio.com/t/vs2019-does-not-appear-to-see-the-preprocessor-def/1337568
 */

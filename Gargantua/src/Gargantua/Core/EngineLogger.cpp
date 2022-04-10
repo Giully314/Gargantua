@@ -1,4 +1,8 @@
+/*
+Gargantua/Core/EngineLogger.cpp
+*/
 #include "EngineLogger.hpp"
+
 #include "Gargantua/Log/Level.hpp"
 
 

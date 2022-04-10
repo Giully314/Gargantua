@@ -2,6 +2,12 @@
 /*
 Gargantua/Core/Scene2d.hpp
 
+PURPOSE: information about the scene.
+
+CLASSES:
+	Scene2d: struct for packing information about the current scene.
+
+TODO: this is (probably) a temporary solution.
 
 */
 

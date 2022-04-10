@@ -15,7 +15,7 @@ namespace Gargantua
 
 		void Pipeline::AddStage(UniqueRes<Stage> stage)
 		{
-			const auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
+			auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
 				{
 					return stage->GetName() == s->GetName();
 				});

@@ -5,12 +5,30 @@ Gargantua/Core/Application.hpp
 PURPOSE: Define the skeleton of an application.
 
 CLASSES:
-	Application: Base class for the application concept.
+	Application: Base class for the application defined from user.
 
 
 DESCRIPTION:
-	
+	This class is contained and controlled inside the Engine.
+	An Application is "what" happens, the Engine is "how" happens.
+	At the core, there is the Pipeline object that defines the order of execution of the 
+	stages (the building block of the Application).
 
+USAGE:
+	class MyApplication : public Gargantua::Core::Application
+	{
+		void Start() override
+		{
+			pipeline.AddStage<MyStage>();
+		}
+
+
+		void Shutdown() override
+		{
+		}
+	}
+
+	Gargantua::Engine e {[](){return new MyApplication();}, width, height};
 */
 
 #include "Gargantua/Core/Pipeline.hpp"
@@ -18,25 +36,21 @@ DESCRIPTION:
 
 #include "Gargantua/Time/TimeStep.hpp"
 
+#include "Gargantua/Types.hpp"
+
 namespace Gargantua
 {
 	namespace Core
 	{
-		/*
-		Interface for the creation of an Application.
-		*/
-		class Application
+		class Application : private NonCopyable
 		{
 		public:
 			Application() = default;
 
-			Application(const Application&) = delete;
-			Application& operator=(const Application&) = delete;
+			Application(Application&&) = default;
+			Application& operator=(Application&&) = default;
 
-			Application(Application&&) = delete;
-			Application& operator=(Application&&) = delete;
-
-			virtual ~Application();
+			virtual ~Application() = default;
 
 
 			/*
@@ -83,7 +97,5 @@ namespace Gargantua
 			Pipeline pipeline;
 			EngineSystems systems;
 		};
-
-
 	} //namespace Core
 } //namespace Gargantua
