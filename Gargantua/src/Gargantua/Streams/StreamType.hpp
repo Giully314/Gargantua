@@ -1,13 +1,25 @@
 #pragma once
+/*
+Gargantua/Streams/StreamType.hpp
 
+PURPOSE: Tag classes for streams.
+
+CLASSES:
+	BasicStream: Basic stream tag.
+	OutputStream: Output stream tag.
+	InputStream: Input stream tag.
+	IOStream: I/O stream tag.
+
+DESCRIPTION:
+
+USAGE:
+
+*/
 
 namespace Gargantua
 {
 	namespace Streams
 	{
-		/*
-		Tag classes.
-		*/
 		struct BasicStream { };
 
 		struct OutputStream { };

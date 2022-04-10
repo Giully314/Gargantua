@@ -1,4 +1,18 @@
 #pragma once
+/*
+Gargantua/Streams/ConsoleStream.hpp
+
+PURPOSE: Console output stream.
+
+CLASSES:
+	ConsoleStream: std::cout wrapper class.
+
+DESCRIPTION:
+	This is a temporary class and should be used only for test.
+
+USAGE:
+
+*/
 
 #include "Gargantua/Streams/StreamType.hpp"
 
