@@ -17,13 +17,16 @@
 #include "Gargantua/Renderer/VertexArray.hpp"
 #include "Gargantua/Renderer/Shader.hpp"
 #include "Gargantua/Renderer/Program.hpp"
+#include "Gargantua/Renderer/Texture2d.hpp"
 #include "Gargantua/Renderer/Types.hpp"
 #include "Gargantua/Renderer/OrthoCamera.hpp"
 #include "Gargantua/Renderer/OrthoCameraController.hpp"
-
+#include "Gargantua/Renderer/Utility.hpp"
 
 #include "Gargantua/Math/Vec4d.hpp"
+#include "Gargantua/Math/Functions.hpp"
 
+#include "Gargantua/Event/WindowEvents.hpp"
 
 #include <imgui.h>
 
@@ -32,110 +35,119 @@
 
 using namespace Gargantua;
 
+#define POSITION 0
+#define TEXTURE 1
+
+constexpr unsigned int WIDTH = 1280;
+constexpr unsigned int HEIGHT = 720;
+
+
+/*
+ONLY FOR TESTING.
+*/
+struct Mesh
+{
+	~Mesh()
+	{
+		if (texture)
+		{
+			texture->Destroy();
+		}
+	}
+
+	UniqueRes<Renderer::Texture2d> texture;
+};
+
 
 class TestStage : public Gargantua::Core::Stage
 {
 public:
-	TestStage(Core::EngineSystems systems_) : Gargantua::Core::Stage("TestStage"), camera(-1, -1, 1, 1), systems(std::move(systems_))
+	TestStage(Core::EngineSystems systems_) : Gargantua::Core::Stage("TestStage"), systems(std::move(systems_))
 	{
-		float vertices[] =
-		{
-			 0.0f,  0.5f, 0.0f,
-			 0.5f, -0.5f, 0.0f,
-			-0.5f, -0.5f, 0.0f,
-			-0.5f,  0.5f, 0.0f,
-		};
-
-		unsigned short elements[] =
-		{
-			0, 1, 2
-			/*1, 2, 3*/
-		};
-
-		color[0] = 1.0f;
-		color[1] = 1.0f;
-		color[2] = 1.0f;
-		color[3] = 1.0f;
+		//background.texture = Renderer::Utility::CreateTX2d("resources/test/BG.png");
 
 
-		vb.Create();
-		vb.Load(vertices, 12, 3, Renderer::BufferElementType::float_t, Renderer::DrawMode::static_draw);
+		ship.texture = Renderer::Utility::CreateTX2d("resources/test/Plane/Fly (1).png");
+	
 
-		eb.Create();
-		eb.Load(elements, 3, Renderer::BufferElementType::unsigned_short_t, Renderer::DrawMode::static_draw);
+		program = systems.shader_sys->CreateProgram("BasicTransform.vert", "BasicColorTexture.frag");
+		auto fb_program = systems.shader_sys->CreateProgram("ScreenTransform.vert", "ScreenColor.frag");
 
-		va.Create();
+		camera = Renderer::Utility::CreateOrtho(WIDTH, HEIGHT);
+		controller.SetCamera(camera.get());
 
-		va.AddElementBuffer(eb);
+		auto s = systems.engine_event_sys;
+		s->GetEventListenerSystem()->RegisterListener<Event::WindowResizeEvent>(
+			[this](const Event::BaseEvent& e)
+			{
+				const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
+				camera = Renderer::Utility::CreateOrtho(we.new_width, we.new_height);
+				controller.SetCamera(camera.get());
+			});	
 
-		va.AddVertexBuffer(vb, 0);
-
-
-		vert_shad.Create(Renderer::ShaderType::vertex_shader);
-		frag_shad.Create(Renderer::ShaderType::fragment_shader);
-						
-		vert_shad.Compile("C:\\Users\\Giully\\source\\repos\\Gargantua\\Gargantua\\src\\Gargantua\\Renderer\\Shaders\\Test.vert");
-		frag_shad.Compile("C:\\Users\\Giully\\source\\repos\\Gargantua\\Gargantua\\src\\Gargantua\\Renderer\\Shaders\\CustomColor.frag");
-
-		program.Create();
-		program.Link(&vert_shad, &frag_shad);
-
-		//camera.SetPosition(Math::Vec3df{ 0.5f, 0.5f, 6.0f });
-		/*camera.SetRotation(90.0f);*/
-		controller.SetCamera(&camera);
+		systems.renderer2d_sys->SetProgram(program);
+		systems.renderer2d_sys->SetFBProgram(fb_program);
 	}
 
 	~TestStage()
 	{
-		vb.Destroy();
-		eb.Destroy();
-		va.Destroy();
-		vert_shad.Destroy();
-		frag_shad.Destroy();
-		program.Destroy();
+		program->Destroy();
 	}
 
 
 	void Start() override
 	{
-		program.Bind();
-		program.SetUniform4f("my_color", color);
-		program.Unbind();
-		systems.renderer_sys->BeginScene(&camera);
+		systems.renderer2d_sys->BeginScene(*camera);
 	}
 
 	void End() override
 	{
-		//systems.renderer_sys->EndScene();
+		systems.renderer2d_sys->EndScene();
 	}
 
 	void Execute(const Gargantua::Time::TimeStep& ts) override 
 	{
+		//Math::Vec4df colors[128] = { Math::Vec4df{1.0f, 1.0f, 1.0f, 1.0f} };
+
+		natural_t colors[400] = { 0xffffffff };
+		std::fill_n(colors, 400, 0xffffffff);
+
+		//auto bg_transf = Math::Transform3d::Translate(Math::Vec3df{-5, 0, 0}) * Math::Transform3d::Scale(10.0f);
+		auto bg_transf = Math::Transform3d::Scale(Math::Vec3df{10, 5, 0});
+		auto s_scale = Math::Transform3d::Translate(Math::Vec3df{ 3, 3, 0 }) *  Math::Transform3d::Scale(1.0f);
 		controller.Update(ts);
-		systems.renderer_sys->Submit(&va, &eb, &program, Renderer::RenderTopology::TRIANGLES);
+		
+
+		systems.renderer2d_sys->DrawQuad(Math::Vec2df{ 0, 0 }, Math::Vec2df{ 2, 2 }, *ship.texture);
+		systems.renderer2d_sys->DrawQuad(Math::Vec2df{ 1, 1 }, Math::Vec2df{ 1, 1 }, Math::Vec4df{1.0f, 0.0f, 0.0f, 1.0f});
+		systems.renderer2d_sys->DrawRotatedQuad(Math::Vec2df{ 1, 1 }, Math::Vec2df{ 1, 1 }, 45.0f, Math::Vec4df{1.0f, 0.0f, 0.0f, 1.0f});
+		
+		systems.renderer2d_sys->DrawPixels(0, HEIGHT - 20, 20, 1, (void*)colors);
 	}
 
 
 	void RenderGUI() override
 	{
 		//ImGui::Text("CIAO COME STAI");
-		ImGui::Begin("Color setting");
+		/*ImGui::Begin("Color setting");
 
 		ImGui::ColorEdit4("Color", &color[0]);
 		
-		ImGui::End();
+		ImGui::End();*/
 	}
 
 private:
-	Renderer::VertexBuffer vb;
-	Renderer::ElementBuffer eb;
-	Renderer::VertexArray va;
-	Renderer::Shader vert_shad;
-	Renderer::Shader frag_shad;
-	Renderer::Program program;
-	Math::Vec4df color;
-	Renderer::OrthoCamera camera;
+	Mesh ship;
+	Mesh background;
+
+	SharedRes<Renderer::Shader> vert_shad;
+	SharedRes<Renderer::Shader> frag_shad;
+	SharedRes<Renderer::Program> program;
+
+	UniqueRes<Renderer::OrthoCamera> camera;
 	Renderer::OrthoCameraController controller;
+	
+	Math::Vec4df color;
 	Core::EngineSystems systems;
 };
 
@@ -158,7 +170,7 @@ int main()
 {
 	using namespace Gargantua;
 	
-	Gargantua::Engine e{ []() {return new Sandbox{}; } };
+	Gargantua::Engine e{ []() {return new Sandbox{}; }, WIDTH, HEIGHT };
 	e.Run();
 
 	return 0;
