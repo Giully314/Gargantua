@@ -1,11 +1,15 @@
 #pragma once
+/*
+Gargantua/Types.hpp
+
+PURPOSE: Define uniform types  to use across the engine.
+*/
+
+
 #include <cstdint>
 #include <memory>
 #include <utility>
 #include <string>
-
-//Define uniform types  to use across the engine.
-
 
 namespace Gargantua
 {
