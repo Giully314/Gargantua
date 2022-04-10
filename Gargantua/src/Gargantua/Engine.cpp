@@ -26,7 +26,7 @@ namespace Gargantua
 	{
 		engine_logger = CreateUniqueRes<Core::EngineLogger>();
 
-		window = CreateUniqueRes<Core::Window>("GargantuaEngine", width, height);
+		window = CreateSharedRes<Core::Window>("GargantuaEngine", width, height);
 
 		stopwatch = CreateUniqueRes<Time::Stopwatch>();
 
@@ -58,7 +58,7 @@ namespace Gargantua
 
 
 		//Init after window has registered events.
-		gui_stage = CreateUniqueRes<Core::ImGuiStage>(window.get());
+		gui_stage = CreateUniqueRes<Core::ImGuiStage>(window);
 
 		//Create the app using the function passed by the user.
 		app = UniqueRes<Core::Application>(create_app());

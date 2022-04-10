@@ -63,7 +63,7 @@ namespace Gargantua
 		//Current application in execution.
 		UniqueRes<Core::Application> app;	
 		UniqueRes<Core::EngineLogger> engine_logger;
-		UniqueRes<Core::Window> window;
+		SharedRes<Core::Window> window;
 		
 		UniqueRes<Time::Stopwatch> stopwatch;
 

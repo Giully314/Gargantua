@@ -1,4 +1,15 @@
 #pragma once
+/*
+PURPOSE: Stage setup for imgui.
+
+CLASSES:
+	ImGuiStage: 
+
+DESCRIPTION:
+
+USAGE:
+
+*/
 
 #include "Gargantua/Core/Stage.hpp"
 #include "Gargantua/Time/TimeStep.hpp"
@@ -12,7 +23,7 @@ namespace Gargantua
 		class ImGuiStage : public Stage
 		{
 		public:
-			ImGuiStage(NonOwnedRes<Window> window_);
+			ImGuiStage(SharedRes<Window> window_);
 
 			~ImGuiStage();
 
@@ -26,7 +37,7 @@ namespace Gargantua
 			void End() override;
 
 		private:
-			NonOwnedRes<Window> window;
+			SharedRes<Window> window;
 		};
 	} //namespace Core 
 } //namespace Gargantua

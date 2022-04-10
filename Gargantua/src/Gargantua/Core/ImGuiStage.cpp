@@ -1,8 +1,16 @@
+/*
+Gargantua/Core/ImGuiStage.cpp
+
+DESCRIPTION:
+	Implementation of the basic setup to make imgui work.
+*/
 #include "ImGuiStage.hpp"
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
+
+#include <utility>
 
 
 namespace Gargantua
@@ -10,7 +18,7 @@ namespace Gargantua
 	namespace Core
 	{
 		
-		ImGuiStage::ImGuiStage(NonOwnedRes<Window> window_) : Stage("ImGuiStage"), window(window_)
+		ImGuiStage::ImGuiStage(SharedRes<Window> window_) : Stage("ImGuiStage"), window(std::move(window_))
 		{
 			//Copied from https://github.com/ocornut/imgui/blob/master/examples/example_glfw_opengl3/main.cpp
 
