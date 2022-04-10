@@ -1,4 +1,25 @@
 #pragma once
+/*
+Gargantua/Concepts/Stream.hpp
+
+PURPOSE: Check if a type is a Stream.
+
+CLASSES:
+	BasicStream: Concept for basic properties of a Stream.
+	OutputStream: Concept for output stream.
+	InputStream: Concept for input stream.
+	IOStream: Concept for I/O stream.
+
+
+DESCRIPTION:
+	These concepts are used for custom stream type inside the Log directory (for now).
+	Other possible future uses are stream serialization of objects inside the engine.
+
+USAGE:
+	template <typename MyStreamType, typename TObject> 
+	requires IOStream<MyStreamType, TObject> 
+	void f();
+*/
 
 #include "Gargantua/Streams/StreamType.hpp"
 
@@ -19,8 +40,6 @@ namespace Gargantua
 		template <typename T>
 		concept BasicStream = requires(T s)
 		{
-			//{s.rdstate()} -> std::same_as<std::ios_base::iostate>;
-			//{s.setstate(std::same_as<std::ios_base::iostate>) } -> std::same_as<void>;
 			typename T::StreamType;
 			{s.Flush()} -> std::same_as<T&>;
 		};
