@@ -3,19 +3,19 @@ A 2d game engine under development.
 
 
 # Project structure and directories
-Concepts: files for the definition of various concepts. 
-Core: Core component abstractions of the engine. 
-DataStructures: Personal implementation of datastructures. 
-Event: Basic building blocks for handling events. 
-Generators: Number generators. 
-Input: Low level input state. 
-Log: Basic logging system. 
-Math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions. 
-Parallel: Components for parallel code. Only prototypes and various ideas. (Not for use yet) 
-Renderer: Low level components for handling renderer objects. 
-Streams: Input and output streams. 
-Systems: Important directory that contains the systems that allows the engine to function. 
-Time: Handling time. 
+Concepts: files for the definition of various concepts.  
+Core: Core component abstractions of the engine.  
+DataStructures: Personal implementation of datastructures.  
+Event: Basic building blocks for handling events.  
+Generators: Number generators.  
+Input: Low level input state.  
+Log: Basic logging system.  
+Math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
+Parallel: Components for parallel code. Only prototypes and various ideas. (Not for use yet)  
+Renderer: Low level components for handling renderer objects.  
+Streams: Input and output streams.  
+Systems: Important directory that contains the systems that allows the engine to function.  
+Time: Handling time.  
 
 
 # Language 
