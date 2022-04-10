@@ -97,7 +97,7 @@ namespace Gargantua
 			void Resize(natural_t width, natural_t height);
 
 
-			const Texture2d& GetColorBuffer() const
+			Texture2d& GetColorBuffer()
 			{
 				return buffer;
 			}
