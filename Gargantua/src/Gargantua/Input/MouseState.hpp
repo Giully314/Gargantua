@@ -1,4 +1,19 @@
 #pragma once
+/*
+Gargantua/Input/MouseState.hpp
+
+PURPOSE: Keep the state of the mouse.
+
+CLASSES:
+	MouseState: Information about the state of the mouse.
+
+DESCRIPTION:
+	State of the mouse in the current frame. Position and buttons pressed.
+
+USAGE:
+	mouse_state.GetX();
+
+*/
 
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Input/MouseCodes.hpp"
@@ -10,7 +25,6 @@ namespace Gargantua
 {
 	namespace Input
 	{
-		//State of the mouse in the current frame.
 		class MouseState
 		{
 		public:

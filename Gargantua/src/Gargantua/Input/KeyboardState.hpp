@@ -1,4 +1,21 @@
 #pragma once
+/*
+Gargantua/Input/KeyboardState.hpp
+
+PURPOSE: State of the keyboard.
+
+CLASSES:
+	KeyboardState: Manages the state of the keyboard.
+
+DESCRIPTION:
+	Simple class that mainstains the state of the keyboard in the current frame using a std::array.
+
+USAGE:
+	keyboard_state.GetKey(Input::Key::ARROW_UP);
+
+TODO: maintains previous state?
+
+*/
 
 #include "Gargantua/Input/KeyCodes.hpp"
 #include "Gargantua/Types.hpp"

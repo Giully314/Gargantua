@@ -1,4 +1,16 @@
 #pragma once
+/*
+Gargantua/Input/MouseCodes.hpp
+
+PURPOSE: Codes for buttons of the mouse.
+
+CLASSES:
+
+DESCRIPTION:
+
+USAGE:
+
+*/
 
 #include "Gargantua/Types.hpp"
 

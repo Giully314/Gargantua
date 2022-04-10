@@ -1,4 +1,16 @@
 #pragma once
+/*
+Gargantua/Input/KeyCodes.hpp
+
+PURPOSE: Codes for keys.
+
+CLASSES:
+
+DESCRIPTION:
+
+USAGE:
+
+*/
 
 #include "Gargantua/Types.hpp"
 
