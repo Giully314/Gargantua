@@ -26,7 +26,8 @@ Windows with opengl and glfw.
 
 
 # Personal considerations
-This is my first real project in C++ and my first engine.
+This is my first real project in C++ and my first engine. I'm developing this engine because i find really 
+interesting how simulations are created. I also want start to develop a game based on pixel simulation.  
 
 
 # Resource that i found useful
