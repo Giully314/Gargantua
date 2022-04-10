@@ -1,4 +1,22 @@
 #pragma once
+/*
+Gargantua/Log/LogMessage.hpp
+
+PURPOSE: Message information.
+
+CLASSES:
+	LogMessage: Class that contatins the message and output it to a stream.
+
+DESCRIPTION:
+	This class is a wrapper for a string that represents a message, adding other informations like time,
+	thread, ecc.
+
+USAGE:
+
+
+TODO: fix time, add thread id.
+
+*/
 
 #include "Gargantua/Log/Level.hpp"
 #include "Gargantua/Concepts/Stream.hpp"
@@ -12,12 +30,6 @@ namespace Gargantua
 {
 	namespace Log
 	{
-		/*
-		This class is a wrapper for a string that represents a message, adding other informations like time,
-		thread, ecc.
-
-		TODO: fix time, add thread id.
-		*/
 		class LogMessage
 		{
 		public:

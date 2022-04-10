@@ -1,4 +1,20 @@
 #pragma once
+/*
+Gargantua/Log/Logger.hpp
+
+PURPOSE: Logger class.
+
+CLASSES:
+	Logger: Log message using a stream.
+
+DESCRIPTION:
+	A Logger is a class that allows to register messages and send them to the chosen stream.
+	Messages are formatted using std::format.
+
+USAGE:
+	Logger<CoonsoleStream> console_logger;
+	console_logger.Debug("debug message {}", code);
+*/
 
 #include "Gargantua/Concepts/Stream.hpp"
 #include "Gargantua/Log/Level.hpp"

@@ -1,3 +1,6 @@
+/*
+Gargantua/Log/LogMessage.cpp
+*/
 #include "LogMessage.hpp"
 
 namespace Gargantua

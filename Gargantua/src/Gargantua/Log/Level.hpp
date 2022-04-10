@@ -1,4 +1,17 @@
 #pragma once
+/*
+Gargantua/Log/Level.hpp
+
+PURPOSE: Level of log.
+
+CLASSES:
+	Level: enum for enumerate the level of logging messages.
+
+DESCRIPTION:
+
+USAGE:
+
+*/
 
 namespace Gargantua
 {
