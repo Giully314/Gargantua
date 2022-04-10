@@ -1,4 +1,20 @@
 #pragma once
+/*
+Gargantua/Event/MouseEvents.hpp
+
+PURPOSE: Mouse events.
+
+CLASSES:
+	MouseCursorEvent: Information about the cursos position.
+	MouseButtonEvent: Information about the button.
+	MouseButtonPressedEvent: Information about the button pressed.
+	MouseButtonReleasedEvent: Information about the button released.
+
+DESCRIPTION:
+	Basic events for handling mouse changes.
+
+USAGE:
+*/
 
 #include "Gargantua/Event/BaseEvent.hpp"
 #include "Gargantua/Types.hpp"

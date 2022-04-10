@@ -1,4 +1,23 @@
 #pragma once
+/*
+Gargantua/Event/EventRegisterSystem.hpp
+
+PURPOSE: Handle low level event register.
+
+CLASSES:
+	EventRegisterSystem: Handle the process of register an event.
+
+
+DESCRIPTION:
+	Register events to the queue. For manipulate the events (extract or other operations), 
+	use an EventRegisterHandler.		
+
+USAGE:
+	event_register_sys.RegisterEvent<MyEvent>(e);
+
+TODO:
+	is UniqueRes the right way to pass an event?
+*/
 
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"
@@ -12,9 +31,6 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		/*
-		Register events to the queue. For manipulate the events (extract or other operations), use an EventRegisterHandler.	
-		*/
 		class EventRegisterSystem
 		{
 		public:

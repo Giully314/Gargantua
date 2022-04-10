@@ -1,4 +1,21 @@
 #pragma once
+/*
+Gargantua/Event/EventRegisterHandler.hpp
+
+PURPOSE: High level event register handler.
+
+CLASSES:
+	EventRegisterHandler: handler for the event register system.
+
+DESCRIPTION:
+	This class acts like an iterator. Provide a unirofm interface to access the low level "container".
+
+USAGE:
+	EventRegisterHandler erh{address_of_event_register_system};
+
+	auto next_event = erh.ExtractEvent();
+
+*/
 
 #include "Gargantua/Event/EventRegisterSystem.hpp"
 #include "Gargantua/Types.hpp"

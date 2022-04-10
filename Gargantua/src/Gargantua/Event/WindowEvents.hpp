@@ -1,4 +1,19 @@
 #pragma once
+/*
+Gargantua/Event/WindowEvents.hpp
+
+PURPOSE: Window events.
+
+CLASSES:
+	WindowResizeEvent: New window sizes information.
+	WindowCloseEvent: Window close signal.
+
+DESCRIPTION:
+	Basic events for handling window changes.
+
+USAGE:
+	
+*/
 
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"

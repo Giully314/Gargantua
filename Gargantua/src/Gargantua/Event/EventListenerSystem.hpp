@@ -1,9 +1,27 @@
 #pragma once
+/*
+Gargantua/Event/EventListenerSystem.hpp
 
-#include "Gargantua/Core/EngineLogger.hpp"
-#include "Gargantua/Types.hpp"
-#include "Gargantua/Concepts/Event.hpp"
+PURPOSE: Manage event listeners.
+
+CLASSES:
+	EventListenerSystem: Register listener for events.
+
+DESCRIPTION:
+	This class handles the low level operations for register/unregister listeners.
+
+USAGE:
+	event_register_sys.RegisterListener<MyEvent>(my_listener);
+
+*/
+
+
 #include "Gargantua/Event/BaseEvent.hpp"
+
+#include "Gargantua/Types.hpp"
+
+#include "Gargantua/Concepts/Event.hpp"
+
 #include "Gargantua/Generators/SequentialNumberGenerator.hpp"
 
 
