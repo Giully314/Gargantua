@@ -1,4 +1,25 @@
 #pragma once
+/*
+Gargantua/DataStructures/ConcurrentQueue.hpp
+
+
+PURPOSE: Queue for multithreading usage.
+
+CLASSES:
+	ConcurrentQueue: an std::queue with lock.
+
+DESCRIPTION:
+	Thread safe queue with notification (condition variable) that wake up other threads when an element is
+	pushed into the queue.
+	Note: This data structure is implemented in the book "C++ Concurrency in Action" by Anthony Williams.
+
+USAGE:
+	ConcurrentQueue<MyType> q;
+
+	Thread1: q.Push(value);
+	Thread2: q.WaitAndPop(variable);
+*/
+
 #include <mutex>
 #include <condition_variable>
 #include <queue>
@@ -9,12 +30,6 @@ namespace Gargantua
 {
 	namespace DataStructures
 	{
-		/*Thread safe queue with notification (condition variable) that wake up other threads when an element is
-		pushed into the queue.
-		Note: This data structure is implemented in the book "C++ Concurrency in Action" by Anthony Williams.
-		I chose to follow the implementation of the book instaed of my personal implementation because it's the
-		first time that i code in a multithreading enviroment so i have 0 experience.
-		*/
 		template <std::movable T>
 		class ConcurrentQueue
 		{
