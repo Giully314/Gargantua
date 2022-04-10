@@ -1,16 +1,29 @@
 #pragma once
+/*
+Gargantua/Time/Stopwatch.hpp
+
+PURPOSE: Get the time between 2 moments.
+
+CLASSES:
+	Stopwatch: Measure time.
+
+DESCRIPTION:
+	Measure the elapsed time between 2 calls of Tick.
+
+USAGE:
+
+*/
+
+
+#include "Gargantua/Time/TimeStep.hpp"
 
 #include <chrono>
 
-#include "Gargantua/Time/TimeStep.hpp"
 
 namespace Gargantua
 {
 	namespace Time
 	{
-		/*
-		Measure the elapsed time between 2 calls of Tick.
-		*/
 		class Stopwatch
 		{
 		public:

@@ -1,4 +1,18 @@
 #pragma once
+/*
+Gargantua/Time/TimeStep.hpp
+
+PURPOSE: Information about time passed between 2 frames.
+
+CLASSES:
+	TimeStep: Value in second or millisecond of time passed between 2 frames.
+
+DESCRIPTION:
+	
+
+USAGE:
+
+*/
 
 #include <chrono>
 
