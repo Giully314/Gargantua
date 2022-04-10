@@ -136,6 +136,8 @@ namespace Gargantua
 			void SetBackground();
 
 
+			void DrawPixels(natural_t x, natural_t y, natural_t width, natural_t height, void* colors);
+
 
 			inline void SetProgram(SharedRes<Renderer::Program> program)
 			{

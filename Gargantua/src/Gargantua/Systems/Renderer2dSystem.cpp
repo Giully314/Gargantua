@@ -81,6 +81,7 @@ namespace Gargantua
 			data.va_quad = Renderer::Utility::CreateVA();
 
 			natural_t white_color = 0xffffffff;
+			
 			data.tx_white = Renderer::Utility::CreateTX2d(1, 1, &white_color);
 
 			data.va_quad->AddVertexBuffer(*center_square, 0);
@@ -243,8 +244,10 @@ namespace Gargantua
 
 
 
-
-
+		void Renderer2dSystem::DrawPixels(natural_t x, natural_t y, natural_t width, natural_t height, void* colors)
+		{
+			data.fb->GetColorBuffer().SetColor(x, y, width, height, colors);
+		}
 
 
 	} //namespace Systems
