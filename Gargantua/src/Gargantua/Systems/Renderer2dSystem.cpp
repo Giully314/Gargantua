@@ -129,9 +129,9 @@ namespace Gargantua
 		}
 
 
-		void Renderer2dSystem::ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
+		void Renderer2dSystem::ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng)
 		{
-			event_list_sys->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
+			event_list_mng->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
 				{
 					const auto& wre = static_cast<const Event::WindowResizeEvent&>(e);
 					Renderer::RendererCommand::SetViewport(0, 0, wre.new_width, wre.new_height);

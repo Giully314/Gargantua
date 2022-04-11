@@ -31,7 +31,7 @@ TODO:
 
 #include "Gargantua/Math/Vec4d.hpp"
 
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 
 #include <vector>
 
@@ -48,7 +48,7 @@ namespace Gargantua
 			void EndScene();
 
 
-			void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys);
+			void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng);
 
 			void RenderFrame();
 

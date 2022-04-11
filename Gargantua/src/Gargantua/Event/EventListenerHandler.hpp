@@ -22,7 +22,7 @@ USAGE:
 
 #include "Gargantua/Concepts/Event.hpp"
 
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 
 #include <ranges>
 #include <string>
@@ -35,7 +35,7 @@ namespace Gargantua
 		class EventListenerHandler
 		{
 		public:
-			EventListenerHandler(NonOwnedRes<EventListenerSystem>);
+			EventListenerHandler(NonOwnedRes<EventListenerManager>);
 
 
 			auto GetEventListeners(const event_name_t& event_name)
@@ -49,15 +49,15 @@ namespace Gargantua
 			}
 
 
-			inline NonOwnedRes<EventListenerSystem> GetEventListenerSystem() { return hdl; }
+			inline NonOwnedRes<EventListenerManager> GetEventListenerSystem() { return hdl; }
 			
-			inline void SetEventListenerSystem(NonOwnedRes<EventListenerSystem> els)
+			inline void SetEventListenerSystem(NonOwnedRes<EventListenerManager> els)
 			{
 				hdl = els;
 			}
 
 		private:
-			NonOwnedRes<EventListenerSystem> hdl;
+			NonOwnedRes<EventListenerManager> hdl;
 		};
 	} //namespace Event
 } //namespace Gargantua

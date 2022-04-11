@@ -8,7 +8,7 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		EventRegisterHandler::EventRegisterHandler(NonOwnedRes<EventRegisterSystem> event_reg_sys) : hdl(event_reg_sys)
+		EventRegisterHandler::EventRegisterHandler(NonOwnedRes<EventRegisterManager> event_reg_sys) : hdl(event_reg_sys)
 		{
 
 		}

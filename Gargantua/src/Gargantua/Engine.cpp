@@ -40,17 +40,17 @@ namespace Gargantua
 
 
 		//Register components to the engine event systems.
-		auto event_list_sys = engine_event_sys->GetEventListenerSystem();
-		auto event_reg_sys = engine_event_sys->GetEventRegisterSystem();
+		auto event_list_mng = engine_event_sys->GetEventListenerManager();
+		auto event_reg_mng = engine_event_sys->GetEventRegisterManager();
 
-		window->ListenToEvents(event_list_sys);
-		window->RegisterEvents(event_reg_sys);
+		window->ListenToEvents(event_list_mng);
+		window->RegisterEvents(event_reg_mng);
 
-		input_sys->ListenToEvents(event_list_sys);
+		input_sys->ListenToEvents(event_list_mng);
 
-		renderer_sys->ListenToEvents(event_list_sys);
+		renderer_sys->ListenToEvents(event_list_mng);
 
-		event_list_sys->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
+		event_list_mng->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
 			{
 				const auto& we = static_cast<const Event::WindowCloseEvent&>(e);
 				should_close = we.is_closed;

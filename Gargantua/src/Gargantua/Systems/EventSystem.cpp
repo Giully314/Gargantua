@@ -10,11 +10,11 @@ namespace Gargantua
 	{
 		EventSystem::EventSystem()
 		{
-			event_reg_sys = CreateUniqueRes<Event::EventRegisterSystem>();
-			event_list_sys = CreateUniqueRes<Event::EventListenerSystem>();
+			event_reg_mng = CreateUniqueRes<Event::EventRegisterManager>();
+			event_list_mng = CreateUniqueRes<Event::EventListenerManager>();
 
-			event_reg_hdl = CreateUniqueRes<Event::EventRegisterHandler>(event_reg_sys.get());
-			event_list_hdl = CreateUniqueRes<Event::EventListenerHandler>(event_list_sys.get());
+			event_reg_hdl = CreateUniqueRes<Event::EventRegisterHandler>(event_reg_mng.get());
+			event_list_hdl = CreateUniqueRes<Event::EventListenerHandler>(event_list_mng.get());
 		}
 
 

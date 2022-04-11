@@ -17,7 +17,7 @@ USAGE:
 
 */
 
-#include "Gargantua/Event/EventRegisterSystem.hpp"
+#include "Gargantua/Event/EventRegisterManager.hpp"
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Event/BaseEvent.hpp"
 
@@ -31,14 +31,14 @@ namespace Gargantua
 		class EventRegisterHandler
 		{
 		public:
-			EventRegisterHandler(NonOwnedRes<EventRegisterSystem>);
+			EventRegisterHandler(NonOwnedRes<EventRegisterManager>);
 
 			//TODO: maybe is better to return a std::optional?
 			UniqueRes<BaseEvent> ExtractEvent();
 
-			inline NonOwnedRes<EventRegisterSystem> GetEventRegisterSystem() { return hdl; }
+			inline NonOwnedRes<EventRegisterManager> GetEventRegisterSystem() { return hdl; }
 
-			inline void SetEventRegisterSystem(NonOwnedRes<EventRegisterSystem> ers)
+			inline void SetEventRegisterSystem(NonOwnedRes<EventRegisterManager> ers)
 			{
 				hdl = ers;
 			}
@@ -54,7 +54,7 @@ namespace Gargantua
 			}
 
 		private:
-			NonOwnedRes<EventRegisterSystem> hdl;
+			NonOwnedRes<EventRegisterManager> hdl;
 		};
 	} //namespace Event
 } //namespace Gargantua

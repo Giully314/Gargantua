@@ -23,8 +23,8 @@ DESCRIPTION:
 #include "Gargantua/Types.hpp"
 #include "Gargantua/Core/EngineLogger.hpp"
 #include "Gargantua/Concepts/Event.hpp"
-#include "Gargantua/Event/EventRegisterSystem.hpp"
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventRegisterManager.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 #include "Gargantua/Event/WindowEvents.hpp"
 #include "Gargantua/Event/KeyEvents.hpp"
 #include "Gargantua/Event/MouseEvents.hpp"
@@ -41,8 +41,8 @@ namespace Gargantua
 		struct WindowProperties
 		{
 			WindowProperties(std::string title_, natural_t width_, natural_t height_) :
-				title(std::move(title_)), width(width_), height(height_), event_reg_sys(nullptr),
-				event_list_sys(nullptr), vsync(false)
+				title(std::move(title_)), width(width_), height(height_), event_reg_mng(nullptr),
+				event_list_mng(nullptr), vsync(false)
 			{
 
 			}
@@ -51,8 +51,8 @@ namespace Gargantua
 			std::string title;
 			natural_t width;
 			natural_t height;
-			NonOwnedRes<Event::EventRegisterSystem> event_reg_sys;
-			NonOwnedRes<Event::EventListenerSystem> event_list_sys;
+			NonOwnedRes<Event::EventRegisterManager> event_reg_mng;
+			NonOwnedRes<Event::EventListenerManager> event_list_mng;
 			bool vsync;
 		};
 
@@ -76,9 +76,9 @@ namespace Gargantua
 
 
 			
-			void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys);
+			void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng);
 
-			void RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys);
+			void RegisterEvents(NonOwnedRes<Event::EventRegisterManager> event_reg_mng);
 
 
 			void SetVSync(bool value);

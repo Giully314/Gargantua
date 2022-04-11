@@ -1,11 +1,11 @@
 #pragma once
 /*
-Gargantua/Event/EventRegisterSystem.hpp
+Gargantua/Event/EventRegisterManager.hpp
 
 PURPOSE: Handle low level event register.
 
 CLASSES:
-	EventRegisterSystem: Handle the process of register an event.
+	EventRegisterManager: Handle the process of register an event.
 
 
 DESCRIPTION:
@@ -13,7 +13,7 @@ DESCRIPTION:
 	use an EventRegisterHandler.		
 
 USAGE:
-	event_register_sys.RegisterEvent<MyEvent>(e);
+	event_register.RegisterEvent<MyEvent>(e);
 
 TODO:
 	is UniqueRes the right way to pass an event?
@@ -31,7 +31,7 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		class EventRegisterSystem
+		class EventRegisterManager
 		{
 		public:
 			friend class EventRegisterHandler;

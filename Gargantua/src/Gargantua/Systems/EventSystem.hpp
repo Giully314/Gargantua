@@ -25,6 +25,8 @@ TODO: Add the possilibity to register a blocking event or make another class to 
 #include "Gargantua/Concepts/Event.hpp"
 #include "Gargantua/Event/EventListenerHandler.hpp"
 #include "Gargantua/Event/EventRegisterHandler.hpp"
+#include "Gargantua/Event/EventRegisterManager.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 
 
 #include <queue>
@@ -47,22 +49,22 @@ namespace Gargantua
 		public:
 			EventSystem();
 
-			inline NonOwnedRes<Event::EventRegisterSystem> GetEventRegisterSystem() 
+			inline NonOwnedRes<Event::EventRegisterManager> GetEventRegisterManager() 
 			{ 
-				return event_reg_sys.get();
+				return event_reg_mng.get();
 			}
 
-			inline NonOwnedRes<Event::EventListenerSystem> GetEventListenerSystem()
+			inline NonOwnedRes<Event::EventListenerManager> GetEventListenerManager()
 			{
-				return event_list_sys.get();
+				return event_list_mng.get();
 			}
 
 			void ProcessEvents();
 			
 
 		private:
-			UniqueRes<Event::EventRegisterSystem> event_reg_sys;
-			UniqueRes<Event::EventListenerSystem> event_list_sys;
+			UniqueRes<Event::EventRegisterManager> event_reg_mng;
+			UniqueRes<Event::EventListenerManager> event_list_mng;
 			
 			UniqueRes<Event::EventRegisterHandler> event_reg_hdl;
 			UniqueRes<Event::EventListenerHandler> event_list_hdl;

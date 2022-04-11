@@ -1,17 +1,17 @@
 #pragma once
 /*
-Gargantua/Event/EventListenerSystem.hpp
+Gargantua/Event/EventListenerManager.hpp
 
 PURPOSE: Manage event listeners.
 
 CLASSES:
-	EventListenerSystem: Register listener for events.
+	EventListenerManager: Register listener for events.
 
 DESCRIPTION:
 	This class handles the low level operations for register/unregister listeners.
 
 USAGE:
-	event_register_sys.RegisterListener<MyEvent>(my_listener);
+	event_register.RegisterListener<MyEvent>(my_listener);
 
 */
 
@@ -42,7 +42,7 @@ namespace Gargantua
 		using event_callback_t = std::function<void(const BaseEvent&)>;
 
 
-		class EventListenerSystem
+		class EventListenerManager
 		{
 		public:
 			friend class EventListenerHandler;

@@ -18,8 +18,8 @@ TODO: add something to allow the stages to communicate?
 */
 
 #include "Gargantua/Time/TimeStep.hpp"
-#include "Gargantua/Event/EventRegisterSystem.hpp"
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventRegisterManager.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 #include "Gargantua/Types.hpp"
 
 #include <string>
@@ -73,13 +73,13 @@ namespace Gargantua
 			virtual void RenderGUI() = 0;
 
 
-			virtual void RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys)
+			virtual void RegisterEvents(NonOwnedRes<Event::EventRegisterManager> event_reg_mng)
 			{
 
 			}
 
 
-			virtual void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
+			virtual void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng)
 			{
 
 			}

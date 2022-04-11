@@ -80,10 +80,10 @@ namespace Gargantua
 
 
 
-		void Window::ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys)
+		void Window::ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng)
 		{
-			properties.event_list_sys = event_list_sys;
-			event_list_sys->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
+			properties.event_list_mng = event_list_mng;
+			event_list_mng->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
 				{
 					const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
 					properties.width = we.new_width;
@@ -91,14 +91,14 @@ namespace Gargantua
 				});
 		}
 
-		void Window::RegisterEvents(NonOwnedRes<Event::EventRegisterSystem> event_reg_sys)
+		void Window::RegisterEvents(NonOwnedRes<Event::EventRegisterManager> event_reg_mng)
 		{
-			properties.event_reg_sys = event_reg_sys;
+			properties.event_reg_mng = event_reg_mng;
 
 			glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height)
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-					props.event_reg_sys->RegisterEvent<Event::WindowResizeEvent>(width, height);
+					props.event_reg_mng->RegisterEvent<Event::WindowResizeEvent>(width, height);
 				});
 
 
@@ -106,7 +106,7 @@ namespace Gargantua
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-					props.event_reg_sys->RegisterEvent<Event::WindowCloseEvent>(true);
+					props.event_reg_mng->RegisterEvent<Event::WindowCloseEvent>(true);
 				});
 
 
@@ -117,13 +117,13 @@ namespace Gargantua
 					switch (action)
 					{
 					case GLFW_PRESS:
-						props.event_reg_sys->RegisterEvent<Event::KeyPressedEvent>(key);
+						props.event_reg_mng->RegisterEvent<Event::KeyPressedEvent>(key);
 						break;
 					case GLFW_RELEASE:
-						props.event_reg_sys->RegisterEvent<Event::KeyReleasedEvent>(key);
+						props.event_reg_mng->RegisterEvent<Event::KeyReleasedEvent>(key);
 						break;
 					case GLFW_REPEAT:
-						props.event_reg_sys->RegisterEvent<Event::KeyPressedEvent>(key);
+						props.event_reg_mng->RegisterEvent<Event::KeyPressedEvent>(key);
 						break;
 					}
 				});
@@ -133,7 +133,7 @@ namespace Gargantua
 				{
 					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-					props.event_reg_sys->RegisterEvent<Event::MouseCursorEvent>((float)xpos, (float)ypos);
+					props.event_reg_mng->RegisterEvent<Event::MouseCursorEvent>((float)xpos, (float)ypos);
 				});
 
 
@@ -144,10 +144,10 @@ namespace Gargantua
 					switch (action)
 					{
 					case GLFW_PRESS:
-						props.event_reg_sys->RegisterEvent<Event::MouseButtonPressedEvent>(button);
+						props.event_reg_mng->RegisterEvent<Event::MouseButtonPressedEvent>(button);
 						break;
 					case GLFW_RELEASE:
-						props.event_reg_sys->RegisterEvent<Event::MouseButtonReleasedEvent>(button);
+						props.event_reg_mng->RegisterEvent<Event::MouseButtonReleasedEvent>(button);
 						break;
 					}
 				});

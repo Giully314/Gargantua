@@ -45,7 +45,7 @@ TODO:
 #include "Gargantua/Renderer/OrthoCamera.hpp"
 #include "Gargantua/Renderer/FrameBuffer.hpp"
 
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -96,7 +96,7 @@ namespace Gargantua
 			void EndScene();
 
 
-			void ListenToEvents(NonOwnedRes<Event::EventListenerSystem> event_list_sys);
+			void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng);
 
 
 			void DrawQuad(const Math::Vec2df& position, const Math::Vec2df& size, 

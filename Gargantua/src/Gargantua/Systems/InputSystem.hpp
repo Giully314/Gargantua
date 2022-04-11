@@ -20,7 +20,7 @@ DESCRIPTION:
 #include "Gargantua/Input/KeyboardState.hpp"
 #include "Gargantua/Input/MouseState.hpp"
 
-#include "Gargantua/Event/EventListenerSystem.hpp"
+#include "Gargantua/Event/EventListenerManager.hpp"
 
 #include "Gargantua/Math/Vec2d.hpp"
 
@@ -34,7 +34,7 @@ namespace Gargantua
 		public:
 			InputSystem();
 
-			void ListenToEvents(NonOwnedRes<Event::EventListenerSystem>);
+			void ListenToEvents(NonOwnedRes<Event::EventListenerManager>);
 			
 			inline static bool IsPressed(key_t key) noexcept
 			{
