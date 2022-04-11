@@ -2,6 +2,11 @@
 A 2d game engine under development.
 
 
+# How to build
+Clone the repository with the option --recurse-submodules (or --recursive).
+Run premake.
+
+
 # Project structure and directories
 Concepts: files for the definition of various concepts.  
 Core: Core component abstractions of the engine.  
