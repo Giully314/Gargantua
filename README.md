@@ -23,6 +23,11 @@ Systems: Important directory that contains the systems that allows the engine to
 Time: Handling time.  
 
 
+# TODO
+https://trello.com/b/c2i4BD7O/gargantua
+
+
+
 # Language 
 The project is based on C++20.
 I wanted to use modules but they are impossible to use even in visual studio :(. Too much bugs and cryptic errors when i started the project.
@@ -33,9 +38,15 @@ Windows with opengl and glfw.
 # Personal considerations
 This is my first real project in C++ and my first engine. I'm developing this engine because i find really 
 interesting how simulations are created. I also want start to develop a game based on pixel simulation.  
+I minimized the usage of external libraries because i find really funny to design and develop the core functionalities.
+At first i also wanted to avoid the usage of glfw (and even of opengl, after i followed the beautiful project tinyrenderer)
+but then i realized that the focus of the project would shift too much. 
+In the end, i hope to learn as much as possible and become better at design and develop software!
 
 
 # Resource that i found useful
+
+## Other engines 
 TheCerno game engine series.  
 Godot engine source code.  
 Spring RTS source code.  
@@ -51,11 +62,14 @@ Game engine architecture by Jason Gregory.
 Input:  
 https://sites.psu.edu/ist446/2015/04/16/so-you-want-to-make-a-game-engine-part-6-input-need-input/
 
-https://ourmachinery.com/post/   
+
+About engines:  
 https://www.gamedeveloper.com/programming/writing-a-game-engine-from-scratch---part-1-messaging  
+https://ourmachinery.com/post/   
 
 
 Memory management: https://gist.github.com/simonrenger/d1da2a10d11f8a971fc6f1b574ab3e99  
+
 
 Talk about task oriented multi threading: 
 https://www.gdcvault.com/play/1022186/Parallelizing-the-Naughty-Dog-Engine  
@@ -65,13 +79,13 @@ GCAP 2016: Parallel Game Engine Design - Brooke Hodgman: https://www.youtube.com
 CppCon 2016: Jason Jurecka “Game engine using STD C++ 11": https://youtu.be/8AjRD6mU96s   
 
 
-
+Physics:  
 https://gafferongames.com/categories/game-physics/  
 
-Mathieu Ropert “This Videogame Programmer Used the STL and You Will Never Guess What Happened Next”: https://youtu.be/6hC9IxqdDDw   
 
-Custom Containers and iterators:
+STD containers, custom containers and iterators:  
 https://www.internalpointers.com/post/writing-custom-iterators-modern-cpp   
+Mathieu Ropert “This Videogame Programmer Used the STL and You Will Never Guess What Happened Next”: https://youtu.be/6hC9IxqdDDw   
 
 
 Graphics:
