@@ -57,7 +57,10 @@ namespace Gargantua
 				return id;
 			}
 
-
+			/*
+			What if an entity is destroyed multiple times? 
+			A check would cost O(n) for every call, it's not good in this situation.
+			*/
 			inline void Destroy(Entity e)
 			{
 				available_entities.push(e);
