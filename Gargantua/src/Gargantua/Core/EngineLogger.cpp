@@ -18,11 +18,6 @@ namespace Gargantua
 			Init();
 		}
 
-		EngineLogger::~EngineLogger()
-		{
-			Shutdown();
-		}
-
 		void EngineLogger::Init()
 		{
 			if (logger == nullptr)
@@ -35,10 +30,5 @@ namespace Gargantua
 			}
 		}
 
-
-		void EngineLogger::Shutdown()
-		{
-			GRG_CORE_INFO("Shutdown Engine Logger");
-		}
 	} //namespace Core
 } //namespace Gargantua

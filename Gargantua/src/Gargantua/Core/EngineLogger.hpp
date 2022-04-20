@@ -39,14 +39,13 @@ namespace Gargantua
 		{
 		public:
 			EngineLogger();
-			~EngineLogger();
+			~EngineLogger() = default;
 
 			static UniqueRes<Log::Logger<Streams::ConsoleStream>>& Get() { return logger; }
 
 		private:
 			static UniqueRes<Log::Logger<Streams::ConsoleStream>> logger;
 			void Init();
-			void Shutdown();
 		};
 	} //namespace Core
 } //namespace Gargantua
