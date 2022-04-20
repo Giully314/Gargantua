@@ -13,8 +13,19 @@ DESCRIPTION:
 USAGE:
 	SequentialNumberGenerator<int> gen;
 
-	gen.Get();
+	auto n = gen.Get(); //n = 0
+	n = gen.Get(); //n = 1
+	n = gen.Get(); //n = 2
+
+
+	while (n < gen.MaxGenerableValue())
+	{
+		//do stuff
+	}
 */
+
+#include "Gargantua/Generators/LimitsGenerator.hpp"
+#include "Gargantua/Generators/Tags.hpp"
 
 #include <concepts>
 #include <iterator>
@@ -26,16 +37,21 @@ namespace Gargantua
 	{
 		template <typename T> 
 		requires std::unsigned_integral<T> && std::incrementable<T>
-		class SequentialNumberGenerator
+		class SequentialNumberGenerator : public LimitsGenerator<T>
 		{
 		public:
-			T Get()
+			using TagGenerator = MonotonicIncreasingGenerator;
+			using ValueType = T;
+
+
+			ValueType Get()
 			{
 				return n++;
 			}
 
+
 		private:
-			T n{ 0 };
+			ValueType n{ 0 };
 		};
-	}
-}
+	} //namespace Generators 
+} //namespace Gargantua
