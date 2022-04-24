@@ -11,6 +11,14 @@ CLASSES:
 DESCRIPTION:
 	The EntityManager is responsible to create and destroy entities. For make it more flexible, a custom generator can be passed
 	by template parameter. The generate must generate only positive numbers and be a MonotonicGenerator.
+	To keep track of entities in use, a std::set is used. For now O(log(n)) it's okay for methods like Destroy and InUse.
+
+
+TODO:
+	For now i will not use a queue to keep track of reusable entities. I prefer to do things in a simple way.
+	For reusing the entities i could use a queue to keep track of destroyed entitites.
+	For a faster on entities i could use an hashmap instaed of a red-black tree.
+
 
 USAGE:
 	EntityManager<SequentialNumberGenerator> mng;
@@ -18,9 +26,16 @@ USAGE:
 	auto entity = mng.Create();
 
 	...
+
+	if (mng.InUse(entity)) 
+	{
+		...
+	}
+
 	...
 
 	mng.Destroy(entity);
+	mng.Destroy(entity); //do nothing0
 
 */
 
@@ -31,6 +46,8 @@ USAGE:
 #include "Gargantua/Concepts/Generator.hpp"
 
 #include <queue>
+#include <set>
+#include <ranges>
 
 
 namespace Gargantua
@@ -42,45 +59,43 @@ namespace Gargantua
 		class EntityManager
 		{
 		public:
-
 			inline Entity Create()
 			{
-				if (available_entities.empty())
-				{
-					Fill(512);
-				}
-
-
-				natural_t id = available_entities.front();
-				available_entities.pop();
+				Entity id = gen.Get();
+				entities_in_use.emplace(id);
 
 				return id;
 			}
 
 			/*
-			What if an entity is destroyed multiple times? 
-			A check would cost O(n) for every call, it's not good in this situation.
+			If entities is not in use (is not "alive"), do nothing.
 			*/
 			inline void Destroy(Entity e)
 			{
-				available_entities.push(e);
-			}
-
-			
-		private:
-			void Fill(const natural_t n)
-			{
-				//check if the generator is at the maximum value...
-				//or assume that after a complete loop, the entities are safe to be reused.
-				for (natural_t i = 0; i < n; ++i)
+				if (auto it = entities_in_use.find(e); it != entities_in_use.end())
 				{
-					available_entities.push(gen.Get());
+					entities_in_use.erase(it);
 				}
 			}
 
+
+			
+			bool InUse(Entity e)
+			{
+				return entities_in_use.contains(e);
+			}
+
+
+			auto GetEntitiesView()
+			{
+				return std::views::all(entities_in_use);
+			}
+
+
 		private:
 			TGenerator<Entity> gen;
-			std::queue<Entity> available_entities;
+			//std::queue<Entity> available_entities;
+			std::set<Entity> entities_in_use;
 		};
 	} //namespace ECS
 } //namespace Gargantua
