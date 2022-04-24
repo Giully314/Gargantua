@@ -142,6 +142,12 @@ namespace Gargantua
 			}
 
 
+			bool HasComponent(Entity e)
+			{
+				return ent_to_idx.contains(e);
+			}
+
+
 		private:
 			//I prefer to use 2 maps for fast lookup in the Unregister function.
 			std::unordered_map<Entity, natural_t> ent_to_idx;
