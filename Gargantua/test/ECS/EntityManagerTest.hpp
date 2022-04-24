@@ -39,6 +39,12 @@ namespace Gargantua
 					entities.push_back(mng.Create());
 				}
 
+
+				if (mng.InUse(entities.front()))
+				{
+					GRG_CORE_INFO("Entity {} ALIVE", entities.front());
+				}
+
 				for (auto e : entities)
 				{
 					GRG_CORE_INFO("Destroying entity {}", e);
