@@ -1,3 +1,8 @@
+/*
+This file is used (for now) for testing the functionalities of the engine.
+*/
+
+
 #include <glad/glad.h>
 
 #include "Gargantua/Engine.hpp"
@@ -9,6 +14,7 @@
 #include "Gargantua/Core/Stage.hpp"
 #include "Gargantua/Core/EngineSystems.hpp"
 
+#include "Gargantua/ECS/Types.hpp"
 
 #include "Gargantua/Time/TimeStep.hpp"
 
@@ -23,12 +29,16 @@
 #include "Gargantua/Renderer/OrthoCameraController.hpp"
 #include "Gargantua/Renderer/Utility.hpp"
 
+#include "Gargantua/Physics/PhysicsComponents.hpp"
+#include "Gargantua/Physics/NewtonianSystem.hpp"
+
 #include "Gargantua/Math/Vec4d.hpp"
 #include "Gargantua/Math/Functions.hpp"
 
 #include "Gargantua/Event/WindowEvents.hpp"
 
 #include <imgui.h>
+
 
 #include <iostream>
 #include <numbers>
@@ -42,21 +52,6 @@ constexpr unsigned int WIDTH = 1280;
 constexpr unsigned int HEIGHT = 720;
 
 
-/*
-ONLY FOR TESTING.
-*/
-struct Mesh
-{
-	~Mesh()
-	{
-		if (texture)
-		{
-			texture->Destroy();
-		}
-	}
-
-	UniqueRes<Renderer::Texture2d> texture;
-};
 
 
 class TestStage : public Gargantua::Core::Stage
@@ -64,11 +59,28 @@ class TestStage : public Gargantua::Core::Stage
 public:
 	TestStage(Core::EngineSystems systems_) : Gargantua::Core::Stage("TestStage"), systems(std::move(systems_))
 	{
-		//background.texture = Renderer::Utility::CreateTX2d("resources/test/BG.png");
+		auto& ecs = systems.ecs_sys;
+		
+		ship = ecs->Create();
+		ecs->Register<Renderer::SpriteComponent>(ship, Renderer::Utility::CreateTX2d("resources/test/Plane/Fly (1).png"));
+		ecs->Register<Physics::TransformComponent>(ship);
+
+		ecs->Register<Physics::NewtonianSystem>(ship);
 
 
-		ship.texture = Renderer::Utility::CreateTX2d("resources/test/Plane/Fly (1).png");
-	
+		auto& p = ecs->Get<Physics::TransformComponent>(ship);
+		GRG_CORE_INFO("{}", p.position.ToString());
+
+
+		real_t aspect_ratio = (real_t)WIDTH / (real_t)HEIGHT;
+		real_t cam_value = 5.0f;
+		real_t b = -cam_value;
+		real_t t = cam_value;
+		real_t r = cam_value * aspect_ratio;
+		real_t l = -r;
+		ortho_camera = ecs->Create();
+		ecs->Register<Renderer::OrthoCameraComponent>(ortho_camera, l, b, r, t);
+		
 
 		program = systems.shader_sys->CreateProgram("BasicTransform.vert", "BasicColorTexture.frag");
 		auto fb_program = systems.shader_sys->CreateProgram("ScreenTransform.vert", "ScreenColor.frag");
@@ -77,7 +89,7 @@ public:
 		controller.SetCamera(camera.get());
 
 		auto s = systems.engine_event_sys;
-		s->GetEventListenerSystem()->RegisterListener<Event::WindowResizeEvent>(
+		s->GetEventListenerManager()->RegisterListener<Event::WindowResizeEvent>(
 			[this](const Event::BaseEvent& e)
 			{
 				const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
@@ -97,7 +109,9 @@ public:
 
 	void Start() override
 	{
-		systems.renderer2d_sys->BeginScene(*camera);
+		//systems.renderer2d_sys->BeginScene(*camera);
+		auto& c = systems.ecs_sys->Get<Renderer::OrthoCameraComponent>(ortho_camera);
+		systems.renderer2d_sys->BeginScene(c.proj_view);
 	}
 
 	void End() override
@@ -117,8 +131,12 @@ public:
 		auto s_scale = Math::Transform3d::Translate(Math::Vec3df{ 3, 3, 0 }) *  Math::Transform3d::Scale(1.0f);
 		controller.Update(ts);
 		
+		//Change the refence system from 0,0 located at the center of the screen to left up.
 
-		systems.renderer2d_sys->DrawQuad(Math::Vec2df{ 0, 0 }, Math::Vec2df{ 2, 2 }, *ship.texture);
+		auto& t = systems.ecs_sys->Get<Physics::TransformComponent>(ship);
+		auto& s = systems.ecs_sys->Get<Renderer::SpriteComponent>(ship);
+		systems.renderer2d_sys->DrawRotatedQuad(t.position, t.scale, t.rotation, *s);
+
 		systems.renderer2d_sys->DrawQuad(Math::Vec2df{ 1, 1 }, Math::Vec2df{ 1, 1 }, Math::Vec4df{1.0f, 0.0f, 0.0f, 1.0f});
 		systems.renderer2d_sys->DrawRotatedQuad(Math::Vec2df{ 1, 1 }, Math::Vec2df{ 1, 1 }, 45.0f, Math::Vec4df{1.0f, 0.0f, 0.0f, 1.0f});
 		
@@ -137,8 +155,8 @@ public:
 	}
 
 private:
-	Mesh ship;
-	Mesh background;
+	ECS::Entity ship;
+	ECS::Entity ortho_camera;
 
 	SharedRes<Renderer::Shader> vert_shad;
 	SharedRes<Renderer::Shader> frag_shad;
@@ -169,7 +187,13 @@ public:
 int main()
 {
 	using namespace Gargantua;
+
+	/*Core::EngineLogger e;
 	
+	
+	Test::ComponentManagerTest test;
+	test.Run();*/
+
 	Gargantua::Engine e{ []() {return new Sandbox{}; }, WIDTH, HEIGHT };
 	e.Run();
 
