@@ -9,9 +9,6 @@ CLASSES:
 
 DESCRIPTION:
 	This is a temporary class and should be used only for test.
-
-USAGE:
-
 */
 
 #include "Gargantua/Streams/StreamType.hpp"
@@ -28,7 +25,6 @@ namespace Gargantua
 		class ConsoleStream
 		{
 		public:
-			//Maybe defines Tag structs for this
 			using StreamType = OutputStream;
 
 			ConsoleStream& Flush()
