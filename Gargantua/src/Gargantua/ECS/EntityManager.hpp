@@ -9,9 +9,9 @@ CLASSES:
 	EntityManager: generate entities (ids) using a generator passed by the user.
 
 DESCRIPTION:
-	The EntityManager is responsible to create and destroy entities. For make it more flexible, a custom generator can be passed
-	by template parameter. The generate must generate only positive numbers and be a MonotonicGenerator.
-	To keep track of entities in use, a std::set is used. For now O(log(n)) it's okay for methods like Destroy and InUse.
+	The EntityManager is responsible to create and destroy entities. To make it more flexible, a custom generator can be 
+	passed as template parameter. The generate must generate only positive numbers and be a MonotonicGenerator.
+	To keep track of entities in use, a std::set is used. For now O(log(n)) it's okay for all methods.
 
 
 TODO:
@@ -59,7 +59,7 @@ namespace Gargantua
 		class EntityManager
 		{
 		public:
-			inline Entity Create()
+			Entity Create()
 			{
 				Entity id = gen.Get();
 				entities_in_use.emplace(id);
@@ -70,7 +70,7 @@ namespace Gargantua
 			/*
 			If entities is not in use (is not "alive"), do nothing.
 			*/
-			inline void Destroy(Entity e)
+			void Destroy(Entity e)
 			{
 				if (auto it = entities_in_use.find(e); it != entities_in_use.end())
 				{
@@ -80,7 +80,7 @@ namespace Gargantua
 
 
 			
-			bool InUse(Entity e)
+			bool InUse(Entity e) const noexcept
 			{
 				return entities_in_use.contains(e);
 			}
