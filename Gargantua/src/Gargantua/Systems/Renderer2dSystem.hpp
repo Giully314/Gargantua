@@ -13,6 +13,7 @@ CLASSES:
 DESCRIPTION:
 	Basic functionalities for rendering any object with 2d conventions.
 	The basic geometric figures that can be rendered are: quad.
+	
 
 
 USAGE:
@@ -21,6 +22,8 @@ USAGE:
 	renderer2d.SetProgram(program);
 	renderer2d.SetUniform("camera", "my_camera_uniform_name_inside_the_shader");
 
+	renderer2d.BeginScene(camera_matrix);
+
 	renderer2d.DrawQuad(position1, scale1, color1);
 	renderer2d.DrawRotatedQuad(position2, scale2, rotation, color2, texture);
 
@@ -28,6 +31,8 @@ USAGE:
 TODO: 
 	maybe make the functions template to allow different types of vec?
 	Other basic geometries: point, line, triangle, circle. 
+	Set a background image.
+	Draw single pixels.
 */
 
 #include "Gargantua/Types.hpp"
@@ -93,6 +98,7 @@ namespace Gargantua
 
 
 			void BeginScene(const Renderer::OrthoCamera& camera);
+			void BeginScene(const Math::Mat4df& proj_view);
 			void EndScene();
 
 
@@ -133,7 +139,7 @@ namespace Gargantua
 
 
 
-			void SetBackground();
+			//void SetBackground();
 
 
 			void DrawPixels(natural_t x, natural_t y, natural_t width, natural_t height, void* colors);

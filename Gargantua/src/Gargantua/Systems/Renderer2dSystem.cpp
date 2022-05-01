@@ -114,6 +114,17 @@ namespace Gargantua
 			data.program->Unbind();
 			Renderer::RendererCommand::Clear();
 		}
+		
+
+		void Renderer2dSystem::BeginScene(const Math::Mat4df& proj_view)
+		{
+			data.fb->Bind();
+			scene->proj_view = proj_view;
+			data.program->Bind();
+			data.program->SetUniformMatrix4f(data.uniforms["camera"], proj_view);
+			data.program->Unbind();
+			Renderer::RendererCommand::Clear();
+		}
 
 
 		void Renderer2dSystem::EndScene()
