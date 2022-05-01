@@ -3,157 +3,128 @@
 Gargantua/ECS/ComponentManager.hpp
 
 
-PURPOSE: Manages 1 type of component.
+PURPOSE: Manages multiple component storage.
 
 CLASSES:
-	ComponentManager: manager for a component.
+	ComponentManager: manager for all the component types.
+
 
 DESCRIPTION:
-	This manager handles one component type in a contigous array (std::vector). Entities can be registered or 
-	unregistered to get or remove the component. Both operations are O(1) (in avarage cases) and to allow this, 
-	extra memory for 2 maps is used. 
-	(For more informations, check https://en.cppreference.com/w/cpp/container/unordered_map for complexity times)
-	The order of insertion is not guaranteed because Unregister swap elements to get O(1) instaed of O(n)
-	for removing a component.
+	Manager for the components passed at compile time through a TypeList. This class manages the "glue" code to get
+	all the different ComponentStorage works with a unified interface. All the functions address the correct 
+	ComponentStorage based on the type TComponent and forward the call to it.
+
+
 
 USAGE:
-	ComponentManager<PositionComponent> mng;
-	auto& pos_comp = mng.Register(entity, position_vec, rotation_vec);
+	using Components = TypeList<TransformComponent, SpriteComponent>;
+	ComponentManager<Components> mng;
+
+	mng.Register<TransformComponent>(entity, position_vec);
+	mng.Register<SpriteComponent>(entity, texture);
 	
 	...
 
-	auto& another_ref = mng.Get(entity); //entity must be registered.
+	auto& component = mng.Get<TransformComponent>(entity); //entity must be registered.
 
 	...
 
-	mng.Unregister(entity);
+	mng.Unregister<SpriteComponent>(entity);
 
-TODO:
-	this is a temporary solution. Consider other ways to implement a component manager with pro/cons.
+
+	
 */
 
 #include "Gargantua/Types.hpp"
 
 #include "Gargantua/ECS/Types.hpp"
+#include "Gargantua/ECS/ComponentStorage.hpp"
 
 #include "Gargantua/Core/EngineLogger.hpp"
 
+#include "Gargantua/MPL/TypeList.hpp"
+
 #include <concepts>
-
 #include <utility>
+#include <tuple>
 
-#include <vector>
-#include <unordered_map>
 
 namespace Gargantua
 {
 	namespace ECS
 	{
-		template <typename T> 
-		requires std::default_initializable<T> && std::movable<T>
+		template <typename TComponents>
 		class ComponentManager
 		{
 		public:
-			using ValueType = T;
+			using TypeListOfComponents = TComponents;
 
 
-			/*
-			If the entity is already registered, return the component associated.
-			*/
-			template <typename ...Args>
-				requires std::constructible_from<T, Args...>
-			ValueType& Register(Entity e, Args&& ...args)
+			template <typename TComponent, typename ...Args>
+				requires std::constructible_from<TComponent, Args...> && 
+					MPL::IsPresentV<TypeListOfComponents, TComponent>
+			TComponent& Register(Entity e, Args&& ...args)
 			{
-				//Check if the entity is already registered and return the component in case.
-				if (auto it = ent_to_idx.find(e); it != ent_to_idx.end())
-				{
-					return components[it->second];
-				}
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				return comp_storage.Register(e, std::forward<Args>(args)...);
+			}
 
-				//Construct the component and set the 2 maps with the respective info.
 
-				components.emplace_back(std::forward<Args>(args)...);
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			void Unregister(Entity e)
+			{
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				comp_storage.Unregister(e);
+			}
 
-				natural_t idx = static_cast<natural_t>(components.size() - 1);
 
-				ent_to_idx.insert({ e, idx });
-				idx_to_ent.insert({ idx, e });
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			TComponent& Get(Entity e)
+			{
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				return comp_storage.Get(e);
+			}
 
-				//GRG_CORE_INFO("Entity {} idx {}", e, idx);
 
-				return components.back();
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			const TComponent& Get(Entity e) const
+			{
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				return comp_storage.Get(e);
+			}
+
+
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			bool Has(Entity e) const
+			{
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				return comp_storage.Has(e);
 			}
 		
 
-			/*
-			If the entity is not registered, do nothing.
-			*/
-			void Unregister(Entity e)
+		private:
+			template <typename T>
+			struct ToComponentStorage
 			{
-				//Check if the entity is registered for removing the component.
-				if (auto it = ent_to_idx.find(e); it != ent_to_idx.end())
-				{
-					//If there is only one component or the position is already at the end just remove it
-					if (components.size() == 1 || it->second == (components.size() - 1))
-					{
-						//GRG_CORE_INFO("Last position");
-						idx_to_ent.erase(it->second);
-						ent_to_idx.erase(e);
-						components.pop_back();
-						return;
-					}
+				using Type = ComponentStorage<T>;
+			};
+
+			using ComponentsStorageType = MPL::RebindT<MPL::TransformT<TComponents, ToComponentStorage>, std::tuple>;
 
 
-					/*
-					Get the idx of the last element, 
-					extract the node associated to this last element from from idx_to_ent to change info later,
-					swap the last element with the element to be removed 
-					erase the info of the entity argument
-					update the information of the swapped component
-					erase the last element. 
-					In this way the operation is O(1) (in avarage) instaed of O(n).
-					*/
-
-					auto ent_del_node = ent_to_idx.extract(it);
-					auto idx_del_node = idx_to_ent.extract(ent_del_node.mapped());
-
-					natural_t last_ent_idx = static_cast<natural_t>(components.size() - 1);
-					auto node = idx_to_ent.extract(last_ent_idx);
-
-					std::swap(components[last_ent_idx], components[ent_del_node.mapped()]);
-					
-
-					ent_to_idx[node.mapped()] = ent_del_node.mapped();
-					node.key() = ent_del_node.mapped();
-
-					idx_to_ent.insert(std::move(node));
-
-					components.pop_back();
-				}
-			}
-
-
-			/*
-			Undefined behavior or exception if the entity is not registered.
-			*/
-			ValueType& Get(Entity e)
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			ComponentStorage<TComponent>& GetComponentStorage()
 			{
-				return components[ent_to_idx[e]];
+				return std::get<ComponentStorage<TComponent>>(components);
 			}
-
-
-			bool HasComponent(Entity e)
-			{
-				return ent_to_idx.contains(e);
-			}
-
 
 		private:
-			//I prefer to use 2 maps for fast lookup in the Unregister function.
-			std::unordered_map<Entity, natural_t> ent_to_idx;
-			std::unordered_map<natural_t, Entity> idx_to_ent;
-
-			std::vector<ValueType> components; 
+			ComponentsStorageType components;
 		};
 	} //namespace ECS 
 } //namespace Gargantua
