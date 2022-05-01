@@ -15,12 +15,6 @@ namespace Gargantua
 		public:
 			void Start() override { }
 			void Shutdown() override { }
-
-
-			void Execute(const Gargantua::Time::TimeStep& ts) override
-			{
-
-			}
 		};
 
 		/*

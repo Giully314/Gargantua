@@ -1,6 +1,9 @@
 #pragma once
 
+#include "Gargantua/MPL/TypeList.hpp"
+
 #include "Gargantua/ECS/ComponentManager.hpp"
+#include "Gargantua/ECS/ComponentStorage.hpp"
 
 #include "Gargantua/Core/EngineLogger.hpp"
 
@@ -21,29 +24,50 @@ namespace Gargantua
 			float y = 0.0f;
 		};
 
+		struct VelocityComponent
+		{
+			VelocityComponent() = default;
+
+			VelocityComponent(float x_, float y_) : x(x_), y(y_)
+			{
+
+			}
+
+			float x = 0.0f;
+			float y = 0.0f;
+		};
+
+		struct AccelerationComponent
+		{
+			AccelerationComponent() = default;
+
+			AccelerationComponent(float x_, float y_) : x(x_), y(y_)
+			{
+
+			}
+
+			float x = 0.0f;
+			float y = 0.0f;
+		};
+
 
 		class ComponentManagerTest
 		{
 		public:
 			void Run()
 			{
-				ECS::ComponentManager<PositionComponent> mng;
+				using ComponentsList = MPL::TypeList<PositionComponent, VelocityComponent, AccelerationComponent>;
 
-				for (natural_t i = 0; i < 100; ++i)
-				{
-					mng.Register(i, i + 10.5f, i * 2 * 100.3f);
-				}
+				ECS::ComponentManager<ComponentsList> mng;
 
-				for (natural_t i = 0; i < 100; ++i)
-				{
-					auto& p = mng.Get(i);
-					GRG_CORE_INFO("Entity {}, position: ( {} , {} )", i, p.x, p.y);
-				}
+				mng.Register<PositionComponent>(0, 13.1f, 12.3f);
+				mng.Register<PositionComponent>(1, 233.1f, 112.432f);
+				
+				auto& p1 = mng.Get<PositionComponent>(0);
+				auto& p2 = mng.Get<PositionComponent>(1);
 
-				for (natural_t i = 0; i < 100; ++i)
-				{
-					mng.Unregister(i);
-				}
+				GRG_CORE_INFO("{} {}", p1.x, p1.y);
+				GRG_CORE_INFO("{} {}", p2.x, p2.y);
 			}
 		};
 
