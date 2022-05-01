@@ -21,6 +21,9 @@ DESCRIPTION:
 #include "Gargantua/Systems/RendererSystem.hpp"
 #include "Gargantua/Systems/Renderer2dSystem.hpp"
 #include "Gargantua/Systems/ShaderSystem.hpp"
+#include "Gargantua/Systems/ECSSystem.hpp"
+
+#include "Gargantua/Settings.hpp"
 
 
 namespace Gargantua
@@ -34,6 +37,7 @@ namespace Gargantua
 			SharedRes<Systems::RendererSystem> renderer_sys;
 			SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 			SharedRes<Systems::ShaderSystem> shader_sys;
+			SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
 		};
 	} //namespace Core 
 } //namespace Gargantua
