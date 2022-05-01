@@ -37,6 +37,7 @@ namespace Gargantua
 		renderer_sys = CreateSharedRes<Systems::RendererSystem>(width, height);
 		renderer2d_sys = CreateSharedRes<Systems::Renderer2dSystem>(width, height);
 		shader_sys = CreateSharedRes<Systems::ShaderSystem>();
+		ecs_sys = CreateSharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>>();
 
 
 		//Register components to the engine event systems.
@@ -69,6 +70,7 @@ namespace Gargantua
 		systems.renderer_sys = renderer_sys;
 		systems.renderer2d_sys = renderer2d_sys;
 		systems.shader_sys = shader_sys;
+		systems.ecs_sys = ecs_sys;
 	}
 
 

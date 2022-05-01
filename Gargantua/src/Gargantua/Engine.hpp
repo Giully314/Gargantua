@@ -17,6 +17,7 @@ DESCRIPTION:
 */
 
 #include "Gargantua/Types.hpp"
+#include "Gargantua/Settings.hpp"
 
 #include "Gargantua/Time/Stopwatch.hpp"
 
@@ -32,6 +33,8 @@ DESCRIPTION:
 #include "Gargantua/Systems/RendererSystem.hpp"
 #include "Gargantua/Systems/Renderer2dSystem.hpp"
 #include "Gargantua/Systems/ShaderSystem.hpp"
+#include "Gargantua/Systems/ECSSystem.hpp"
+
 
 #include <functional>
 
@@ -73,6 +76,7 @@ namespace Gargantua
 		SharedRes<Systems::RendererSystem> renderer_sys;
 		SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 		SharedRes<Systems::ShaderSystem> shader_sys;
+		SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
 
 		//SharedRes<Core::Scene2d> scene2d;
 
