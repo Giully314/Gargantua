@@ -57,6 +57,8 @@ namespace Gargantua
 			This function is called at the start of the Run method from Engine.
 			Note that this function doesn't replace the role of constructor.
 			This function could be used to initialize the stages, register listeners and events and so on.
+			After adding the stages to the pipeline, the Start method of the pipeline should be called for 
+			the correcting initialization of the stages.
 			*/
 			virtual void Start() = 0;
 			
@@ -64,6 +66,7 @@ namespace Gargantua
 			/*
 			This function is called at the end of the Run method from Engine.
 			Note that this function doesn't replace the role of destructor.
+			The End method of the pipeline should be called for the correcting end of the stages.
 			*/
 			virtual void Shutdown() = 0;
 
