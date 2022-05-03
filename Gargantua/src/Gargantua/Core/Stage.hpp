@@ -13,14 +13,32 @@ DESCRIPTION:
 	that does only one thing. For example, a RendererStage is a stage that uses the renderer system
 	to draw the entities after the PhysicsStage has computed the physics.
 
-TODO: add something to allow the stages to communicate?
 
+USAGE:
+	class MyLevelGameStage : public Stage
+	{
+		//implement the logic of a level.
+	};
+	
+	
+	Note: consider to implent a System in the ecs for the rendering instaed of a stage if it is only
+	necessary to render entities.
+	class MyRenderingStage : public Stage
+	{
+	};
+
+
+TODO: 
+	add something to allow the stages to communicate?
+	consider to implement in the interface a function Save, that saves the state of the stage.
 */
 
+#include "Gargantua/Types.hpp"
+
 #include "Gargantua/Time/TimeStep.hpp"
+
 #include "Gargantua/Event/EventRegisterManager.hpp"
 #include "Gargantua/Event/EventListenerManager.hpp"
-#include "Gargantua/Types.hpp"
 
 #include <string>
 
@@ -28,19 +46,11 @@ namespace Gargantua
 {
 	namespace Core
 	{
-		/*
-		A stage is a basic building block for creating a pipeline of operations to be executed.
-		For example there could be a MotionStage, CollisionResolverStage and so on.
-
-		TODO: consider to implement in the interface a function Save, that saves the state of the stage.
-		*/
-		class Stage
+		class Stage : private NonCopyable
 		{
 		public:
+			Stage() = default;
 			Stage(std::string stage_name_);
-
-			Stage(const Stage&) = delete;
-			Stage& operator=(const Stage&) = delete;
 
 			Stage(Stage&&) noexcept = default;
 			Stage& operator=(Stage&&) noexcept = default;
@@ -88,7 +98,7 @@ namespace Gargantua
 			inline std::string_view GetName() const noexcept { return stage_name; }
 
 		protected:
-			const std::string stage_name;
+			const std::string stage_name{"DefaultStageName"};
 		};
 	} //namespace Core
 } //namespace Gargantua
