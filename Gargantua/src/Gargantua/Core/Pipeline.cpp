@@ -69,20 +69,36 @@ namespace Gargantua
 		}
 
 
+		void Pipeline::Start()
+		{
+			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
+				{
+					s->Start();
+				});
+		}
+
+
+		void Pipeline::End()
+		{
+			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
+				{
+					s->End();
+				});
+		}
+
+
 		void Pipeline::Execute(const Time::TimeStep& ts)
 		{
 			std::ranges::for_each(stages, [&](UniqueRes<Stage>& s)
 				{
-					s->Start();
 					s->Execute(ts);
-					s->End();
 				});
 		}
 
 
 		void Pipeline::RenderGUI()
 		{
-			std::ranges::for_each(stages, [&](UniqueRes<Stage>& s)
+			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
 				{
 					s->RenderGUI();
 				});

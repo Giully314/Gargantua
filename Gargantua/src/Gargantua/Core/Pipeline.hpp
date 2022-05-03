@@ -80,8 +80,23 @@ namespace Gargantua
 			*/
 			void RemoveStage(std::string_view stage_name);
 
+
 			/*
-			Execute the pipeline. This means that for every stage, Start, Execute and End are called.
+			Start the pipeline calling the Start method for each stage. This method should be called before the 
+			game loop. It is used for initializing the resources (once).
+			*/
+			void Start();
+
+
+			/*
+			End the pipeline calling the End method for each stage. This method should be called after the end of 
+			the game loop for saving the state of a stage or deallocate resources.
+			*/
+			void End();
+
+
+			/*
+			Execute the pipeline. Call the Execute method for each stage.
 			*/
 			void Execute(const Time::TimeStep& ts);
 
