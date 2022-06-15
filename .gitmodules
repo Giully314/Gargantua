@@ -1,6 +1,0 @@
-[submodule ".\\Gargantua\\vendor\\glfw"]
-	path = .\\Gargantua\\vendor\\glfw
-	url = https://github.com/Giully314/glfw
-[submodule ".\\Gargantua\\vendor\\imgui"]
-	path = .\\Gargantua\\vendor\\imgui
-	url = https://github.com/Giully314/imgui.git
