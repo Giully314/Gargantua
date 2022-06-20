@@ -151,6 +151,14 @@ namespace Gargantua
 						break;
 					}
 				});
+
+
+			glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
+				{
+					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+
+					props.event_reg_mng->RegisterEvent<Event::MouseWheelScrollEvent>((real_t)yoffset);
+				});
 		}
 	} //namespace Core
 } //namespace Gargantua
