@@ -77,6 +77,23 @@ namespace Gargantua
 			EVENT_NAME;
 			GET_EVENT_NAME
 		};
+
+
+
+		struct MouseWheelScrollEvent : public BaseEvent
+		{
+			MouseWheelScrollEvent(real_t y_offset_) : y_offset(y_offset_)
+			{
+
+			}
+
+			EVENT_NAME;
+			GET_EVENT_NAME
+
+
+			real_t y_offset;
+		};
+
 	} //namespace Event
 } //namespace Gargantua
 
