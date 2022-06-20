@@ -28,7 +28,7 @@ namespace Gargantua
 		class MouseState
 		{
 		public:
-			MouseState() : x(0), y(0)
+			MouseState() : x(0.0f), y(0.0f)
 			{
 				buttons.fill(false);
 			}
