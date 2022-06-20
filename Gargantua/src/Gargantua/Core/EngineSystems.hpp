@@ -18,10 +18,10 @@ DESCRIPTION:
 
 #include "Gargantua/Systems/EventSystem.hpp"
 #include "Gargantua/Systems/InputSystem.hpp"
-#include "Gargantua/Systems/RendererSystem.hpp"
 #include "Gargantua/Systems/Renderer2dSystem.hpp"
 #include "Gargantua/Systems/ShaderSystem.hpp"
 #include "Gargantua/Systems/ECSSystem.hpp"
+#include "Gargantua/Systems/TimeSystem.hpp"
 
 #include "Gargantua/Settings.hpp"
 
@@ -34,10 +34,10 @@ namespace Gargantua
 		{
 			SharedRes<Systems::EventSystem> engine_event_sys;
 			SharedRes<Systems::EventSystem> app_event_sys;
-			SharedRes<Systems::RendererSystem> renderer_sys;
 			SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 			SharedRes<Systems::ShaderSystem> shader_sys;
 			SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
+			SharedRes<Systems::TimeSystem> time_sys;
 		};
 	} //namespace Core 
 } //namespace Gargantua
