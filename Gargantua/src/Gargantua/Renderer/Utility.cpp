@@ -4,26 +4,28 @@ Gargantua/Renderer/Utility.cpp
 #include "Utility.hpp"
 #include "Gargantua/Renderer/Types.hpp"
 
+#include <utility>
+
 namespace Gargantua
 {
 	namespace Renderer
 	{
 		//*************************** VERTEX BUFFER ********************************
 
-		UniqueRes<VertexBuffer> Utility::CreateVB()
+		SharedRes<VertexBuffer> Utility::CreateVB()
 		{
-			auto vb = CreateUniqueRes<VertexBuffer>();
+			auto vb = CreateSharedRes<VertexBuffer>();
 			vb->Create();
 
 			return vb;
 		}
 
 
-		UniqueRes<VertexBuffer> Utility::CreateVB(const void* data, natural_t count, natural_t elem_per_vert, BufferElementType type, DrawMode mode)
+		SharedRes<VertexBuffer> Utility::CreateVB(const void* data, natural_t count, natural_t elem_per_vert, DrawMode mode)
 		{
-			auto vb = CreateUniqueRes<VertexBuffer>();
+			auto vb = CreateSharedRes<VertexBuffer>();
 			vb->Create();
-			vb->Load(data, count, elem_per_vert, type, mode);
+			vb->Load(data, count, elem_per_vert, mode);
 
 			return vb;
 		}
@@ -32,20 +34,20 @@ namespace Gargantua
 
 		//*************************** ELEMENT BUFFER ********************************
 
-		UniqueRes<ElementBuffer> Utility::CreateEB()
+		SharedRes<ElementBuffer> Utility::CreateEB()
 		{
-			auto eb = CreateUniqueRes<ElementBuffer>();
+			auto eb = CreateSharedRes<ElementBuffer>();
 			eb->Create();
 
 			return eb;
 		}
 
 
-		UniqueRes<ElementBuffer> Utility::CreateEB(const void* data, natural_t count, BufferElementType type, DrawMode mode)
+		SharedRes<ElementBuffer> Utility::CreateEB(const void* data, natural_t count, DrawMode mode)
 		{
-			auto eb = CreateUniqueRes<ElementBuffer>();
+			auto eb = CreateSharedRes<ElementBuffer>();
 			eb->Create();
-			eb->Load(data, count, type, mode);
+			eb->Load(data, count, mode);
 
 			return eb;
 		}
@@ -54,9 +56,9 @@ namespace Gargantua
 
 		//*************************** VERTEX ARRAY ********************************
 
-		UniqueRes<VertexArray> Utility::CreateVA()
+		SharedRes<VertexArray> Utility::CreateVA()
 		{
-			auto va = CreateUniqueRes<VertexArray>();
+			auto va = CreateSharedRes<VertexArray>();
 			va->Create();
 			return va;
 		}
@@ -65,17 +67,17 @@ namespace Gargantua
 
 		//*************************** TEXTURE 2D ********************************
 
-		UniqueRes<Texture2d> Utility::CreateTX2d()
+		SharedRes<Texture2d> Utility::CreateTX2d()
 		{
-			auto tx = CreateUniqueRes<Texture2d>();
+			auto tx = CreateSharedRes<Texture2d>();
 			tx->Create();
 
 			return tx;
 		}
 
-		UniqueRes<Texture2d> Utility::CreateTX2d(std::string_view file_name)
+		SharedRes<Texture2d> Utility::CreateTX2d(std::string_view file_name)
 		{
-			auto tx = CreateUniqueRes<Texture2d>();
+			auto tx = CreateSharedRes<Texture2d>();
 			tx->Create();
 			tx->Load(file_name);
 
@@ -83,12 +85,12 @@ namespace Gargantua
 		}
 
 
-		UniqueRes<Texture2d> Utility::CreateTX2d(natural_t width, natural_t height, void* data)
+		SharedRes<Texture2d> Utility::CreateTX2d(natural_t width, natural_t height, void* data)
 		{
-			auto tx = CreateUniqueRes<Texture2d>();
+			auto tx = CreateSharedRes<Texture2d>();
 			tx->Create();
 			tx->Empty(width, height);
-			tx->SetColor(data);
+			tx->Fill(data);
 
 			return tx;
 		}
@@ -98,21 +100,21 @@ namespace Gargantua
 
 		//*************************** ORTHO CAMERA ********************************
 
-		UniqueRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f)
+		SharedRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f)
 		{
-			auto cam = CreateUniqueRes<OrthoCamera>(l, b, r, t, n, f);
+			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t, n, f);
 			return cam;
 		}
 
 
-		UniqueRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t)
+		SharedRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t)
 		{
-			auto cam = CreateUniqueRes<OrthoCamera>(l, b, r, t);
+			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
 			return cam;
 		}
 
 
-		UniqueRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height)
+		SharedRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height)
 		{
 			real_t aspect_ratio = (real_t)width / (real_t)height;
 
@@ -122,12 +124,12 @@ namespace Gargantua
 			real_t r = cam_value * aspect_ratio;
 			real_t l = -r;
 
-			auto cam = CreateUniqueRes<OrthoCamera>(l, b, r, t);
+			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
 			return cam;
 		}
 
 
-		UniqueRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height, real_t cam_value)
+		SharedRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height, real_t cam_value)
 		{
 			real_t aspect_ratio = (real_t)width / (real_t)height;
 
@@ -136,7 +138,7 @@ namespace Gargantua
 			real_t r = cam_value * aspect_ratio;
 			real_t l = -r;
 
-			auto cam = CreateUniqueRes<OrthoCamera>(l, b, r, t);
+			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
 			return cam;
 		}
 		//*************************** ORTHO CAMERA ********************************
@@ -144,29 +146,29 @@ namespace Gargantua
 
 		//*************************** SHADER AND PROGRAM ********************************
 
-		UniqueRes<Shader> Utility::CreateVSH(std::string_view path)
+		SharedRes<Shader> Utility::CreateVSH(std::string_view path)
 		{
-			auto vsh = CreateUniqueRes<Shader>();
+			auto vsh = CreateSharedRes<Shader>();
 			vsh->Create(ShaderType::vertex_shader);
 			vsh->Compile(path);
 			return vsh;
 		}
 		
-		UniqueRes<Shader> Utility::CreateFSH(std::string_view path)
+		SharedRes<Shader> Utility::CreateFSH(std::string_view path)
 		{
-			auto fsh = CreateUniqueRes<Shader>();
+			auto fsh = CreateSharedRes<Shader>();
 			fsh->Create(ShaderType::fragment_shader);
 			fsh->Compile(path);
 			return fsh;
 		}
 
 
-		UniqueRes<Program> Utility::CreatePR(std::string_view vert_path, std::string_view frag_path)
+		SharedRes<Program> Utility::CreatePR(std::string_view vert_path, std::string_view frag_path)
 		{
 			auto vsh = Utility::CreateVSH(vert_path);
 			auto fsh = Utility::CreateFSH(frag_path);
 
-			auto p = CreateUniqueRes<Program>();
+			auto p = CreateSharedRes<Program>();
 			p->Create();
 			p->Link(*vsh, *fsh);
 
@@ -177,9 +179,9 @@ namespace Gargantua
 		//*************************** SHADER AND PROGRAM ********************************
 
 		//*************************** FRAME BUFFER **************************************
-		UniqueRes<FrameBuffer> Utility::CreateFB(natural_t width, natural_t height)
+		SharedRes<FrameBuffer> Utility::CreateFB(natural_t width, natural_t height)
 		{
-			auto fb = CreateUniqueRes<FrameBuffer>();
+			auto fb = CreateSharedRes<FrameBuffer>();
 			fb->Create();
 			fb->Initialize(width, height);
 

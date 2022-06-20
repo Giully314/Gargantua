@@ -28,6 +28,8 @@ TODO:
 #include <glad/glad.h>
 
 #include "Gargantua/Types.hpp"
+
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 #include "Gargantua/Renderer/VertexBuffer.hpp"
 #include "Gargantua/Renderer/ElementBuffer.hpp"
 
@@ -36,26 +38,26 @@ namespace Gargantua
 {
 	namespace Renderer
 	{
-		class VertexArray : private NonCopyable
+		class VertexArray : public OpenGLObject
 		{
 		public:
-			inline void Create()
+			void Create()
 			{
 				glGenVertexArrays(1, &id);
 			}
 
-			inline void Destroy()
+			void Destroy()
 			{
 				glDeleteVertexArrays(1, &id);
 				id = 0;
 			}
 
-			inline void Bind() const
+			void Bind() const
 			{
 				glBindVertexArray(id);
 			}
 
-			inline void Unbind() const
+			void Unbind() const
 			{
 				glBindVertexArray(0);
 			}
@@ -64,10 +66,6 @@ namespace Gargantua
 			void AddVertexBuffer(const VertexBuffer& vb, natural_t attribute);
 
 			void AddElementBuffer(const ElementBuffer& eb);
-
-
-		private:
-			GLuint id = 0;
 		};
 	} //namespace Renderer 
 } //namespace Gargantua

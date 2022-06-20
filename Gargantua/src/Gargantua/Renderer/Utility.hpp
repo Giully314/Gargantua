@@ -2,7 +2,7 @@
 /*
 Gargantua/Renderer/Utility.hpp
 
-PURPOSE: Function utilities.
+PURPOSE: Function utilities for temporary usage in testing.
 
 CLASSES:
 	Utility: struct with utility static methods.
@@ -31,36 +31,36 @@ namespace Gargantua
 	{
 		struct Utility
 		{
-			static UniqueRes<VertexBuffer> CreateVB();
-			static UniqueRes<VertexBuffer> CreateVB(const void* data, natural_t count, natural_t elem_per_vert, BufferElementType type, DrawMode mode);
-		
-			static UniqueRes<ElementBuffer> CreateEB();
-			static UniqueRes<ElementBuffer> CreateEB(const void* data, natural_t count, BufferElementType type, DrawMode mode);
-		
-			static UniqueRes<VertexArray> CreateVA();
-
-			static UniqueRes<Texture2d> CreateTX2d();
-			static UniqueRes<Texture2d> CreateTX2d(std::string_view file_name);
-			static UniqueRes<Texture2d> CreateTX2d(natural_t width, natural_t height, void* data);
+			static SharedRes<VertexBuffer> CreateVB();
+			static SharedRes<VertexBuffer> CreateVB(const void* data, natural_t count, natural_t elem_per_vert, DrawMode mode);
 			
+			static SharedRes<ElementBuffer> CreateEB();
+			static SharedRes<ElementBuffer> CreateEB(const void* data, natural_t count, DrawMode mode);
+			
+			static SharedRes<VertexArray> CreateVA();
+			
+			static SharedRes<Texture2d> CreateTX2d();
+			static SharedRes<Texture2d> CreateTX2d(std::string_view file_name);
+			static SharedRes<Texture2d> CreateTX2d(natural_t width, natural_t height, void* data);
+			
+			static SharedRes<OrthoCamera> CreateOrtho(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f);
+			static SharedRes<OrthoCamera> CreateOrtho(real_t l, real_t b, real_t r, real_t t);
+			static SharedRes<OrthoCamera> CreateOrtho(natural_t width, natural_t height);
+			static SharedRes<OrthoCamera> CreateOrtho(natural_t width, natural_t height, real_t cam_value);
 
-			static UniqueRes<OrthoCamera> CreateOrtho(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f);
-			static UniqueRes<OrthoCamera> CreateOrtho(real_t l, real_t b, real_t r, real_t t);
-			static UniqueRes<OrthoCamera> CreateOrtho(natural_t width, natural_t height);
-			static UniqueRes<OrthoCamera> CreateOrtho(natural_t width, natural_t height, real_t cam_value);
 
 			/*
 			NOTE: these funcions are only for testing mode. For shader/program creation is better to use
 			the ShaderManager.
 			*/
 			//Create Vertex Shader
-			static UniqueRes<Shader> CreateVSH(std::string_view path);
+			static SharedRes<Shader> CreateVSH(std::string_view path);
 			//Create Fragment Shader
-			static UniqueRes<Shader> CreateFSH(std::string_view path);
-			static UniqueRes<Program> CreatePR(std::string_view vert_path, std::string_view frag_path);
+			static SharedRes<Shader> CreateFSH(std::string_view path);
+			static SharedRes<Program> CreatePR(std::string_view vert_path, std::string_view frag_path);
 
 			
-			static UniqueRes<FrameBuffer> CreateFB(natural_t width, natural_t height);
+			static SharedRes<FrameBuffer> CreateFB(natural_t width, natural_t height);
 		};
 	} //namespace Renderer 
 } //namespace Gargantua

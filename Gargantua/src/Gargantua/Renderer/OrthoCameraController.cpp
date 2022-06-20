@@ -48,7 +48,7 @@ namespace Gargantua
 			{
 				rotation += angular_velocity * time;
 			}
-			
+
 			camera->SetPositionAndRotation(position, rotation);
 		}
 	} //namespace Renderer

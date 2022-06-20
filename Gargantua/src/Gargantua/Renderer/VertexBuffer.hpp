@@ -6,49 +6,85 @@ PURPOSE: Wrapper class for OpenGL VertexBuffer object.
 
 
 CLASSES:
+	VertexBufferInfo: info for the buffer.
 	VertexBuffer: Class for VertexBuffer object.
 
 
 DESCRIPTION:
 	This class is intented to be a wrapper and NOT an abstraction of OpenGL.
 	This means that all the operations will be explicit and that the RAII is not implemented.
-	A buffer is just an array of data. The meaning of this data is given by the VertexArray
-	and the geometry associated (points, line, triangles and so on).
+	A buffer is just an array of data. 
 	For now the vertex buffer allows to load only floating point data.
 
 
 USAGE:
-	
+	VertexBuffer vb;
+	vb.Create();
+	vb.Load(...);
+
+	...
+
+	vb.Destroy();
 */
 
 
 #include <glad/glad.h>
 
-#include "Gargantua/Renderer/Buffer.hpp"
+#include "Gargantua/Types.hpp"
+
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 #include "Gargantua/Renderer/Types.hpp"
 
 namespace Gargantua
 {
 	namespace Renderer
 	{
-		class VertexBuffer : public Buffer
+		struct VertexBufferInfo
+		{
+			natural_t elem_per_vert = 0; 
+			DrawMode draw_mode = DrawMode::static_draw;
+		};
+
+
+		class VertexBuffer : public OpenGLObject
 		{
 		public:
-			inline void Bind() const override
+			void Create()
+			{
+				glGenBuffers(1, &id);
+			}
+
+			void Destroy()
+			{
+				glDeleteBuffers(1, &id);
+				id = 0;
+			}
+
+			void Bind() const 
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, id);
 			}
 
-			inline void Unbind() const override
+			void Unbind() const 
 			{
 				glBindBuffer(GL_ARRAY_BUFFER, 0);
+			}
+
+
+			const VertexBufferInfo& GetInfo() const noexcept 
+			{
+				return info;
 			}
 
 			
 			/*
 			The buffer is unbinded after the load of the data.
 			*/
-			void Load(const void* data, natural_t count, natural_t elem_per_vert, BufferElementType type, DrawMode mode);
+			void Load(const void* data, natural_t count, natural_t elem_per_vert, DrawMode mode);
+		
+
+		private:
+			VertexBufferInfo info;
 		};
 	} //namespace Renderer
 } //namespace Gargantua

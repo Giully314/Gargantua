@@ -17,7 +17,7 @@ namespace Gargantua
 			const auto& info = vb.GetInfo();
 
 			glEnableVertexAttribArray(attribute);
-			glVertexAttribPointer(attribute, info.elem_per_vert, (GLenum)info.type, GL_FALSE, 0, 0);
+			glVertexAttribPointer(attribute, info.elem_per_vert, GL_FLOAT, GL_FALSE, 0, 0);
 			glBindVertexArray(0);
 		}
 

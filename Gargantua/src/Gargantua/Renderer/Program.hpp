@@ -30,6 +30,7 @@ USAGE:
 #include "Gargantua/Types.hpp"
 
 #include "Gargantua/Renderer/Shader.hpp"
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 
 #include "Gargantua/Math/Vec2d.hpp"
 #include "Gargantua/Math/Vec3d.hpp"
@@ -44,7 +45,7 @@ namespace Gargantua
 	{
 
 		//TODO: consider to make a cache for uniforms instaed of recomputing them.
-		class Program : private NonCopyable
+		class Program : public OpenGLObject
 		{
 		public:
 			inline void Create()
@@ -130,10 +131,6 @@ namespace Gargantua
 				GLint location = glGetUniformLocation(id, name.data());
 				glUniform1i(location, v);
 			}
-
-
-		private:
-			GLuint id = 0;
 		};
 	} //namespace Renderer 
 } //namespace Gargantua

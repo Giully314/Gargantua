@@ -34,6 +34,7 @@ USAGE:
 #include "Gargantua/Types.hpp"
 
 #include "Gargantua/Renderer/Types.hpp"
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 
 #include <string_view>
 
@@ -42,7 +43,7 @@ namespace Gargantua
 {
 	namespace Renderer
 	{
-		class Shader : private NonCopyable
+		class Shader : public OpenGLObject
 		{
 		public:
 			friend class Program;
@@ -60,9 +61,6 @@ namespace Gargantua
 
 
 			void Compile(std::string_view path);
-
-		private:
-			GLuint id = 0;
 		};
 	} //namespace Renderer
 } //namespace Gargantua

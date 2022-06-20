@@ -16,7 +16,7 @@ namespace Gargantua
 
 			glBindFramebuffer(GL_FRAMEBUFFER, id);
 
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, buffer.id, 0);
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, buffer.GetRenderId(), 0);
 
 			GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 			if (status != GL_FRAMEBUFFER_COMPLETE)
@@ -30,8 +30,8 @@ namespace Gargantua
 
 		void FrameBuffer::Resize(natural_t width, natural_t height)
 		{
+			buffer.Destroy();
 			buffer.Empty(width, height);
 		}
-
 	} //namespace Renderer
 } //namespace Gargantua

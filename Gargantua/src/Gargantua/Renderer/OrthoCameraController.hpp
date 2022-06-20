@@ -23,6 +23,8 @@ DESCRIPTION:
 #include "Gargantua/Math/Vec3d.hpp"
 
 
+#include <utility>
+
 namespace Gargantua
 {
 	namespace Renderer
@@ -37,19 +39,47 @@ namespace Gargantua
 			void Update(const Time::TimeStep& ts);
 
 
-			inline void SetCamera(NonOwnedRes<OrthoCamera> camera)
+			inline void SetCamera(SharedRes<OrthoCamera> camera)
 			{
 				this->camera = camera;
 			}
 
+
+			inline OrthoCamera& GetCamera() const noexcept
+			{
+				return *camera;
+			}
+
+
+			inline void CreateCamera(real_t aspect_ratio)
+			{
+				this->aspect_ratio = aspect_ratio;
+				camera = CreateSharedRes<OrthoCamera>(-aspect_ratio * zoom_level, 
+					-zoom_level, aspect_ratio * zoom_level, zoom_level);
+			}
+
+			inline void ZoomLevelOffset(real_t offset)
+			{
+				zoom_level -= offset * 0.25f;
+				zoom_level = std::max(zoom_level, 0.5f);
+
+				camera->SetProjection(-aspect_ratio * zoom_level,
+					-zoom_level, aspect_ratio * zoom_level, zoom_level);
+			}
+		
+
 		private:
-			NonOwnedRes<OrthoCamera> camera = nullptr;
+			SharedRes<OrthoCamera> camera = nullptr;
 
 			Math::Vec3df position;
 			real_t rotation = 0.0f;
 
 			real_t velocity = 1.0f;
 			real_t angular_velocity = 50;
+
+			real_t zoom_level = 5.0f;
+
+			real_t aspect_ratio = 0.0f;
 		};
 	} //namespace Renderer
 } //namespace Gargantua

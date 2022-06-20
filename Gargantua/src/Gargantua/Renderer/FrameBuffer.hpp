@@ -18,54 +18,15 @@ TODO:
 
 #include "Gargantua/Types.hpp"
 
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 #include "Gargantua/Renderer/Texture2d.hpp"
+
 
 namespace Gargantua
 {
 	namespace Renderer
 	{
-
-		/*
-		Temporary solution while deciding how to do it.
-		The render buffer is only color because the engine is for 2d only.
-		*/
-		/*class RenderBuffer : private NonCopyable
-		{
-		public:
-			friend class FrameBuffer;
-
-			inline void Create(natural_t width, natural_t height)
-			{
-				glGenRenderbuffers(1, &id);
-				glBindRenderbuffer(GL_RENDERBUFFER, id);
-				glRenderbufferStorage(GL_RENDERBUFFER, GL_RGBA8, width, height);
-				glBindRenderbuffer(GL_RENDERBUFFER, 0);
-			}
-
-
-			inline void Destroy()
-			{
-				glDeleteRenderbuffers(1, &id);
-				id = 0;
-			}
-
-			inline void Bind() const
-			{
-				glBindRenderbuffer(GL_RENDERBUFFER, id);
-			}
-
-			inline void Unbind() const 
-			{
-				glBindRenderbuffer(GL_RENDERBUFFER, 0);
-			}
-
-		private:
-			GLuint id = 0;
-		};*/
-
-
-
-		class FrameBuffer : private NonCopyable
+		class FrameBuffer : public OpenGLObject
 		{
 		public:
 			void Create()
@@ -97,13 +58,29 @@ namespace Gargantua
 			void Resize(natural_t width, natural_t height);
 
 
-			Texture2d& GetColorBuffer()
+			Texture2d& GetColorBuffer() 
 			{
 				return buffer;
 			}
 
+
+			render_id_t GetColorBufferId() const
+			{
+				return buffer.GetRenderId();
+			}
+
+
+			natural_t GetHeight() const noexcept 
+			{
+				return buffer.GetHeight();
+			}
+
+			natural_t GetWidth() const noexcept
+			{
+				return buffer.GetWidth();
+			}
+
 		private:
-			GLuint id = 0;
 			Texture2d buffer;
 		};
 	} //namespace Renderer

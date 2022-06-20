@@ -14,6 +14,7 @@ DESCRIPTION:
 */
 #include "Gargantua/Types.hpp"
 
+#include "Gargantua/Math/MathFunctions.hpp"
 
 #include "Gargantua/Math/Mat4d.hpp"
 #include "Gargantua/Math/Vec3d.hpp"
@@ -74,6 +75,13 @@ namespace Gargantua
 				return proj_view;
 			}
 
+
+
+			inline void SetProjection(real_t l, real_t b, real_t r, real_t t)
+			{
+				projection = Math::Projection::Orthographic(l, b, r, t);
+				UpdateCameraMatrix();
+			}
 			
 
 		private:

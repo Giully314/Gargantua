@@ -6,18 +6,19 @@ PURPOSE: Wrapper class for OpenGL ElementBuffer object.
 
 
 CLASSES:
+	ElementBufferInfo: info for the buffer.
 	ElementBuffer: Class for ElementBuffer object.
 
 
 DESCRIPTION:
 	This class is intented to be a wrapper and NOT an abstraction of OpenGL.
 	This means that all the operations will be explicit and that the RAII is not implemented.
-	A buffer is just an array of data. The meaning of this data is given by the VertexArray
-	and the geometry associated (points, line, triangles and so on).
+	A buffer is just an array of data. 
+	For now the element buffer loads only unsigned short indices.
 */
 
-#include "Gargantua/Renderer/Buffer.hpp"
 #include "Gargantua/Renderer/Types.hpp"
+#include "Gargantua/Renderer/OpenGLObject.hpp"
 
 #include "Gargantua/Types.hpp"
 
@@ -25,27 +26,57 @@ namespace Gargantua
 {
 	namespace Renderer
 	{
-		class ElementBuffer : public Buffer
+		struct ElementBufferInfo
+		{
+			natural_t count = 0;
+			DrawMode draw_mode = DrawMode::static_draw;
+		};
+
+
+		class ElementBuffer : public OpenGLObject
 		{
 		public:
-			inline void Bind() const override
+
+			void Create()
+			{
+				glGenBuffers(1, &id);
+			}
+
+			void Destroy()
+			{
+				glDeleteBuffers(1, &id);
+				id = 0;
+			}
+
+
+			void Bind() const 
 			{
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id);
 			}
 
-			inline void Unbind() const override
+			void Unbind() const 
 			{
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			}
 
 			
-			void Load(const void* data, natural_t count, BufferElementType type, DrawMode mode);
 
-
-			inline natural_t GetCount() const noexcept
+			natural_t GetCount() const noexcept
 			{
 				return info.count;
 			}
+
+			const ElementBufferInfo& GetInfo() const noexcept
+			{
+				return info;
+			}
+
+
+			void Load(const void* data, natural_t count,  DrawMode mode);
+
+
+		private:
+			ElementBufferInfo info;
 		};
 
 	} //namespace Renderer

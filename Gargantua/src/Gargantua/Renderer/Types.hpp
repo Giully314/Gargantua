@@ -33,43 +33,5 @@ namespace Gargantua
 			fragment_shader = GL_FRAGMENT_SHADER,
 			vertex_shader = GL_VERTEX_SHADER,
 		};
-
-
-		enum class BufferElementType : GLenum
-		{
-			float_t = GL_FLOAT,
-			int_t = GL_INT,
-			unsigned_int_t = GL_UNSIGNED_INT,
-			unsigned_short_t = GL_UNSIGNED_SHORT,
-		};
-
-
-		struct Conversion
-		{
-			static size_t ElementTypeSize(BufferElementType t)
-			{
-				switch (t)
-				{
-				case BufferElementType::float_t:
-					return sizeof(GLfloat);
-				case BufferElementType::int_t:
-					return sizeof(GLint);
-				case BufferElementType::unsigned_int_t:
-					return sizeof(GLuint);
-				case BufferElementType::unsigned_short_t:
-					return sizeof(GLushort);
-				}
-				return 0;
-			}
-		};
-
-
-
-		enum class RenderTopology : GLenum
-		{
-			POINTS = GL_POINTS,
-			LINES = GL_LINES,
-			TRIANGLES = GL_TRIANGLES,
-		};
 	} //namespace Renderer 
 } //namespace Gargantua

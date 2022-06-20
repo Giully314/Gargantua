@@ -4,7 +4,7 @@ Gargantua/Renderer/OrthoCamera.cpp
 
 #include "OrthoCamera.hpp"
 
-#include "Gargantua/Math/Functions.hpp"
+#include "Gargantua/Math/MathFunctions.hpp"
 
 
 namespace Gargantua
