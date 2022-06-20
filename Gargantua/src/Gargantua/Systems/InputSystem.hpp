@@ -45,6 +45,7 @@ namespace Gargantua
 			{
 				return Math::Vec2df{ mouse->GetX(), mouse->GetY() };
 			}
+			
 
 		private:
 			static UniqueRes<Input::KeyboardState> keyboard;
