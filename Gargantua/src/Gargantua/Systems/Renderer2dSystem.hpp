@@ -37,8 +37,6 @@ TODO:
 
 #include "Gargantua/Types.hpp"
 
-#include "Gargantua/Core/Scene2d.hpp"
-
 #include "Gargantua/Math/Vec2d.hpp"
 #include "Gargantua/Math/Vec4d.hpp"
 #include "Gargantua/Math/Mat3d.hpp"
@@ -78,16 +76,20 @@ namespace Gargantua
 			std::unordered_map<std::string, std::string> uniforms;
 
 
-			UniqueRes<Renderer::VertexArray> va_quad = nullptr;
-			UniqueRes<Renderer::ElementBuffer> eb = nullptr;
-			UniqueRes<Renderer::Texture2d> tx_white = nullptr;
+			//These are used for simplify the process of drawing a simple quad.
+			//In a 2d renderer, most of the time, a quad is the only shape used for drawing.
+			SharedRes<Renderer::VertexArray> va_quad = nullptr;
+			SharedRes<Renderer::ElementBuffer> eb = nullptr;
+			SharedRes<Renderer::Texture2d> tx_white = nullptr;
 			
-			UniqueRes<Renderer::FrameBuffer> fb;
-			UniqueRes<Renderer::VertexArray> fb_quad = nullptr;
-			UniqueRes<Renderer::ElementBuffer> fb_eb = nullptr;
+			SharedRes<Renderer::FrameBuffer> fb = nullptr;
+			SharedRes<Renderer::VertexArray> fb_quad = nullptr;
+			SharedRes<Renderer::ElementBuffer> fb_eb = nullptr;
 			
 
 			const Math::Vec4df white{ 1.0f, 1.0f, 1.0f, 1.0f };
+
+			Math::Mat4df proj_view;
 		};
 
 
@@ -139,10 +141,11 @@ namespace Gargantua
 
 
 
-			//void SetBackground();
 
-
-			void DrawPixels(natural_t x, natural_t y, natural_t width, natural_t height, void* colors);
+			inline void SetCameraMatrix(Math::Mat4df camera_matrix)
+			{
+				data.proj_view = std::move(camera_matrix);
+			}
 
 
 			inline void SetProgram(SharedRes<Renderer::Program> program)
@@ -164,8 +167,13 @@ namespace Gargantua
 				data.uniforms[type] = uniform_name;
 			}
 
+
+			inline const Renderer::FrameBuffer& GetFrameBuffer() const 
+			{
+				return *data.fb;
+			}
+
 		private:
-			SharedRes<Core::Scene2d> scene;
 			Renderer2dData data;
 		};
 	} //namespace Systems

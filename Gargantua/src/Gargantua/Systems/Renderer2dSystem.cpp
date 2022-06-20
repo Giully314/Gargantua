@@ -12,7 +12,7 @@ Gargantua/Systems/Renderer2dSystem.cpp
 #include "Gargantua/Event/WindowEvents.hpp"
 
 
-#include "Gargantua/Math/Functions.hpp"
+#include "Gargantua/Math/MathFunctions.hpp"
 
 
 namespace Gargantua
@@ -63,21 +63,19 @@ namespace Gargantua
 			};
 
 
-			scene = CreateSharedRes<Core::Scene2d>();
-
 			data.uniforms["camera"] = "u_proj_view";
 			data.uniforms["transform"] = "u_transform";
 			data.uniforms["color"] = "u_color";
 			data.uniforms["tiling_factor"] = "u_tiling_factor";
 
 
-			UniqueRes<Renderer::VertexBuffer> center_square = Renderer::Utility::CreateVB(vertices, 8, 2, Renderer::BufferElementType::float_t,
+			SharedRes<Renderer::VertexBuffer> center_square = Renderer::Utility::CreateVB(vertices, 8, 2,
 				Renderer::DrawMode::static_draw);
 
-			UniqueRes<Renderer::VertexBuffer> square_text = Renderer::Utility::CreateVB(text_coords, 8, 2, Renderer::BufferElementType::float_t,
+			SharedRes<Renderer::VertexBuffer> square_text = Renderer::Utility::CreateVB(text_coords, 8, 2,
 				Renderer::DrawMode::static_draw);
 
-			data.eb = Renderer::Utility::CreateEB(elements, 6, Renderer::BufferElementType::unsigned_short_t, Renderer::DrawMode::static_draw);
+			data.eb = Renderer::Utility::CreateEB(elements, 6, Renderer::DrawMode::static_draw);
 			data.va_quad = Renderer::Utility::CreateVA();
 
 			natural_t white_color = 0xffffffff;
@@ -91,13 +89,13 @@ namespace Gargantua
 
 			data.fb_quad = Renderer::Utility::CreateVA();
 
-			UniqueRes<Renderer::VertexBuffer> screen_square = Renderer::Utility::CreateVB(fb_vertices, 8, 2, Renderer::BufferElementType::float_t,
+			SharedRes<Renderer::VertexBuffer> screen_square = Renderer::Utility::CreateVB(fb_vertices, 8, 2,
 				Renderer::DrawMode::static_draw);
 
-			UniqueRes<Renderer::VertexBuffer> screen_text = Renderer::Utility::CreateVB(text_coords, 8, 2, Renderer::BufferElementType::float_t,
+			SharedRes<Renderer::VertexBuffer> screen_text = Renderer::Utility::CreateVB(text_coords, 8, 2,
 				Renderer::DrawMode::static_draw);
 			
-			data.fb_eb = Renderer::Utility::CreateEB(elements, 6, Renderer::BufferElementType::unsigned_short_t, Renderer::DrawMode::static_draw);
+			data.fb_eb = Renderer::Utility::CreateEB(elements, 6, Renderer::DrawMode::static_draw);
 
 			data.fb_quad->AddVertexBuffer(*screen_square, 0);
 			data.fb_quad->AddVertexBuffer(*screen_text, 1);
@@ -108,9 +106,9 @@ namespace Gargantua
 		void Renderer2dSystem::BeginScene(const Renderer::OrthoCamera& camera)
 		{
 			data.fb->Bind();
-			scene->proj_view = camera.GetProjectionView();
+			data.proj_view = camera.GetProjectionView();
 			data.program->Bind();
-			data.program->SetUniformMatrix4f(data.uniforms["camera"], scene->proj_view);
+			data.program->SetUniformMatrix4f(data.uniforms["camera"], data.proj_view);
 			data.program->Unbind();
 			Renderer::RendererCommand::Clear();
 		}
@@ -119,7 +117,7 @@ namespace Gargantua
 		void Renderer2dSystem::BeginScene(const Math::Mat4df& proj_view)
 		{
 			data.fb->Bind();
-			scene->proj_view = proj_view;
+			data.proj_view = proj_view;
 			data.program->Bind();
 			data.program->SetUniformMatrix4f(data.uniforms["camera"], proj_view);
 			data.program->Unbind();
@@ -134,7 +132,7 @@ namespace Gargantua
 			data.fb->GetColorBuffer().Bind();
 			data.fb_quad->Bind();
 
-			Renderer::RendererCommand::Draw(*data.fb_eb, Renderer::RenderTopology::TRIANGLES);
+			Renderer::RendererCommand::Draw(*data.fb_eb);
 
 			data.fb_program->Unbind();
 		}
@@ -194,7 +192,7 @@ namespace Gargantua
 			texture.Bind();
 			data.va_quad->Bind();
 
-			Renderer::RendererCommand::Draw(*data.eb, Renderer::RenderTopology::TRIANGLES);
+			Renderer::RendererCommand::Draw(*data.eb);
 		}
 
 		/************************** DRAW QUAD ***************************************/
@@ -248,17 +246,11 @@ namespace Gargantua
 			texture.Bind();
 			data.va_quad->Bind();
 
-			Renderer::RendererCommand::Draw(*data.eb, Renderer::RenderTopology::TRIANGLES);
+			Renderer::RendererCommand::Draw(*data.eb);
 		}
 		
 		/************************** DRAW ROTATED QUAD ***************************************/
 
-
-
-		void Renderer2dSystem::DrawPixels(natural_t x, natural_t y, natural_t width, natural_t height, void* colors)
-		{
-			data.fb->GetColorBuffer().SetColor(x, y, width, height, colors);
-		}
 
 
 	} //namespace Systems
