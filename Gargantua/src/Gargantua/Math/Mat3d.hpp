@@ -79,7 +79,7 @@ namespace Gargantua
 
 
 
-			inline Mat3d& operator+=(const Mat3d& rhs)
+			Mat3d& operator+=(const Mat3d& rhs)
 			{
 				m[0] += rhs.m[0];
 				m[1] += rhs.m[1];
@@ -88,7 +88,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat3d& operator-=(const Mat3d& rhs)
+			Mat3d& operator-=(const Mat3d& rhs)
 			{
 				m[0] -= rhs.m[0];
 				m[1] -= rhs.m[1];
@@ -97,7 +97,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat3d& operator*=(const value_type c)
+			Mat3d& operator*=(const value_type c)
 			{
 				m[0] *= c;
 				m[1] *= c;
@@ -106,7 +106,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat3d& operator*=(const Mat3d& rhs)
+			Mat3d& operator*=(const Mat3d& rhs)
 			{
 				m[0] = m[0][0] * rhs.m[0] + m[0][1] * rhs.m[1] + m[0][2] * rhs.m[2] + m[0][3] * rhs.m[3];
 				m[1] = m[1][0] * rhs.m[0] + m[1][1] * rhs.m[1] + m[1][2] * rhs.m[2] + m[1][3] * rhs.m[3];
@@ -116,7 +116,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat3d& operator/=(const value_type c)
+			Mat3d& operator/=(const value_type c)
 			{
 				m[0] /= c;
 				m[1] /= c;
@@ -126,14 +126,14 @@ namespace Gargantua
 
 
 
-			inline void Zero()
+			void Zero()
 			{
 				m[0].Zero();
 				m[1].Zero();
 				m[2].Zero();
 			}
 
-			inline void Identity()
+			void Identity()
 			{
 				m[0].x = value_type{ 1 };
 				m[0].y = value_type{ 0 };
@@ -181,6 +181,17 @@ namespace Gargantua
 				inverse /= d;
 
 				return inverse;
+			}
+
+
+			const value_type* GetAddress() const
+			{
+				return &(m[0].x);
+			}
+
+			value_type* GetAddress()
+			{
+				return &(m[0].x);
 			}
 
 

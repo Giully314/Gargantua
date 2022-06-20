@@ -47,7 +47,7 @@ namespace Gargantua
 			T operator[](std::size_t idx) const { return reinterpret_cast<const T*>(&x)[idx]; }
 
 
-			inline Vec3d& operator+=(const Vec3d& rhs)
+			Vec3d& operator+=(const Vec3d& rhs)
 			{
 				x += rhs.x;
 				y += rhs.y;
@@ -56,7 +56,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec3d& operator-=(const Vec3d& rhs)
+			Vec3d& operator-=(const Vec3d& rhs)
 			{
 				x -= rhs.x;
 				y -= rhs.y;
@@ -65,7 +65,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec3d& operator*=(const T c)
+			Vec3d& operator*=(const T c)
 			{
 				x *= c;
 				y *= c;
@@ -74,7 +74,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec3d& operator/=(const T c)
+			Vec3d& operator/=(const T c)
 			{
 				x /= c;
 				y /= c;
@@ -84,7 +84,7 @@ namespace Gargantua
 
 
 
-			inline void Zero()
+			void Zero()
 			{
 				x = T{ 0 };
 				y = T{ 0 };
@@ -93,7 +93,7 @@ namespace Gargantua
 
 
 
-			inline void Normalize()
+			void Normalize()
 			{
 				T l = x * x + y * y + z * z;
 				if (l != 0)
@@ -105,7 +105,7 @@ namespace Gargantua
 				}
 			}
 
-			inline Vec3d Normalized()
+			Vec3d Normalized()
 			{
 				Vec3d copy = *this;
 				copy.Normalize();
@@ -113,13 +113,19 @@ namespace Gargantua
 			}
 
 
-			inline T Length() const
+			T Length() const
 			{
 				return std::sqrt(x * x + y * y + z * z);
 			}
 
 
-			inline T Dot(const Vec3d& rhs) const
+			T LengthSqr() const
+			{
+				return x * x + y * y + z * z;
+			}
+
+
+			T Dot(const Vec3d& rhs) const
 			{
 				return x * rhs.x + y * rhs.y + z * rhs.z;
 			}

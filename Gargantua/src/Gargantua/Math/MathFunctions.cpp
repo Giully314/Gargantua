@@ -1,7 +1,7 @@
 /*
 Gargantua/Math/Functions.cpp
 */
-#include "Functions.hpp"
+#include "MathFunctions.hpp"
 
 
 namespace Gargantua

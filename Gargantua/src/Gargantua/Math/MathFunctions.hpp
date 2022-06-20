@@ -1,13 +1,14 @@
 #pragma once
 /*
-Gargantua/Math/Functions.hpp
+Gargantua/Math/MathFunctions.hpp
 
 PURPOSE: Mathematical functions for different purposes.
 
 
 CLASSES:
 	Projection: Provide functions for projections.
-	Transform3d: Provide functions for 3d transformations.
+	Transform3d: Provide functions for 3d transformations. (really temporary, not so much useful for a 2d engine)
+	Transform2d: Functions for 2d transformations.
 	Angles: Conversion between angles.
 
 DESCRIPTION:
@@ -17,6 +18,8 @@ DESCRIPTION:
 
 #include "Gargantua/Math/Mat4d.hpp"
 #include "Gargantua/Math/Vec3d.hpp"
+#include "Gargantua/Math/Vec2d.hpp"
+#include "Gargantua/Math/Mat2d.hpp"
 
 #include <cmath>
 #include <numbers>
@@ -26,6 +29,8 @@ namespace Gargantua
 {
 	namespace Math
 	{
+		//*********************** PROJECTION *********************************************
+		
 		struct Projection
 		{
 
@@ -68,6 +73,11 @@ namespace Gargantua
 			}
 		};
 
+		//*********************** PROJECTION *********************************************
+
+
+
+		//*********************** TRANSFORM 3D *****************************************
 
 		struct Transform3d
 		{
@@ -139,7 +149,76 @@ namespace Gargantua
 			}
 		};
 
+		//*********************** TRANSFORM 3D *****************************************
 
+
+
+
+		//*********************** TRANSFORM 2D *****************************************
+
+		struct Transform2d
+		{
+			//Positive theta values rotate counter clockwise.
+			template <typename T>
+			requires std::is_arithmetic_v<T>
+			static Mat2d<T> Rotate(const T theta)
+			{
+				Mat2d<T> rotation;
+
+				const T c = std::cos(theta);
+				const T s = std::sin(theta);
+
+				rotation(0, 0) = c;
+				rotation(0, 1) = -s;
+
+				rotation(1, 0) = s;
+				rotation(1, 1) = c;
+
+				return rotation;
+			}
+
+			template <typename T>
+			static Mat2d<T> Scale(const T c)
+			{
+				Mat2d<T> scale{ c };
+
+				return scale;
+			}
+
+
+			template <typename T>
+			static Mat2d<T> Scale(const Vec2d<T>& v)
+			{
+				Mat2d<T> scale;
+
+				scale(0, 0) = v[0];
+
+				scale(1, 1) = v[1];
+
+				return scale;
+			}
+
+
+			template <typename T>
+			static Vec2d<T> RotateCounterClock90(const Vec2d<T>& v)
+			{
+				return Vec2d<T>{-v.y, v.x};
+			}
+
+			template <typename T>
+			static Vec2d<T> RotateClock90(const Vec2d<T>& v)
+			{
+				return Vec2d<T>{v.y, -v.x};
+			}
+
+		};
+
+		//*********************** TRANSFORM 2D *****************************************
+
+
+
+
+		//*************************** ANGLES ********************************************
 
 		struct Angles
 		{
@@ -157,6 +236,8 @@ namespace Gargantua
 				return static_cast<T>(a * 180.0 / std::numbers::pi);
 			}
 		};
+
+		//*************************** ANGLES ********************************************
 
 	} //namespace Math
 } //namespace Gargantua

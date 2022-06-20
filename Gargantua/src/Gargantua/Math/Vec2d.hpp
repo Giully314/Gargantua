@@ -41,7 +41,7 @@ namespace Gargantua
 			T operator[](std::size_t idx) const { return reinterpret_cast<const T*>(&x)[idx]; }
 
 			
-			inline Vec2d& operator+=(const Vec2d& rhs)
+			Vec2d& operator+=(const Vec2d& rhs)
 			{
 				x += rhs.x;
 				y += rhs.y;
@@ -49,7 +49,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec2d& operator-=(const Vec2d& rhs)
+			Vec2d& operator-=(const Vec2d& rhs)
 			{
 				x -= rhs.x;
 				y -= rhs.y;
@@ -57,7 +57,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec2d& operator*=(const T c)
+			Vec2d& operator*=(const T c)
 			{
 				x *= c;
 				y *= c;
@@ -65,7 +65,7 @@ namespace Gargantua
 			}
 
 
-			inline Vec2d& operator/=(const T c)
+			Vec2d& operator/=(const T c)
 			{
 				x /= c;
 				y /= c;
@@ -74,7 +74,7 @@ namespace Gargantua
 			
 
 
-			inline void Zero()
+			void Zero()
 			{
 				x = T{ 0 };
 				y = T{ 0 };
@@ -82,7 +82,7 @@ namespace Gargantua
 
 
 			
-			inline void Normalize()
+			void Normalize()
 			{
 				T l = x * x + y * y;
 				if (l != 0)
@@ -93,7 +93,7 @@ namespace Gargantua
 				}
 			}
 
-			inline Vec2d Normalized()
+			Vec2d Normalized()
 			{
 				Vec2d copy = *this;
 				copy.Normalize();
@@ -101,13 +101,19 @@ namespace Gargantua
 			}
 
 
-			inline T Length() const
+			T Length() const
 			{
 				return std::sqrt(x * x + y * y);
 			}
 
 
-			inline T Dot(const Vec2d& rhs) const
+			T LengthSqr() const
+			{
+				return x * x + y * y;
+			}
+
+
+			T Dot(const Vec2d& rhs) const
 			{
 				return x * rhs.x + y * rhs.y;
 			}
@@ -196,6 +202,14 @@ namespace Gargantua
 			lhs /= (T)c;
 			return lhs;
 		}
+
+
+		template <typename T>
+		inline Vec2d<T> operator-(const Vec2d<T>& v)
+		{
+			return Vec2d<T>{-v.x, -v.y};
+		}
+
 	} //namespace Math
 } //namespace Gargantua
 

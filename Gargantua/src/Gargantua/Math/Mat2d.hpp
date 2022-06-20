@@ -81,7 +81,7 @@ namespace Gargantua
 
 
 
-			inline Mat2d& operator+=(const Mat2d& rhs)
+			Mat2d& operator+=(const Mat2d& rhs)
 			{
 				m[0] += rhs.m[0];
 				m[1] += rhs.m[1];
@@ -89,7 +89,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat2d& operator-=(const Mat2d& rhs)
+			Mat2d& operator-=(const Mat2d& rhs)
 			{
 				m[0] -= rhs.m[0];
 				m[1] -= rhs.m[1];
@@ -97,7 +97,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat2d& operator*=(const value_type c)
+			Mat2d& operator*=(const value_type c)
 			{
 				m[0] *= c;
 				m[1] *= c;
@@ -105,7 +105,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat2d& operator*=(const Mat2d& rhs)
+			Mat2d& operator*=(const Mat2d& rhs)
 			{
 				T x = m[0][0];
 				T y = m[0][1];
@@ -121,7 +121,7 @@ namespace Gargantua
 			}
 
 
-			inline Mat2d& operator/=(const value_type c)
+			Mat2d& operator/=(const value_type c)
 			{
 				m[0] /= c;
 				m[1] /= c;
@@ -131,13 +131,13 @@ namespace Gargantua
 		
 
 
-			inline void Zero()
+			void Zero()
 			{
 				m[0].Zero();
 				m[1].Zero();
 			}
 
-			inline void Identity()
+			void Identity()
 			{
 				m[0].x = value_type{ 1 };
 				m[0].y = value_type{ 0 };
@@ -159,6 +159,17 @@ namespace Gargantua
 				value_type d = Determinant();
 				return Mat2d{ m[1][1] / d, -m[0][1] / d,
 							-m[1][0] / d,  m[0][0] / d};
+			}
+
+
+			const value_type* GetAddress() const
+			{
+				return &(m[0].x);
+			}
+
+			value_type* GetAddress()
+			{
+				return &(m[0].x);
 			}
 
 
