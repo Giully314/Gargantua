@@ -18,6 +18,10 @@ USAGE:
 	std::string shader_src = ResourceSystem::ReadFile("shader.vert");
 */
 
+
+#include "Gargantua/Renderer/Texture2d.hpp"
+
+
 #include <string>
 #include <string_view>
 
@@ -28,6 +32,8 @@ namespace Gargantua
 		struct ResourceSystem
 		{
 			static std::string ReadFile(std::string_view file_path);
+
+			static SharedRes<Renderer::Texture2d> LoadSharedTexture2d(std::string_view file_path);
 		};
 	} //namespace Systems
 } //namespace Gargantua

@@ -3,6 +3,8 @@ Gargantua/Systems/ResourceSystem.cpp
 */
 #include "ResourceSystem.hpp"
 
+#include "Gargantua/Types.hpp"
+
 #include "Gargantua/Core/EngineLogger.hpp"
 
 #include <string>
@@ -24,6 +26,17 @@ namespace Gargantua
 				return buffer.str();
 			}
 			return {};
+		}
+
+
+
+		SharedRes<Renderer::Texture2d> ResourceSystem::LoadSharedTexture2d(std::string_view file_path)
+		{
+			auto tx = CreateSharedRes<Renderer::Texture2d>();
+			tx->Create();
+			tx->Load(file_path);
+
+			return tx;
 		}
 	} //namespace Systems
 } //namespace Gargantua
