@@ -2,16 +2,25 @@
 /*
 Gargantua/Time/Stopwatch.hpp
 
-PURPOSE: Get the time between 2 moments.
+PURPOSE: Measure time.
+
 
 CLASSES:
-	Stopwatch: Measure time.
+	Stopwatch: Get the time between 2 ticks.
+
 
 DESCRIPTION:
 	Measure the elapsed time between 2 calls of Tick.
 
-USAGE:
 
+USAGE:
+	Stopwatch s;
+
+	TimeStep ts1 = s.Tick();
+	
+	...
+	
+	TimeStep ts2 = s.Tick();
 */
 
 
@@ -27,7 +36,7 @@ namespace Gargantua
 		class Stopwatch
 		{
 		public:
-			inline TimeStep Tick()
+			TimeStep Tick()
 			{
 				auto temp = std::chrono::steady_clock::now();
 				TimeStep ts{ std::chrono::duration<real64_t>(temp - s) };
