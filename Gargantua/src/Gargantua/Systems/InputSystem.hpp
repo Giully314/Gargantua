@@ -22,6 +22,8 @@ DESCRIPTION:
 
 #include "Gargantua/Event/EventListenerManager.hpp"
 
+#include "Gargantua/Systems/EventSystem.hpp"
+
 #include "Gargantua/Math/Vec2d.hpp"
 
 
@@ -34,16 +36,23 @@ namespace Gargantua
 		public:
 			InputSystem();
 
-			void ListenToEvents(NonOwnedRes<Event::EventListenerManager>);
+			void ListenAndRegisterEvents(SharedRes<Systems::EventSystem> event_sys);
 			
-			inline static bool IsPressed(key_t key) noexcept
+			static bool IsPressed(key_t key) noexcept
 			{
 				return keyboard->GetKey(key);
 			}
 
-			inline static Math::Vec2df MouseCoords() noexcept
+			static Math::Vec2df MouseCoords() noexcept
 			{
 				return Math::Vec2df{ mouse->GetX(), mouse->GetY() };
+			}
+
+
+			static void ResetState()
+			{
+				keyboard->ResetState();
+				mouse->ResetState();
 			}
 			
 

@@ -47,8 +47,9 @@ TODO:
 #include "Gargantua/Renderer/ElementBuffer.hpp"
 #include "Gargantua/Renderer/OrthoCamera.hpp"
 #include "Gargantua/Renderer/FrameBuffer.hpp"
+#include "Gargantua/Renderer/RendererCommand.hpp"
 
-#include "Gargantua/Event/EventListenerManager.hpp"
+#include "Gargantua/Systems/EventSystem.hpp"
 
 #include <unordered_map>
 #include <string>
@@ -104,7 +105,7 @@ namespace Gargantua
 			void EndScene();
 
 
-			void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng);
+			void ListenAndRegisterEvents(SharedRes<Systems::EventSystem> event_sys);
 
 
 			void DrawQuad(const Math::Vec2df& position, const Math::Vec2df& size, 
@@ -142,18 +143,18 @@ namespace Gargantua
 
 
 
-			inline void SetCameraMatrix(Math::Mat4df camera_matrix)
+			void SetCameraMatrix(Math::Mat4df camera_matrix)
 			{
 				data.proj_view = std::move(camera_matrix);
 			}
 
 
-			inline void SetProgram(SharedRes<Renderer::Program> program)
+			void SetProgram(SharedRes<Renderer::Program> program)
 			{
 				data.program = std::move(program);
 			}
 
-			inline void SetFBProgram(SharedRes<Renderer::Program> program)
+			void SetFBProgram(SharedRes<Renderer::Program> program)
 			{
 				data.fb_program = std::move(program);
 			}
@@ -162,15 +163,21 @@ namespace Gargantua
 			Responsability of the caller to pass a valid type name.
 			type name could be: "camera", "transform".
 			*/
-			inline void SetUniform(const std::string& type, const std::string& uniform_name)
+			void SetUniform(const std::string& type, const std::string& uniform_name)
 			{
 				data.uniforms[type] = uniform_name;
 			}
 
 
-			inline const Renderer::FrameBuffer& GetFrameBuffer() const 
+			const Renderer::FrameBuffer& GetFrameBuffer() const 
 			{
 				return *data.fb;
+			}
+
+			void ResizeFrameBuffer(natural_t width, natural_t height)
+			{
+				data.fb->Resize(width, height);
+				Renderer::RendererCommand::SetViewport(0, 0, width, height);
 			}
 
 		private:

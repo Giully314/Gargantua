@@ -20,21 +20,19 @@ TODO: Add the possilibity to register a blocking event or make another class to 
 
 #include "Gargantua/Core/EngineLogger.hpp"
 
-#include "Gargantua/Event/BaseEvent.hpp"
 #include "Gargantua/Types.hpp"
+
 #include "Gargantua/Concepts/Event.hpp"
+
+#include "Gargantua/Event/BaseEvent.hpp"
 #include "Gargantua/Event/EventListenerHandler.hpp"
 #include "Gargantua/Event/EventRegisterHandler.hpp"
 #include "Gargantua/Event/EventRegisterManager.hpp"
 #include "Gargantua/Event/EventListenerManager.hpp"
 
 
-#include <queue>
-#include <unordered_map>
 #include <functional>
-#include <vector>
-#include <algorithm>
-#include <ranges>
+#include <utility>
 
 
 namespace Gargantua
@@ -49,25 +47,47 @@ namespace Gargantua
 		public:
 			EventSystem();
 
-			inline NonOwnedRes<Event::EventRegisterManager> GetEventRegisterManager() 
-			{ 
-				return event_reg_mng.get();
-			}
 
-			inline NonOwnedRes<Event::EventListenerManager> GetEventListenerManager()
+			void BlockInputEvents(bool block)
 			{
-				return event_list_mng.get();
+				block_input_events = block;
 			}
 
 			void ProcessEvents();
 			
 
+			template <Concepts::Event T, typename ...Args>
+			void RegisterEvent(Args&& ...args)
+			{
+				event_reg_mng->RegisterEvent<T, Args...>(std::forward<Args>(args)...);
+			}
+
+
+			template <Concepts::Event T>
+			natural_t RegisterListener(event_callback_t f)
+			{
+				return event_list_mng->RegisterListener<T>(std::move(f));
+			}
+
+			template <Concepts::Event T>
+			void UnregisterListener(natural_t id)
+			{
+				event_list_mng->UnregisterListener(id);
+			}
+
+
 		private:
-			UniqueRes<Event::EventRegisterManager> event_reg_mng;
-			UniqueRes<Event::EventListenerManager> event_list_mng;
-			
-			UniqueRes<Event::EventRegisterHandler> event_reg_hdl;
-			UniqueRes<Event::EventListenerHandler> event_list_hdl;
+			SharedRes<Event::EventRegisterManager> event_reg_mng;
+			SharedRes<Event::EventListenerManager> event_list_mng;
+
+			SharedRes<Event::EventRegisterHandler> event_reg_hdl;
+			SharedRes<Event::EventListenerHandler> event_list_hdl;
+
+			/*
+			For example, if the panel in which the app is running is not in focus, block the process of input events 
+			(like key pressed and mouse events) even though they are registered by the backend.
+			*/
+			bool block_input_events;
 		};
 	} //namespace Systems
 } //namespace Gargantua

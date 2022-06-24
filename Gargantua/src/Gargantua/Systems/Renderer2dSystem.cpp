@@ -3,7 +3,6 @@ Gargantua/Systems/Renderer2dSystem.cpp
 */
 #include "Renderer2dSystem.hpp"
 
-#include "Gargantua/Renderer/RendererCommand.hpp"
 #include "Gargantua/Renderer/VertexBuffer.hpp"
 #include "Gargantua/Renderer/ElementBuffer.hpp"
 #include "Gargantua/Renderer/Utility.hpp"
@@ -138,9 +137,10 @@ namespace Gargantua
 		}
 
 
-		void Renderer2dSystem::ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng)
+		void Renderer2dSystem::ListenAndRegisterEvents(SharedRes<Systems::EventSystem> event_sys)
 		{
-			event_list_mng->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
+			//The frame buffer is not linked to the window anymore; it is linked to the imgui panel.
+			event_sys->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
 				{
 					const auto& wre = static_cast<const Event::WindowResizeEvent&>(e);
 					Renderer::RendererCommand::SetViewport(0, 0, wre.new_width, wre.new_height);
