@@ -17,6 +17,7 @@ project "Sandbox"
 		"%{wks.location}/Gargantua/test",
 		"%{wks.location}/Gargantua/vendor/imgui",
 		"%{wks.location}/Gargantua/vendor/Glad/include",
+		"%{wks.location}/GargantuaEditor/src",
 	}
 
 	links {"Gargantua"}
