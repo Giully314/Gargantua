@@ -33,32 +33,31 @@ namespace Gargantua
 		{
 		public:
 			OrthoCameraController() = default;
-			OrthoCameraController(NonOwnedRes<OrthoCamera> camera_);
 
 
 			void Update(const Time::TimeStep& ts);
 
 
-			inline void SetCamera(SharedRes<OrthoCamera> camera)
+			void SetCamera(SharedRes<OrthoCamera> camera)
 			{
 				this->camera = camera;
 			}
 
 
-			inline OrthoCamera& GetCamera() const noexcept
+			OrthoCamera& GetCamera() const noexcept
 			{
 				return *camera;
 			}
 
 
-			inline void CreateCamera(real_t aspect_ratio)
+			void CreateCamera(real_t aspect_ratio)
 			{
 				this->aspect_ratio = aspect_ratio;
 				camera = CreateSharedRes<OrthoCamera>(-aspect_ratio * zoom_level, 
 					-zoom_level, aspect_ratio * zoom_level, zoom_level);
 			}
 
-			inline void ZoomLevelOffset(real_t offset)
+			void ZoomLevelOffset(real_t offset)
 			{
 				zoom_level -= offset * 0.25f;
 				zoom_level = std::max(zoom_level, 0.5f);

@@ -37,32 +37,32 @@ namespace Gargantua
 			OrthoCamera(real_t l, real_t b, real_t r, real_t t);
 
 
-			inline void SetPosition(Math::Vec3df new_position)
+			void SetPosition(Math::Vec3df new_position)
 			{
 				position = std::move(new_position);
 				UpdateCameraMatrix();
 			}
 
 
-			inline const Math::Vec3df& GetPosition() const noexcept
+			const Math::Vec3df& GetPosition() const noexcept
 			{
 				return position;
 			}
 
 
-			inline void SetRotation(real_t new_rotation)
+			void SetRotation(real_t new_rotation)
 			{
 				rotation = new_rotation;
 				UpdateCameraMatrix();
 			}
 
-			inline real_t GetRotation() const noexcept
+			real_t GetRotation() const noexcept
 			{
 				return rotation;
 			}
 
 
-			inline void SetPositionAndRotation(Math::Vec3df new_position, real_t new_rotation)
+			void SetPositionAndRotation(Math::Vec3df new_position, real_t new_rotation)
 			{
 				position = std::move(new_position);
 				rotation = new_rotation;
@@ -70,14 +70,14 @@ namespace Gargantua
 			}
 
 
-			inline const Math::Mat4df& GetProjectionView() const noexcept
+			const Math::Mat4df& GetProjectionView() const noexcept
 			{
 				return proj_view;
 			}
 
 
 
-			inline void SetProjection(real_t l, real_t b, real_t r, real_t t)
+			void SetProjection(real_t l, real_t b, real_t r, real_t t)
 			{
 				projection = Math::Projection::Orthographic(l, b, r, t);
 				UpdateCameraMatrix();

@@ -12,14 +12,6 @@ namespace Gargantua
 {
 	namespace Renderer
 	{
-		
-		OrthoCameraController::OrthoCameraController(NonOwnedRes<OrthoCamera> camera_) : camera(camera_),
-			position(), rotation(0.0f), velocity(0.1f), angular_velocity(0.1f)
-		{
-
-		}
-
-
 		void OrthoCameraController::Update(const Time::TimeStep& ts)
 		{
 			const real_t time = (real_t)ts.GetInSec();
