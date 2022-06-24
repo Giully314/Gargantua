@@ -30,8 +30,9 @@ namespace Gargantua
 
 		void FrameBuffer::Resize(natural_t width, natural_t height)
 		{
-			buffer.Destroy();
-			buffer.Empty(width, height);
+			Destroy(); //destroy frame buffer and the attached texture
+			Create(); //create a new frame buffer
+			Initialize(width, height);
 		}
 	} //namespace Renderer
 } //namespace Gargantua
