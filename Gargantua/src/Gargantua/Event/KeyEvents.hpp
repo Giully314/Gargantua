@@ -24,7 +24,7 @@ namespace Gargantua
 	{
 		struct KeyEvent : public BaseEvent
 		{
-			KeyEvent(key_t key_code_) : key_code(key_code_)
+			KeyEvent(key_t key_code_) : BaseEvent(StaticEventType::KeyboardEvent), key_code(key_code_)
 			{
 
 			}

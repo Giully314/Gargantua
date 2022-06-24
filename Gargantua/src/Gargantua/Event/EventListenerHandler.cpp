@@ -8,7 +8,7 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		EventListenerHandler::EventListenerHandler(NonOwnedRes<EventListenerManager> event_list_sys) :
+		EventListenerHandler::EventListenerHandler(SharedRes<EventListenerManager> event_list_sys) :
 			hdl(event_list_sys)
 		{
 

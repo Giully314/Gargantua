@@ -26,7 +26,16 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		struct MouseCursorEvent : public BaseEvent
+		struct MouseEvent : public BaseEvent
+		{
+			MouseEvent() : BaseEvent(StaticEventType::MouseEvent) { }
+
+			EVENT_NAME;
+			GET_EVENT_NAME
+		};
+
+
+		struct MouseCursorEvent : public MouseEvent
 		{
 			MouseCursorEvent(real_t x_, real_t y_) : x(x_), y(y_)
 			{
@@ -42,7 +51,7 @@ namespace Gargantua
 		};
 
 
-		struct MouseButtonEvent : public BaseEvent
+		struct MouseButtonEvent : public MouseEvent
 		{
 			MouseButtonEvent(mouse_t button_) : button(button_)
 			{
@@ -80,7 +89,7 @@ namespace Gargantua
 
 
 
-		struct MouseWheelScrollEvent : public BaseEvent
+		struct MouseWheelScrollEvent : public MouseEvent
 		{
 			MouseWheelScrollEvent(real_t y_offset_) : y_offset(y_offset_)
 			{

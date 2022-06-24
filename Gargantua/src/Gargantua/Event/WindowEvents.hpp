@@ -5,6 +5,7 @@ Gargantua/Event/WindowEvents.hpp
 PURPOSE: Window events.
 
 CLASSES:
+	WindowEvent: base event struct for window. Specify the static type of the event.
 	WindowResizeEvent: New window sizes information.
 	WindowCloseEvent: Window close signal.
 
@@ -26,9 +27,18 @@ namespace Gargantua
 {
 	namespace Event
 	{
-		struct WindowResizeEvent : public BaseEvent
+		struct WindowEvent : public BaseEvent
 		{
-			WindowResizeEvent(natural_t new_width_, natural_t new_height_) :
+			WindowEvent() : BaseEvent(StaticEventType::WindowEvent) { }
+
+			EVENT_NAME;
+			GET_EVENT_NAME
+		};
+
+
+		struct WindowResizeEvent : public WindowEvent
+		{
+			WindowResizeEvent(natural_t new_width_, natural_t new_height_) : 
 				new_width(new_width_), new_height(new_height_)
 			{
 
@@ -42,7 +52,7 @@ namespace Gargantua
 		};
 
 
-		struct WindowCloseEvent : public BaseEvent
+		struct WindowCloseEvent : public WindowEvent
 		{
 			WindowCloseEvent(bool is_closed_) : is_closed(is_closed_)
 			{

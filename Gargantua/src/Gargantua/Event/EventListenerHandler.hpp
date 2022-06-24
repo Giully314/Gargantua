@@ -35,7 +35,7 @@ namespace Gargantua
 		class EventListenerHandler
 		{
 		public:
-			EventListenerHandler(NonOwnedRes<EventListenerManager>);
+			EventListenerHandler(SharedRes<EventListenerManager>);
 
 
 			auto GetEventListeners(const event_name_t& event_name)
@@ -49,15 +49,15 @@ namespace Gargantua
 			}
 
 
-			inline NonOwnedRes<EventListenerManager> GetEventListenerSystem() { return hdl; }
+			SharedRes<EventListenerManager> GetEventListenerSystem() { return hdl; }
 			
-			inline void SetEventListenerSystem(NonOwnedRes<EventListenerManager> els)
+			void SetEventListenerSystem(SharedRes<EventListenerManager> els)
 			{
 				hdl = els;
 			}
 
 		private:
-			NonOwnedRes<EventListenerManager> hdl;
+			SharedRes<EventListenerManager> hdl;
 		};
 	} //namespace Event
 } //namespace Gargantua

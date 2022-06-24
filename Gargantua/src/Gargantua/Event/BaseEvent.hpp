@@ -5,6 +5,7 @@ Gargantua/Event/BaseEvent.hpp
 PURPOSE: abstract class for an event.
 
 CLASSES:
+	StaticEventType: enum for the static category of an event.
 	BaseEvent: base abstract class for every event defined.
 
 DESCRIPTION:
@@ -38,7 +39,20 @@ TODO:
 namespace Gargantua
 {
 	namespace Event
-	{
+	{	
+		/*
+		This static type is used to dispatch event in the ProcessEvent function inside the EventSystem.
+		The engine can block the process of one or more type of events.
+		*/
+		enum class StaticEventType : byte_t
+		{
+			UnknownEvent = 0,
+			WindowEvent,
+			KeyboardEvent,
+			MouseEvent,
+			ImGuiEvent,
+		};
+
 	
 		struct BaseEvent
 		{
@@ -47,12 +61,17 @@ namespace Gargantua
 
 			BaseEvent() = default;
 
+			BaseEvent(StaticEventType type) : static_type(type) { }
+
 			BaseEvent(BaseEvent&&) noexcept = default;
 			BaseEvent& operator=(BaseEvent&&) noexcept = default;
 
 			virtual ~BaseEvent();
 
 			virtual const event_name_t& GetEventName() const noexcept { return EventName; }
+
+
+			StaticEventType static_type = StaticEventType::UnknownEvent;
 		};
 
 #define EVENT_NAME static const event_name_t EventName

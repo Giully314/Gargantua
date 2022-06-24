@@ -31,30 +31,30 @@ namespace Gargantua
 		class EventRegisterHandler
 		{
 		public:
-			EventRegisterHandler(NonOwnedRes<EventRegisterManager>);
+			EventRegisterHandler(SharedRes<EventRegisterManager>);
 
 			//TODO: maybe is better to return a std::optional?
 			UniqueRes<BaseEvent> ExtractEvent();
 
-			inline NonOwnedRes<EventRegisterManager> GetEventRegisterSystem() { return hdl; }
+			SharedRes<EventRegisterManager> GetEventRegisterSystem() { return hdl; }
 
-			inline void SetEventRegisterSystem(NonOwnedRes<EventRegisterManager> ers)
+			void SetEventRegisterSystem(SharedRes<EventRegisterManager> ers)
 			{
 				hdl = ers;
 			}
 
-			inline auto GetViewOfEvents()
+			auto GetViewOfEvents()
 			{
 				return hdl->event_queue | std::views::all;
 			}
 
-			inline void ClearEventQueue()
+			void ClearEventQueue()
 			{
 				hdl->event_queue.clear();
 			}
 
 		private:
-			NonOwnedRes<EventRegisterManager> hdl;
+			SharedRes<EventRegisterManager> hdl;
 		};
 	} //namespace Event
 } //namespace Gargantua
