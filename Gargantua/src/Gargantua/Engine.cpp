@@ -15,6 +15,7 @@ OVERVIEW:
 #include "Gargantua/Event/BaseEvent.hpp"
 #include "Gargantua/Event/WindowEvents.hpp"
 
+
 namespace Gargantua
 {
 	Engine::Engine(std::function<Core::Application* (void)> create_app) : Engine(std::move(create_app), 1080, 720)
@@ -27,31 +28,30 @@ namespace Gargantua
 		engine_logger = CreateUniqueRes<Core::EngineLogger>();
 
 		window = CreateSharedRes<Core::Window>("GargantuaEngine", width, height);
+		
+		/*
+		The vsync should be used in combo with the time system to coordinate the 2 concepts.
+		*/
+		window->SetVSync(false);
 
-		stopwatch = CreateUniqueRes<Time::Stopwatch>();
 
 		//Creation of the systems.
 		engine_event_sys = CreateSharedRes<Systems::EventSystem>();
 		app_event_sys = CreateSharedRes<Systems::EventSystem>();
 		input_sys = CreateSharedRes<Systems::InputSystem>();
-		renderer_sys = CreateSharedRes<Systems::RendererSystem>(width, height);
 		renderer2d_sys = CreateSharedRes<Systems::Renderer2dSystem>(width, height);
 		shader_sys = CreateSharedRes<Systems::ShaderSystem>();
 		ecs_sys = CreateSharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>>();
+		time_sys = CreateSharedRes<Systems::TimeSystem>();
+
 
 
 		//Register components to the engine event systems.
-		auto event_list_mng = engine_event_sys->GetEventListenerManager();
-		auto event_reg_mng = engine_event_sys->GetEventRegisterManager();
+		window->ListenAndRegisterEvents(engine_event_sys);
 
-		window->ListenToEvents(event_list_mng);
-		window->RegisterEvents(event_reg_mng);
+		input_sys->ListenAndRegisterEvents(engine_event_sys);
 
-		input_sys->ListenToEvents(event_list_mng);
-
-		renderer_sys->ListenToEvents(event_list_mng);
-
-		event_list_mng->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
+		engine_event_sys->RegisterListener<Event::WindowCloseEvent>([this](const Event::BaseEvent& e)
 			{
 				const auto& we = static_cast<const Event::WindowCloseEvent&>(e);
 				should_close = we.is_closed;
@@ -67,10 +67,10 @@ namespace Gargantua
 		auto& systems = app->GetEngineSystems();
 		systems.engine_event_sys = engine_event_sys;
 		systems.app_event_sys = app_event_sys;
-		systems.renderer_sys = renderer_sys;
 		systems.renderer2d_sys = renderer2d_sys;
 		systems.shader_sys = shader_sys;
 		systems.ecs_sys = ecs_sys;
+		systems.time_sys = time_sys;
 	}
 
 
@@ -98,39 +98,34 @@ namespace Gargantua
 	{
 		GRG_CORE_INFO("Start of the Run method");
 		app->Start();
-		stopwatch->Tick();
 
-		real64_t t = 0.0;
-		const real64_t frame_per_sec = 20;
-		const real64_t single_frame = 1.0 / frame_per_sec;
+
+		time_sys->SetUpdatePerSecond(60.0);
 
 		while (!should_close)
 		{
-			Time::TimeStep ts = stopwatch->Tick();
-			//GRG_CORE_DEBUG("Time elapsed: {}", ts.GetInMilliSec());
-			t += ts.GetInMilliSec();
 
-			if (t >= single_frame)
+			time_sys->ComputeFrameTime();
+			const Systems::TimeInfo& info = time_sys->GetInfo();
+			
+			//Update the logic with a fixed time step.
+			do
 			{
-				t -= single_frame;
-				
+				time_sys->Tick();
 				engine_event_sys->ProcessEvents();
 				app_event_sys->ProcessEvents();
+				app->Execute(info.ts);
+			} while (info.valid);
 
 
-				app->Execute(ts);
+			//Render the scene.
 
-				//Lazy renderer and physics
-				//physics_sys.UpdateState();
-				//renderer_sys->RenderFrame();
+			gui_stage->Start();
+			app->RenderGUI();
+			gui_stage->End();
 
-
-				gui_stage->Start();
-				app->RenderGUI();
-				gui_stage->End();
-
-				window->Update();
-			}
+			window->Update();
+			
 		}	
 
 		app->Shutdown();

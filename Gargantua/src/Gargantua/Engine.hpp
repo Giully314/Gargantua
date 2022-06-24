@@ -14,6 +14,11 @@ DESCRIPTION:
 	Entry point of the engine.
 	Controls the initialization of every system and component.
 	Provide the game loop.
+
+
+TODO:
+	clean up the code (expecially in the constructor). Too much code in a single function, bad readability.
+
 */
 
 #include "Gargantua/Types.hpp"
@@ -30,10 +35,10 @@ DESCRIPTION:
 
 #include "Gargantua/Systems/EventSystem.hpp"
 #include "Gargantua/Systems/InputSystem.hpp"
-#include "Gargantua/Systems/RendererSystem.hpp"
 #include "Gargantua/Systems/Renderer2dSystem.hpp"
 #include "Gargantua/Systems/ShaderSystem.hpp"
 #include "Gargantua/Systems/ECSSystem.hpp"
+#include "Gargantua/Systems/TimeSystem.hpp"
 
 
 #include <functional>
@@ -51,9 +56,9 @@ namespace Gargantua
 		~Engine();
 
 
-		inline NonOwnedRes<Core::Window> GetWindow() const noexcept 
+		SharedRes<Core::Window> GetWindow() const noexcept 
 		{
-			return window.get();
+			return window;
 		}
 
 
@@ -68,15 +73,15 @@ namespace Gargantua
 		UniqueRes<Core::EngineLogger> engine_logger;
 		SharedRes<Core::Window> window;
 		
-		UniqueRes<Time::Stopwatch> stopwatch;
 
+		//Use the EngineSystems struct?
 		SharedRes<Systems::EventSystem> engine_event_sys;
 		SharedRes<Systems::EventSystem> app_event_sys;
 		SharedRes<Systems::InputSystem> input_sys;
-		SharedRes<Systems::RendererSystem> renderer_sys;
 		SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 		SharedRes<Systems::ShaderSystem> shader_sys;
 		SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
+		SharedRes<Systems::TimeSystem> time_sys;
 
 		//SharedRes<Core::Scene2d> scene2d;
 
