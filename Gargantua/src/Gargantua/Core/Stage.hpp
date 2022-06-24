@@ -37,8 +37,7 @@ TODO:
 
 #include "Gargantua/Time/TimeStep.hpp"
 
-#include "Gargantua/Event/EventRegisterManager.hpp"
-#include "Gargantua/Event/EventListenerManager.hpp"
+#include "Gargantua/Systems/EventSystem.hpp"
 
 #include <string>
 
@@ -83,19 +82,13 @@ namespace Gargantua
 			virtual void RenderGUI() = 0;
 
 
-			virtual void RegisterEvents(NonOwnedRes<Event::EventRegisterManager> event_reg_mng)
+			virtual void ListenAndRegisterEvents(SharedRes<Systems::EventSystem> event_sys)
 			{
 
 			}
 
 
-			virtual void ListenToEvents(NonOwnedRes<Event::EventListenerManager> event_list_mng)
-			{
-
-			}
-
-
-			inline std::string_view GetName() const noexcept { return stage_name; }
+			std::string_view GetName() const noexcept { return stage_name; }
 
 		protected:
 			const std::string stage_name{"DefaultStageName"};

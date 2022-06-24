@@ -20,11 +20,19 @@ USAGE:
 		void Start() override
 		{
 			pipeline.AddStage<MyStage>();
+			
+			...
+
+
+			pipeline.Start();
 		}
 
 
 		void Shutdown() override
 		{
+			...
+
+			pipeline.End();
 		}
 	}
 
