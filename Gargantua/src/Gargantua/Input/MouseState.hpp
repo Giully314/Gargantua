@@ -34,20 +34,29 @@ namespace Gargantua
 			}
 
 
-			inline bool GetButton(mouse_t button) const { return buttons[button]; }
-			inline void SetButton(mouse_t button, bool value) { buttons[button] = value; }
+			bool GetButton(mouse_t button) const { return buttons[button]; }
+			void SetButton(mouse_t button, bool value) { buttons[button] = value; }
 
-			inline real_t GetX() const noexcept { return x; }
-			inline real_t GetY() const noexcept { return y; }
+			real_t GetX() const noexcept { return x; }
+			real_t GetY() const noexcept { return y; }
 
-			inline void SetX(real_t x) { this->x = x; }
-			inline void SetY(real_t y) { this->y = y; }
+			void SetX(real_t x) { this->x = x; }
+			void SetY(real_t y) { this->y = y; }
 
-			inline void SetCoords(real_t x, real_t y)
+			void SetCoords(real_t x, real_t y)
 			{
 				this->x = x;
 				this->y = y;
 			}
+
+
+			void ResetState()
+			{
+				x = 0.0f;
+				y = 0.0f;
+				buttons.fill(false);
+			}
+
 
 		private:
 			real_t x;
