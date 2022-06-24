@@ -5,6 +5,8 @@ Gargantua/Types.hpp
 PURPOSE: Define uniform types  to use across the engine.
 */
 
+#include <glad/glad.h>
+
 
 #include <cstdint>
 #include <memory>
@@ -37,10 +39,11 @@ namespace Gargantua
 	//**********************************
 
 
-	/*
-	Note on pointers: Resource should be handled only by these 3 types.
-	"raw pointers" are accepted only with resource that are not handled by an object. (like references)
-	*/
+	//************ RENDERER ************
+	using render_id_t = GLuint;
+	//**********************************
+
+
 
 	//Unique resource owned.
 	template <typename T>
@@ -63,18 +66,6 @@ namespace Gargantua
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
 
-
-	//I don't know if this could be useful inside the engine.
-	template <typename T>
-	using WeakRes = std::weak_ptr<T>;
-
-
-	//A simple pointer to a resource. The object using this MUST not perform construction or destruction
-	//associated to this pointer.
-	//Another case of usage is for passing a UniqueRes or a SharedRes. The interface of a function
-	//could just take a NonOwnedRes and the user can pass a UniqueRes or a SharedRes.
-	template <typename T>
-	using NonOwnedRes = T*;
 
 
 	//Inherite private from this class to disable copy (and get errors at compile time).
