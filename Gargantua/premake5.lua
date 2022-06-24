@@ -20,7 +20,7 @@ project "Gargantua"
 		"%{wks.location}/Gargantua/vendor/stb_image",
 	}
 
-	links {"ImGui", "Glad", "glfw", "opengl32.lib", "stb_image"}
+	links {"imgui", "Glad", "glfw", "opengl32.lib", "stb_image"}
 
 	--defines {"GRG_LOGGER_ON"}
 
