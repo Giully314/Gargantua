@@ -45,31 +45,32 @@ namespace Gargantua
 {
 	namespace ECS
 	{
-		//Really ugly, temporary solution.
-		template <Concepts::System T>
-		struct CheckSystem
+		namespace ECSPredicate
 		{
-			static constexpr bool Value = true;
-		};
+			//Really ugly, temporary solution.
+			template <Concepts::System T>
+			struct CheckSystem
+			{
+				static constexpr bool Value = true;
+			};
+		} //namespace ECSPredicate
 
 
 		template <typename TSystems>
-		requires MPL::CheckPredicateV<TSystems, CheckSystem>
+		requires MPL::CheckPredicateV<TSystems, ECSPredicate::CheckSystem>
 		class SystemManager
 		{
 		public:
-
-
 			template <Concepts::System TSystem>
 			TSystem& Get()
 			{
-				return std::get<TSystem>(components);
+				return std::get<TSystem>(systems);
 			}
 
 			template <Concepts::System TSystem>
 			const TSystem& Get() const
 			{
-				return std::get<TSystem>(components);
+				return std::get<TSystem>(systems);
 			}
 
 
@@ -98,7 +99,7 @@ namespace Gargantua
 
 		private:
 			using SystemsStorageType = MPL::RebindT<TSystems, std::tuple>;
-			SystemsStorageType components;
+			SystemsStorageType systems;
 		};
 	} //namespace ECS
 } //namespace Gargantua
