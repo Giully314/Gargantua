@@ -65,9 +65,10 @@ https://github.com/cocos-creator/engine-native
 ## Books
 Large scale C++ volume 1 by John Lakos.
 Game engine architecture by Jason Gregory.  
-Game Physics by David H. Eberly.
-Real-time collision detection by Christer Ericson.
-Mathematics for 3D Game Programming and Computer Graphics.
+Game Physics by David H. Eberly.  
+Real-time collision detection by Christer Ericson.  
+Mathematics for 3D Game Programming and Computer Graphics.  
+
 
 
 ## Conferences and articles
