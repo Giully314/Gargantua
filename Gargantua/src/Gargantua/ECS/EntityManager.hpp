@@ -45,7 +45,6 @@ USAGE:
 
 #include "Gargantua/Concepts/Generator.hpp"
 
-#include <queue>
 #include <set>
 #include <ranges>
 
@@ -67,20 +66,21 @@ namespace Gargantua
 				return id;
 			}
 
-			/*
-			If entities is not in use (is not "alive"), do nothing.
-			*/
+
+
 			void Destroy(Entity e)
 			{
-				if (auto it = entities_in_use.find(e); it != entities_in_use.end())
-				{
-					entities_in_use.erase(it);
-				}
+				entities_in_use.erase(e);
 			}
 
 
 			
-			bool InUse(Entity e) const noexcept
+			const bool InUse(Entity e) const noexcept
+			{
+				return entities_in_use.contains(e);
+			}
+
+			bool InUse(Entity e) noexcept
 			{
 				return entities_in_use.contains(e);
 			}
@@ -94,7 +94,6 @@ namespace Gargantua
 
 		private:
 			TGenerator<Entity> gen;
-			//std::queue<Entity> available_entities;
 			std::set<Entity> entities_in_use;
 		};
 	} //namespace ECS
