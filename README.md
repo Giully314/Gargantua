@@ -8,7 +8,7 @@ Run premake.
 
 
 # Project structure and directories
-##Gargantua
+## Gargantua
 Concepts: files for the definition of various concepts.  
 Core: Core components of the engine.  
 ECS: entity component system implementation.
@@ -28,7 +28,7 @@ Time: Handling time.
 Note: there are 2 types of systems, the systems in the Systems directory and the ecs systems (that start with 
 the prefix ECS). Even though the names are similar they should not be confused with each other.
 
-##GargantuaEditor
+## GargantuaEditor
 Implementation of a game editor using Gargantua.
 For now is still in hard development.
 
