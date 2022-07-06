@@ -56,6 +56,9 @@ TODO:
 
 #include "Gargantua/Generators/SequentialNumberGenerator.hpp"
 
+#include "Gargantua/Settings.hpp"
+
+
 #include <utility>
 #include <concepts>
 
@@ -64,14 +67,11 @@ namespace Gargantua
 {
 	namespace Systems
 	{
-
-		template <typename TListOfComponents, typename TListOfSystems,
-			template <class T> typename TGenerator = Generators::SequentialNumberGenerator>
 		class ECSSystem
 		{
 		public:
-			using TypeListOfComponents = TListOfComponents;
-			using TypeListOfSystems = TListOfSystems;
+			using TypeListOfComponents = ListOfComponents;
+			using TypeListOfSystems = ListOfSystems;
 
 
 
@@ -179,9 +179,9 @@ namespace Gargantua
 			//*********************************** SYSTEM MANAGER ******************************************
 
 		private:
-			ECS::EntityManager<TGenerator> entity_mng;
-			ECS::ComponentManager<TListOfComponents> component_mng;
-			ECS::SystemManager<TListOfSystems> system_mng;
+			ECS::EntityManager<EntityNumberGenerator> entity_mng;
+			ECS::ComponentManager<ListOfComponents> component_mng;
+			ECS::SystemManager<ListOfSystems> system_mng;
 		};
 	} //namespace Systems
 } //namespace Gargantua
