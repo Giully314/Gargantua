@@ -29,6 +29,25 @@ namespace Gargantua
 {
 	namespace Math
 	{
+		struct Product
+		{
+			template <typename T>
+			static T Dot(const Vec2d<T>& v1, const Vec2d<T>& v2)
+			{
+				return v1.Dot(v2);
+			}
+
+
+			template <typename T>
+			static Vec2d<T> Hadamard(const Vec2d<T>& v1, const Vec2d<T>& v2)
+			{
+				return {v1.x * v2.x, v1.y * v2.y};
+			}
+
+		};
+
+
+
 		//*********************** PROJECTION *********************************************
 		
 		struct Projection
