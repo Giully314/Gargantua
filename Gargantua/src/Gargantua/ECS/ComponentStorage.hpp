@@ -17,6 +17,7 @@ DESCRIPTION:
 	for removing a component.
 
 USAGE:
+	(Example 1)
 	ComponentStorage<PositionComponent> mng;
 	auto& pos_comp = mng.Register(entity, position_vec, rotation_vec);
 
@@ -27,9 +28,17 @@ USAGE:
 	...
 
 	mng.Unregister(entity);
+	
 
-TODO:
-	this is a temporary solution. Consider other ways to implement a component storage with pro/cons.
+	(Example 2)
+	ComponentStorage<PositionComponent> mng;
+	auto& pos_comp = mng.Register(entity, position_vec, rotation_vec);
+	
+	mng.Register(entity2, ...);
+
+	//ERROR: after the insertion of another component, consider all reference to be invalidated.
+	pos_comp.position = {1, 1} 
+
 */
 
 #include "Gargantua/Types.hpp"
@@ -149,14 +158,17 @@ namespace Gargantua
 			}
 
 
-			bool Has(Entity e) const noexcept
+			const bool Has(Entity e) const noexcept
 			{
 				return ent_to_idx.contains(e);
 			}
 
+			bool Has(Entity e) noexcept
+			{
+				return ent_to_idx.contains(e);
+			}
 
 		private:
-			//I prefer to use 2 maps for fast lookup in the Unregister function.
 			std::unordered_map<Entity, natural_t> ent_to_idx;
 			std::unordered_map<natural_t, Entity> idx_to_ent;
 

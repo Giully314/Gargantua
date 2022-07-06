@@ -32,6 +32,9 @@ USAGE:
 	mng.Unregister<SpriteComponent>(entity);
 
 
+TODO:
+	should the component manager have some method to check if the entity passed is a valid entity or just a random
+	number? or should this check be done in the ECSSystem?
 	
 */
 
@@ -40,12 +43,12 @@ USAGE:
 #include "Gargantua/ECS/Types.hpp"
 #include "Gargantua/ECS/ComponentStorage.hpp"
 
-#include "Gargantua/Core/EngineLogger.hpp"
-
 #include "Gargantua/MPL/TypeList.hpp"
 
 #include <concepts>
+
 #include <utility>
+
 #include <tuple>
 
 
@@ -99,7 +102,15 @@ namespace Gargantua
 
 			template <typename TComponent>
 				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
-			bool Has(Entity e) const
+			const bool Has(Entity e) const
+			{
+				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
+				return comp_storage.Has(e);
+			}
+
+			template <typename TComponent>
+				requires MPL::IsPresentV<TypeListOfComponents, TComponent>
+			bool Has(Entity e)
 			{
 				ComponentStorage<TComponent>& comp_storage = GetComponentStorage<TComponent>();
 				return comp_storage.Has(e);
