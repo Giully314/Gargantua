@@ -16,7 +16,6 @@ DESCRIPTION:
 */
 
 #include "Gargantua/Types.hpp"
-#include "Gargantua/Settings.hpp"
 
 #include "Gargantua/ECS/Types.hpp"
 #include "Gargantua/ECS/ComponentManager.hpp"
@@ -27,14 +26,11 @@ namespace Gargantua
 {
 	namespace Concepts
 	{
-		/*
-		I think it's really bad to define the ComponentManager in this way
-		but for now i don't have any feedback from good programmers on this so i let it for now.
-		*/
 		template <typename TSystem>
 		concept System = requires (TSystem system, ECS::Entity e, const Time::TimeStep & ts,
 			ECS::ComponentManager<void>& component_mng)
 		{
+			//typename TSystem::RequiredComponents;
 			{system.Execute(ts, component_mng)};
 			{system.Register(e)};
 			{system.Unregister(e)};
