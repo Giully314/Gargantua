@@ -8,8 +8,10 @@ Run premake.
 
 
 # Project structure and directories
+##Gargantua
 Concepts: files for the definition of various concepts.  
-Core: Core component abstractions of the engine.  
+Core: Core components of the engine.  
+ECS: entity component system implementation.
 DataStructures: Personal implementation of datastructures.  
 Event: Basic building blocks for handling events.  
 Generators: Number generators.  
@@ -18,9 +20,17 @@ Log: Basic logging system.
 Math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
 Parallel: Components for parallel code. Only prototypes and various ideas. (Not for use yet)  
 Renderer: Low level components for handling renderer objects.  
+Physics: Implementation of the newtonian mechanics.
 Streams: Input and output streams.  
-Systems: Important directory that contains the systems that allows the engine to function.  
-Time: Handling time.  
+Systems: The core systems of the engine implementing core functionalities.  
+Time: Handling time.
+
+Note: there are 2 types of systems, the systems in the Systems directory and the ecs systems (that start with 
+the prefix ECS). Even though the names are similar they should not be confused with each other.
+
+##GargantuaEditor
+Implementation of a game editor using Gargantua.
+For now is still in hard development.
 
 
 # TODO
@@ -31,8 +41,6 @@ https://trello.com/b/c2i4BD7O/gargantua
 # Language 
 The project is based on C++20.
 I wanted to use modules but they are impossible to use even in visual studio :(. Too much bugs and cryptic errors when i started the project.
-Since the beginning i was planning to use only opengl and glfw so most of the class are not abstract (for the API definition); the only platform supported is 
-Windows with opengl and glfw. 
 
 
 # Personal considerations
@@ -57,6 +65,10 @@ https://github.com/cocos-creator/engine-native
 ## Books
 Large scale C++ volume 1 by John Lakos.
 Game engine architecture by Jason Gregory.  
+Game Physics by David H. Eberly.
+Real-time collision detection by Christer Ericson.
+Mathematics for 3D Game Programming and Computer Graphics.
+
 
 ## Conferences and articles
 Input:  
@@ -91,3 +103,4 @@ Mathieu Ropert “This Videogame Programmer Used the STL and You Will Never Gues
 Graphics:
 How 3D video games do graphics: https://www.youtube.com/watch?v=bGe-d09Nc_M  
 https://github.com/ssloy/tinyrenderer   
+https://www.scratchapixel.com/
