@@ -97,53 +97,6 @@ namespace Gargantua
 		//*************************** TEXTURE 2D ********************************
 		
 
-
-		//*************************** ORTHO CAMERA ********************************
-
-		SharedRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t, real_t n, real_t f)
-		{
-			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t, n, f);
-			return cam;
-		}
-
-
-		SharedRes<OrthoCamera> Utility::CreateOrtho(real_t l, real_t b, real_t r, real_t t)
-		{
-			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
-			return cam;
-		}
-
-
-		SharedRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height)
-		{
-			real_t aspect_ratio = (real_t)width / (real_t)height;
-
-			real_t cam_value = 5.0f;
-			real_t b = -cam_value;
-			real_t t = cam_value;
-			real_t r = cam_value * aspect_ratio;
-			real_t l = -r;
-
-			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
-			return cam;
-		}
-
-
-		SharedRes<OrthoCamera> Utility::CreateOrtho(natural_t width, natural_t height, real_t cam_value)
-		{
-			real_t aspect_ratio = (real_t)width / (real_t)height;
-
-			real_t b = -cam_value;
-			real_t t = cam_value;
-			real_t r = cam_value * aspect_ratio;
-			real_t l = -r;
-
-			auto cam = CreateSharedRes<OrthoCamera>(l, b, r, t);
-			return cam;
-		}
-		//*************************** ORTHO CAMERA ********************************
-		
-
 		//*************************** SHADER AND PROGRAM ********************************
 
 		SharedRes<Shader> Utility::CreateVSH(std::string_view path)
