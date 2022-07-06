@@ -2,15 +2,7 @@
 /*
 Gargantua/ECS/Types.hpp
 
-
-PURPOSE:
-
-CLASSES:
-
-DESCRIPTION:
-
-USAGE:
-
+PURPOSE: Define types inherent to ECS.
 */
 
 #include <cstdint>
