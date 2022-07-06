@@ -23,7 +23,6 @@ DESCRIPTION:
 #include "Gargantua/Systems/ECSSystem.hpp"
 #include "Gargantua/Systems/TimeSystem.hpp"
 
-#include "Gargantua/Settings.hpp"
 
 
 namespace Gargantua
@@ -32,11 +31,14 @@ namespace Gargantua
 	{
 		struct EngineSystems
 		{
+			//TODO: are all these systems necessary from the engine side?
+			//for example the app_event_sys and ecs_sys are "useless" in the engine class.
+			//Even the renderer2d
 			SharedRes<Systems::EventSystem> engine_event_sys;
 			SharedRes<Systems::EventSystem> app_event_sys;
 			SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 			SharedRes<Systems::ShaderSystem> shader_sys;
-			SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
+			SharedRes<Systems::ECSSystem> ecs_sys;
 			SharedRes<Systems::TimeSystem> time_sys;
 		};
 	} //namespace Core 
