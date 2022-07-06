@@ -15,7 +15,24 @@ DESCRIPTION:
 
 
 USAGE: 
+	TimeSystem time_sys;
 
+	time_sys.SetUpdatePerSecond(60.0f);
+
+	while (game_loop_is_true)
+	{
+		time_sys.ComputeFrameTime();
+		const Systems::TimeInfo& info = time_sys.GetInfo();
+			
+		//Update the logic with a fixed time step.
+		do
+		{
+			time_sys.Tick();
+			engine_event_sys.ProcessEvents();
+			app_event_sys.ProcessEvents();
+			app->Execute(info.ts);
+		} while (info.valid);
+	}
 
 TODO: 
 	add the possibility to register different stopwatch or time elapsed and get noticed with an event?
@@ -48,7 +65,7 @@ namespace Gargantua
 			}
 			
 
-			//Time between 2 frames (render)
+			//Time between 2 rendered frames.
 			void ComputeFrameTime();
 
 			void Tick();
@@ -58,7 +75,6 @@ namespace Gargantua
 			{
 				return info;
 			}
-
 
 
 		private:
@@ -71,7 +87,6 @@ namespace Gargantua
 			Time::TimeStep accumulator;
 
 			TimeInfo info;
-
 		};
 	} //namespace Systems
 } //namespace Gargantua
