@@ -45,7 +45,6 @@ TODO:
 #include "Gargantua/Renderer/Program.hpp"
 #include "Gargantua/Renderer/VertexArray.hpp"
 #include "Gargantua/Renderer/ElementBuffer.hpp"
-#include "Gargantua/Renderer/OrthoCamera.hpp"
 #include "Gargantua/Renderer/FrameBuffer.hpp"
 #include "Gargantua/Renderer/RendererCommand.hpp"
 
@@ -100,7 +99,6 @@ namespace Gargantua
 			Renderer2dSystem(natural_t width, natural_t height);
 
 
-			void BeginScene(const Renderer::OrthoCamera& camera);
 			void BeginScene(const Math::Mat4df& proj_view);
 			void EndScene();
 

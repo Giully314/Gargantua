@@ -101,16 +101,6 @@ namespace Gargantua
 			data.fb_quad->AddElementBuffer(*data.fb_eb);
 		}
 
-
-		void Renderer2dSystem::BeginScene(const Renderer::OrthoCamera& camera)
-		{
-			data.fb->Bind();
-			data.proj_view = camera.GetProjectionView();
-			data.program->Bind();
-			data.program->SetUniformMatrix4f(data.uniforms["camera"], data.proj_view);
-			data.program->Unbind();
-			Renderer::RendererCommand::Clear();
-		}
 		
 
 		void Renderer2dSystem::BeginScene(const Math::Mat4df& proj_view)
