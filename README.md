@@ -11,7 +11,7 @@ Run premake.
 ## Gargantua
 Concepts: files for the definition of various concepts.  
 Core: Core components of the engine.  
-ECS: entity component system implementation.
+ECS: entity component system implementation.  
 DataStructures: Personal implementation of datastructures.  
 Event: Basic building blocks for handling events.  
 Generators: Number generators.  
@@ -20,7 +20,7 @@ Log: Basic logging system.
 Math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
 Parallel: Components for parallel code. Only prototypes and various ideas. (Not for use yet)  
 Renderer: Low level components for handling renderer objects.  
-Physics: Implementation of the newtonian mechanics.
+Physics: Implementation of the newtonian mechanics.  
 Streams: Input and output streams.  
 Systems: The core systems of the engine implementing core functionalities.  
 Time: Handling time.
