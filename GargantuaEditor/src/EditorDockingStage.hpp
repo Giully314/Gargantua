@@ -2,13 +2,13 @@
 /*
 EditorDockingStage.hpp
 
-PURPOSE:
+PURPOSE: Docking with Dead ImGui.
 
 CLASSES:
-
+	EditorDockingStage: Stage for first setup imgui and docking.
 
 DESCRIPTION:
-
+	Simple stage for setup imgui and docking for now.
 */
 
 #include <Gargantua/Types.hpp>
@@ -16,7 +16,6 @@ DESCRIPTION:
 #include <Gargantua/Core/Stage.hpp>
 
 #include <Gargantua/Time/TimeStep.hpp>
-
 
 
 

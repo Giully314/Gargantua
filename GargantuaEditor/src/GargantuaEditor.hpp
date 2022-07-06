@@ -2,13 +2,13 @@
 /*
 GargantuaEditor.hpp
 
-
-PURPOSE:
+PURPOSE: Game editor using Gargantua.
 
 CLASSES:
+	GargantuaEditor: Application for the game editor.
 
 DESCRIPTION:
-
+	Initialize all the resources for the editor and register the stages of the pipeline.
 
 */
 

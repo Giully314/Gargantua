@@ -1,5 +1,9 @@
 /*
 GargantuaEditor.cpp
+
+OVERVIEW:
+	Set the shaders to be used by the renderer2d.
+	Set the stages of the pipeline.
 */
 
 #include "GargantuaEditor.hpp"
