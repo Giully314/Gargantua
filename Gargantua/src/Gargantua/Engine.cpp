@@ -41,7 +41,7 @@ namespace Gargantua
 		input_sys = CreateSharedRes<Systems::InputSystem>();
 		renderer2d_sys = CreateSharedRes<Systems::Renderer2dSystem>(width, height);
 		shader_sys = CreateSharedRes<Systems::ShaderSystem>();
-		ecs_sys = CreateSharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>>();
+		ecs_sys = CreateSharedRes<Systems::ECSSystem>();
 		time_sys = CreateSharedRes<Systems::TimeSystem>();
 
 
@@ -97,10 +97,10 @@ namespace Gargantua
 	void Engine::Run()
 	{
 		GRG_CORE_INFO("Start of the Run method");
-		app->Start();
-
 
 		time_sys->SetUpdatePerSecond(60.0);
+
+		app->Start();
 
 		while (!should_close)
 		{

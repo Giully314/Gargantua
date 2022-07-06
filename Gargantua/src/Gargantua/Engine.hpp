@@ -22,9 +22,7 @@ TODO:
 */
 
 #include "Gargantua/Types.hpp"
-#include "Gargantua/Settings.hpp"
 
-#include "Gargantua/Time/Stopwatch.hpp"
 
 #include "Gargantua/Core/Application.hpp"
 #include "Gargantua/Core/EngineLogger.hpp"
@@ -80,7 +78,7 @@ namespace Gargantua
 		SharedRes<Systems::InputSystem> input_sys;
 		SharedRes<Systems::Renderer2dSystem> renderer2d_sys;
 		SharedRes<Systems::ShaderSystem> shader_sys;
-		SharedRes<Systems::ECSSystem<ListOfComponents, ListOfSystems>> ecs_sys;
+		SharedRes<Systems::ECSSystem> ecs_sys;
 		SharedRes<Systems::TimeSystem> time_sys;
 
 		//SharedRes<Core::Scene2d> scene2d;
