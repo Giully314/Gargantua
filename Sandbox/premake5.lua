@@ -1,15 +1,18 @@
 project "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	cppdialect "C++latest"
-	staticruntime "On"
+	cppdialect "C++20"
+	compileas "Module"
 	systemversion "latest"
 
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files {"src/**.hpp", "src/**.cpp"}
+	files {"src/**.ixx", "src/**.cpp"}
+
+
+
 
 	includedirs 
 	{
@@ -23,11 +26,20 @@ project "Sandbox"
 	links {"Gargantua"}
 
 
+	filter "files:**.cpp"
+		compileas "C++"
+
+	filter "files:**.ixx"
+		compileas "Module"
+
 	filter "configurations:Debug"
 		symbols "On"
 		runtime "Debug"
+		buildoptions "/MDd /EHsc"
 
 	filter "configurations:Release"
 		optimize "On"
 		runtime "Release"
-		--buildoptions "/MT"
+		buildoptions "/MD /EHsc"
+
+	filter { }
