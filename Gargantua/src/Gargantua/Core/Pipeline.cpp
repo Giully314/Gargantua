@@ -1,108 +1,105 @@
 /*
-Gargantua/Core/Pipeline.cpp
+gargantua/core/pipeline.cpp
 */
 
-#include "Pipeline.hpp"
+module gargantua.core.pipeline;
 
-#include <algorithm>
-#include <utility>
+import <algorithm>;
+import <utility>;
+import <string>;
 
-
-namespace Gargantua
+namespace gargantua::core
 {
-	namespace Core
+
+	auto Pipeline::AddStage(UniqueRes<Stage> stage) -> void
 	{
-
-		void Pipeline::AddStage(UniqueRes<Stage> stage)
-		{
-			auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
-				{
-					return stage->GetName() == s->GetName();
-				});
-
-
-			if (it == stages.end())
+		auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
 			{
-				stages.push_back(std::move(stage));
-			}
-		}
+				return stage->GetName() == s->GetName();
+			});
 
 
-		
-		void Pipeline::AddStageAfter(UniqueRes<Stage> stage, std::string_view stage_name)
+		if (it == stages.end()) [[likely]]
 		{
-			auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
-				{
-					return stage_name == s->GetName();
-				});
+			stages.push_back(std::move(stage));
+		}
+	}
 
-			if (it != stages.end())
+
+
+	auto Pipeline::AddStageAfter(UniqueRes<Stage> stage, std::string_view stage_name) -> void
+	{
+		auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
 			{
-				//increment the iterator because the method insert, insert the element before the iterator.
-				++it; 
+				return stage_name == s->GetName();
+			});
 
-				stages.insert(it, std::move(stage));
-			}
-		}
-
-
-		void Pipeline::AddStageBefore(UniqueRes<Stage> stage, std::string_view stage_name)
+		if (it != stages.end()) [[likely]]
 		{
-			auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
-				{
-					return stage_name == s->GetName();
-				});
+			//increment the iterator because the method insert, inserts the element before the iterator.
+			++it;
 
-			if (it != stages.end())
+			stages.insert(it, std::move(stage));
+		}
+	}
+
+
+	auto Pipeline::AddStageBefore(UniqueRes<Stage> stage, std::string_view stage_name) -> void
+	{
+		auto it = std::ranges::find_if(stages, [&](const UniqueRes<Stage>& s)
 			{
-				stages.insert(it, std::move(stage));
-			}
-		}
+				return stage_name == s->GetName();
+			});
 
-
-		void Pipeline::RemoveStage(std::string_view stage_name)
+		if (it != stages.end())
 		{
-			stages.remove_if([=](const UniqueRes<Stage>& s)
-				{
-					return s->GetName() == stage_name;
-				});
+			stages.insert(it, std::move(stage));
 		}
+	}
 
 
-		void Pipeline::Start()
-		{
-			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
-				{
-					s->Start();
-				});
-		}
+	auto Pipeline::RemoveStage(std::string_view stage_name) -> void
+	{
+		stages.remove_if([=](const UniqueRes<Stage>& s)
+			{
+				return s->GetName() == stage_name;
+			});
+	}
 
 
-		void Pipeline::End()
-		{
-			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
-				{
-					s->End();
-				});
-		}
+	auto Pipeline::Start() -> void
+	{
+		std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
+			{
+				s->Start();
+			});
+	}
 
 
-		void Pipeline::Execute(const Time::TimeStep& ts)
-		{
-			std::ranges::for_each(stages, [&](UniqueRes<Stage>& s)
-				{
-					s->Execute(ts);
-				});
-		}
+	auto Pipeline::End() -> void
+	{
+		std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
+			{
+				s->End();
+			});
+	}
 
 
-		void Pipeline::RenderGUI()
-		{
-			std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
-				{
-					s->RenderGUI();
-				});
-		}
+	auto Pipeline::Execute(const time::TimeStep& ts) -> void
+	{
+		std::ranges::for_each(stages, [&](UniqueRes<Stage>& s)
+			{
+				s->Execute(ts);
+			});
+	}
 
-	} //namespace Core
-} //namespace Gargantua
+
+	auto Pipeline::RenderGUI() -> void
+	{
+		std::ranges::for_each(stages, [](UniqueRes<Stage>& s)
+			{
+				s->RenderGUI();
+			});
+	}
+
+} //namespace gargantua::core

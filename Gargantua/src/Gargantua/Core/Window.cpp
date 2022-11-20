@@ -1,169 +1,175 @@
 /*
 Gargantua/Core/Window.cpp
 */
-#include "Window.hpp"
+
+module;
+
+#include "../vendor/Glad/include/glad/glad.h"
+#include "../vendor/glfw/include/GLFW/glfw3.h"
 
 
-namespace Gargantua
+module gargantua.core.window;
+
+import <string>;
+
+namespace gargantua::core
 {
-	namespace Core
+	Window::Window() : Window("", 1, 1)
 	{
-		Window::Window() : Window("", 1, 1)
-		{
 
+	}
+
+	Window::Window(std::string title, natural_t width, natural_t height) :
+		properties(title, width, height), window(nullptr)
+	{
+		int status = glfwInit();
+
+		if (not status) [[unlikely]]
+		{
+			//GRG_CORE_ERROR("GLFW initialization failed.");
+			throw;
 		}
 
-		Window::Window(std::string title, natural_t width, natural_t height) :
-			properties(title, width, height), window(nullptr)
-		{
-			int status = glfwInit();
 
-			if (!status)
+		//GRG_CORE_DEBUG("Creating window");
+		window = glfwCreateWindow(properties.width, properties.height, properties.title.c_str(), NULL, NULL);
+
+		if (not window) [[unlikely]]
+		{
+			throw;
+		}
+
+		glfwMakeContextCurrent(window);
+		glfwSetWindowUserPointer(window, &properties);
+
+
+		//This must be called after setting window the current context
+		if (not gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) [[unlikely]]
+		{
+			//GRG_CORE_ERROR("Failed to initialize GLAD");
+			throw;
+		}
+	}
+
+
+	Window::~Window()
+	{
+		if (window) [[likely]]
+		{
+			glfwDestroyWindow(window);
+		}
+		glfwTerminate();
+	}
+
+
+	auto Window::Update() -> void
+	{
+		/*GRG_CORE_DEBUG("Window Update. Window size {} {}", properties.width, properties.height);*/
+		glfwPollEvents();
+		glfwSwapBuffers(window);
+	}
+
+
+	auto Window::SetVSync(bool value) -> void
+	{
+		if (value)
+		{
+			glfwSwapInterval(1);
+		}
+		else
+		{
+			glfwSwapInterval(0);
+		}
+
+		properties.vsync = value;
+	}
+
+
+
+	auto Window::ListenAndRegisterEvents(SharedRes<system::EventSystem> event_sys) -> void
+	{
+		properties.event_sys = std::move(event_sys);
+		ListenToEvents();
+		RegisterEvents();
+	}
+
+
+	auto Window::ListenToEvents() -> void
+	{
+		properties.event_sys->RegisterListener<event::WindowResizeEvent>([this](const event::BaseEvent& e)
 			{
-				GRG_CORE_ERROR("GLFW initialization failed.");
-				throw;
-			}
+				const event::WindowResizeEvent& we = static_cast<const event::WindowResizeEvent&>(e);
+				properties.width = we.new_width;
+				properties.height = we.new_height;
+			});
+	}
 
-
-			GRG_CORE_DEBUG("Creating window");
-			window = glfwCreateWindow(properties.width, properties.height, properties.title.c_str(), NULL, NULL);
-
-			if (!window)
+	auto Window::RegisterEvents() -> void
+	{
+		glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height)
 			{
-				throw;
-			}
-
-			glfwMakeContextCurrent(window);
-			glfwSetWindowUserPointer(window, &properties);
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+				props.event_sys->RegisterEvent<event::WindowResizeEvent>(width, height);
+			});
 
 
-			//This must be called after setting window the current context
-			if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		glfwSetWindowCloseCallback(window, [](GLFWwindow* window)
 			{
-				GRG_CORE_ERROR("Failed to initialize GLAD");
-				throw;
-			}
-		}
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+
+				props.event_sys->RegisterEvent<event::WindowCloseEvent>(true);
+			});
 
 
-		Window::~Window()
-		{
-			if (window)
+		glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
 			{
-				glfwDestroyWindow(window);
-			}
-			glfwTerminate();
-		}
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+
+				switch (action)
+				{
+				case GLFW_PRESS:
+					props.event_sys->RegisterEvent<event::KeyPressedEvent>(key);
+					break;
+				case GLFW_RELEASE:
+					props.event_sys->RegisterEvent<event::KeyReleasedEvent>(key);
+					break;
+				case GLFW_REPEAT:
+					props.event_sys->RegisterEvent<event::KeyPressedEvent>(key);
+					break;
+				}
+			});
 
 
-		void Window::Update()
-		{
-			/*GRG_CORE_DEBUG("Window Update. Window size {} {}", properties.width, properties.height);*/
-			glfwPollEvents();
-			glfwSwapBuffers(window);
-		}
-
-
-		void Window::SetVSync(bool value)
-		{
-			if (value)
+		glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos)
 			{
-				glfwSwapInterval(1);
-			}
-			else
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+
+				props.event_sys->RegisterEvent<event::MouseCursorEvent>((float)xpos, (float)ypos);
+			});
+
+
+		glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
 			{
-				glfwSwapInterval(0);
-			}
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-			properties.vsync = value;
-		}
-
-
-
-		void Window::ListenAndRegisterEvents(SharedRes<Systems::EventSystem> event_sys)
-		{
-			properties.event_sys = std::move(event_sys);
-			ListenToEvents();
-			RegisterEvents();
-		}
-
-
-		void Window::ListenToEvents()
-		{
-			properties.event_sys->RegisterListener<Event::WindowResizeEvent>([this](const Event::BaseEvent& e)
+				switch (action)
 				{
-					const Event::WindowResizeEvent& we = static_cast<const Event::WindowResizeEvent&>(e);
-					properties.width = we.new_width;
-					properties.height = we.new_height;
-				});
-		}
-
-		void Window::RegisterEvents()
-		{
-			glfwSetWindowSizeCallback(window, [](GLFWwindow* window, int width, int height)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-					props.event_sys->RegisterEvent<Event::WindowResizeEvent>(width, height);
-				});
+				case GLFW_PRESS:
+					props.event_sys->RegisterEvent<event::MouseButtonPressedEvent>(button);
+					break;
+				case GLFW_RELEASE:
+					props.event_sys->RegisterEvent<event::MouseButtonReleasedEvent>(button);
+					break;
+				}
+			});
 
 
-			glfwSetWindowCloseCallback(window, [](GLFWwindow* window)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
+		glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
+			{
+				WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
 
-					props.event_sys->RegisterEvent<Event::WindowCloseEvent>(true);
-				});
+				props.event_sys->RegisterEvent<event::MouseWheelScrollEvent>((real_t)yoffset);
+			});
+	}
 
-
-			glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-
-					switch (action)
-					{
-					case GLFW_PRESS:
-						props.event_sys->RegisterEvent<Event::KeyPressedEvent>(key);
-						break;
-					case GLFW_RELEASE:
-						props.event_sys->RegisterEvent<Event::KeyReleasedEvent>(key);
-						break;
-					case GLFW_REPEAT:
-						props.event_sys->RegisterEvent<Event::KeyPressedEvent>(key);
-						break;
-					}
-				});
-
-
-			glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-
-					props.event_sys->RegisterEvent<Event::MouseCursorEvent>((float)xpos, (float)ypos);
-				});
-
-
-			glfwSetMouseButtonCallback(window, [](GLFWwindow* window, int button, int action, int mods)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-
-					switch (action)
-					{
-					case GLFW_PRESS:
-						props.event_sys->RegisterEvent<Event::MouseButtonPressedEvent>(button);
-						break;
-					case GLFW_RELEASE:
-						props.event_sys->RegisterEvent<Event::MouseButtonReleasedEvent>(button);
-						break;
-					}
-				});
-
-
-			glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset)
-				{
-					WindowProperties& props = *(WindowProperties*)glfwGetWindowUserPointer(window);
-
-					props.event_sys->RegisterEvent<Event::MouseWheelScrollEvent>((real_t)yoffset);
-				});
-		}
-	} //namespace Core
-} //namespace Gargantua
+} //namespace gargantua::core

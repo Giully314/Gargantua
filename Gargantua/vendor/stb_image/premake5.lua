@@ -1,7 +1,7 @@
 project "stb_image"
 	kind "StaticLib"
 	language "C"
-	staticruntime "On"
+	--staticruntime "On"
 	systemversion "latest"
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")

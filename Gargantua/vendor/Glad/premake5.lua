@@ -2,7 +2,7 @@ project "Glad"
 	kind "StaticLib"
 	language "C"
 	systemversion "latest"
-	staticruntime "On"
+	--staticruntime "On"
 
 	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")

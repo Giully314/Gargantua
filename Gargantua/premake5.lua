@@ -1,14 +1,16 @@
 project "Gargantua"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++latest"
-	staticruntime "On"
+	cppdialect "C++20"
 	systemversion "latest"
+
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
-	files {"src/**.hpp", "src/**.cpp", "test/**.hpp", "test/**.cpp"}
+	files {"src/**.ixx", "src/**.cpp"}
+
+	--technically the c++20 version specify the modules so it is not necessary to specify
 
 	--include dirs extern to project do not work. i don't know if is is a bug from visual studio or premake.
 	includedirs 
@@ -20,17 +22,27 @@ project "Gargantua"
 		"%{wks.location}/Gargantua/vendor/stb_image",
 	}
 
-	links {"imgui", "Glad", "glfw", "opengl32.lib", "stb_image"}
+	links {"STLHeaderUnit", "imgui", "Glad", "glfw", "opengl32.lib", "stb_image"}
 
-	--defines {"GRG_LOGGER_ON"}
+
+	filter "files:**.cpp"
+		compileas "C++"
+
+	filter "files:**.ixx"
+		compileas "Module"
+
 
 	filter "configurations:Debug"
-		defines "GRG_MODE_DEBUG"
-		runtime "Debug"
+		defines {"GRG_MODE_DEBUG", "GRG_LOGGER_ON"}
 		symbols "On"
+		buildoptions "/MDd /EHsc"
+		files {"test/**.ixx", "test/**.cpp"}
 
 
 	filter "configurations:Release"
 		defines "GRG_MODE_RELEASE"
-		runtime "Release"
 		optimize "On"
+		buildoptions "/MD /EHsc"
+
+	--reset filter 
+	filter { }

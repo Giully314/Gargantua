@@ -1,23 +1,21 @@
 /*
-Gargantua/Core/Application.cpp
+gargantua/core/application.cpp
 */
-#include "Application.hpp"
+
+module gargantua.core.application;
 
 
-namespace Gargantua
+namespace gargantua::core
 {
-	namespace Core
+
+	auto Application::Execute(const time::TimeStep& ts) -> void
 	{
-		void Application::Execute(const Time::TimeStep& ts)
-		{
-			pipeline.Execute(ts);
-		}
+		pipeline.Execute(ts);
+	}
 
 
-		void Application::RenderGUI()
-		{
-			pipeline.RenderGUI();
-		}
-
-	} //namespace Core
-} //namespace Gargantua
+	auto Application::RenderGUI() -> void
+	{
+		pipeline.RenderGUI();
+	}
+} //namespace gargantua::core
