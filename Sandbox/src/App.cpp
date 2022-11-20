@@ -1,15 +1,16 @@
 /*
 Sandbox/src/App.cpp
 */
-#include "App.hpp"
+
+module;
 
 #include <glad/glad.h>
 
-#include "Stages.hpp"
+module sandbox.app;
 
 
 
-namespace Sandbox
+namespace sandbox
 {
 	void App::Start() 
 	{
@@ -19,7 +20,7 @@ namespace Sandbox
 		systems.renderer2d_sys->SetProgram(program);
 		systems.renderer2d_sys->SetFBProgram(fb_program);
 
-		pipeline.AddStage<RenderTestStage>(systems);
+		pipeline.AddStage<TestStage>();
 
 		pipeline.Start();
 		//pipeline.AddStage<TestStage>(systems);
