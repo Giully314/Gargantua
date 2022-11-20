@@ -8,11 +8,10 @@ workspace "Gargantua"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
-
+include "STLHeaderUnit"
 include "Gargantua/vendor/glfw"
 include "Gargantua/vendor/Glad"
 include "Gargantua/vendor/imgui"
 include "Gargantua/vendor/stb_image"
 include "Gargantua"
-include "GargantuaEditor"
 include "Sandbox"
