@@ -17,13 +17,6 @@ TODO:
 */
 
 
-/*
-Why i define this macro here instaed of inside premake file?
-Visual studio doesn't recognize macro definition inside the properties.
-This is a known thing but who cares to fix it when you can waste people's time.
-https://developercommunity.visualstudio.com/t/vs2019-does-not-appear-to-see-the-preprocessor-def/1337568
-*/
-
 export module gargantua.system.logger_system;
 
 import gargantua.types;
@@ -41,14 +34,16 @@ namespace gargantua::system
 
 		static auto Get() -> const UniqueRes<logging::Logger<logging::ConsoleStream>>&
 		{ 
-			return logger; 
+			return console_logger;
 		} 
 
 	private:
-		static UniqueRes<logging::Logger<logging::ConsoleStream>> logger;
-		void Init();
-	};
+		static UniqueRes<logging::Logger<logging::ConsoleStream>> console_logger;
+		static UniqueRes<logging::Logger<logging::MutexConsoleStream>> mutex_console_logger;
 
+		auto InitConsoleLogger() -> void;
+		auto InitMutexConsoleLogger() -> void;
+	};
 } //namespace gargantua::system
 
 //#ifdef GRG_LOGGER_ON

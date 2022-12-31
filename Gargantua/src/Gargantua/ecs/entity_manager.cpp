@@ -2,7 +2,7 @@
 gargantua/ecs/entity_manager.cpp
 */
 
-module gargantua.ecs.entity_manager;
+module gargantua.ecs.ecs:entity_manager;
 
 
 namespace gargantua::ecs
@@ -12,36 +12,37 @@ namespace gargantua::ecs
 		//If no entity is available, create a new one.
 		if (available == 0)
 		{
-			entity_t e = CreateEntityID();
+			entity_t e = EntityManipulation::MakeEntity(g.Get(), 0);
 			entities.push_back(e);
 			return e;
 		}
 
 		//Get a recycled entity.
+		--available;
 		auto temp_next = next;
-		next = ExtractEntity(entities[next]);
-		entities[temp_next] = InsertEntity(temp_next, entities[temp_next]);
+		next = EntityManipulation::ExtractID(entities[next]);
+		entities[temp_next] = EntityManipulation::InsertIdInEntity(entities[temp_next], temp_next);
 
 		return entities[temp_next];
 	}
 
 
-	auto EntityManager::DestroyEntity(entity_t e_id) -> void
+	auto EntityManager::DestroyEntity(entity_t e) -> void
 	{
-		auto e = ExtractEntity(e_id);
+		auto id = EntityManipulation::ExtractID(e);
 		//increment the generation number 
-		++entities[e];
+		++entities[id];
 		++available;
 		
 		//if this is the first entity to be recyled the procedure is a little bit different
 		if (available == 1)
 		{
-			next = e;
+			next = id;
 		}
 		else
 		{
-			entities[e] = InsertEntity(next, entities[e]);
-			next = e;
+			entities[id] = EntityManipulation::InsertIdInEntity(entities[id], next);
+			next = id;
 		}
 	}
 } //namespace gargantua::ecs

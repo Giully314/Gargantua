@@ -1,161 +1,230 @@
 /*
 gargantua/datastructures/sparse_set.ixx
 
-PURPOSE: sparse set.
+PURPOSE: Implementation of sparse set.
 
 CLASSES: 
-	SparseSet: sparse set with double sparse map.
+	SparseSet: data structure used primarily by ecs for fast insert/delete and traverse components.
 
 DESCRIPTION:
-	This implementation uses 2 maps to keep track of index in both directions, from sparse to packed and from
-	packed to sparse. This allows to both inserting and removing O(1).
-	Traverse the packed array is fast because the memory is contigous.
-	Access a single data can be problematic in terms of cache hits because there is the level of indirection
-	from the sparse map.
+	The implementation is based on this article:
+	https://www.codeproject.com/Articles/859324/Fast-Implementations-of-Sparse-Sets-in-Cplusplus
+		
+	The implementation is done by trying to respect the syntax of STL containers.
+
+	Note that the SparseSet uses the maximum of the type as a null value to avoid double memory ref to check
+	if an element is in the set.
+
 
 USAGE:
-	SparseSet<int, PositionComponent> s;
-	s.Emplace(2, x, y);
+	SparseSet<unsigned int> s;
+	s.insert(2);
 	
 	//Fast iteration for all the packed data.
+	//Note: iterators are not preserved after insert or erase.
 	for (auto& p : s)
 	{
+		//DON'T INSERT OR REMOVE IN A RANGE-BASED LOOP OR WHILE USING ITERATORS.
 		...
 	}
 	
-	s.Remove(2);
+	s.erase(2);
 */
 
 export module gargantua.datastructures.sparse_set;
 
 import <concepts>;
+import <memory>;
 import <vector>;
-import <unordered_map>;
+import <utility>;
+import <cassert>;
+import <limits>;
 
 import gargantua.types;
 
 export namespace gargantua::datastructures
 {
-	template <std::regular TIndex, std::semiregular TData>
+	template <std::unsigned_integral T, typename TAlloc = std::allocator<T>>
 	class SparseSet
 	{
 	public:
+		using value_type = T;
+		using reference = T&;
+		using const_reference = const T&;
+
+		using iterator = std::vector<T>::iterator;
+		using const_iterator = std::vector<T>::const_iterator;
+
+		using difference_type = std::vector<T>::difference_type;
+
+		using size_type = std::vector<T>::size_type;
+
+
+	public:
+		SparseSet() = default;
+
+		SparseSet(const SparseSet&) = default;
+		SparseSet& operator=(const SparseSet&) = default;
+
+		SparseSet(SparseSet&&) noexcept = default;
+		SparseSet& operator=(SparseSet&&) noexcept = default;
+
+		~SparseSet() = default;
+
+
 		/*
-		* Emplace a data associated to an idx and return it.
-		* If the idx already has a data, return the data.
-		*
-		* Complexity: O(1). (Depends only on the complexity of construction of the component)
+		* Insert a new value if not present.
+		* Complexity: ammortized O(1). Technically the sparse set is resized if the value passed is not in the range.
 		*/
-		template <typename ...Args> 
-			requires std::constructible_from<TData, Args...>
-		auto Emplace(TIndex idx, Args&& ...args) -> TData&
+		auto insert(T value) -> void 
 		{
-			//The idx is already registered so return the data associated.
-			if (auto it = sparse_to_packed.find(idx); it != sparse_to_packed.end()) [[unlikely]]
+			if (!contains(value)) [[likely]]
 			{
-				return packed[it->second];
+				try_insert(value);
 			}
-
-			//Emplace a new element.
-			packed.emplace_back(std::forward<Args>(args)...);
-			auto i = static_cast<natural_t>(packed.size() - 1);
-
-			sparse_to_packed[idx] = i;
-			packed_to_sparse[i] = idx;
-
-			return packed.back();
 		}
 
+
 		/*
-		* Erase a data associated to the index idx.
-		* If the data is not present, return false.
-		* Note that after calling this function, all the references are invalidated.
-		*
+		* Erase the value from the set.
 		* Complexity: O(1).
 		*/
-		auto Erase(TIndex idx) -> bool
+		auto erase(T value) -> void
 		{
-			auto it_idx_to_data = sparse_to_packed.find(idx);
-
-			//The idx has no data.
-			if (it_idx_to_data == sparse_to_packed.end()) [[unlikely]]
+			if (contains(value)) [[likely]]
 			{
-				return false;
-			}
-
-			//If there is only one component, just pop_back.
-			if (packed.size() == 1) [[unlikely]]
-			{
+				packed[sparse[value]] = packed.back();
+				sparse[packed.back()] = sparse[value];
+				sparse[value] = std::numeric_limits<T>::max();
 				packed.pop_back();
-				sparse_to_packed.clear();
-				packed_to_sparse.clear();
-				return true;
 			}
-
-
-			//Retrieve info about the 2 components that must be swapped
-
-			auto it_data_to_idx = packed_to_sparse.find(it_idx_to_data->second);
-
-			auto node_last_component = packed_to_sparse.extract(static_cast<natural_t>(packed.size() - 1));
-			auto node_last_idx = sparse_to_packed.extract(node_last_component.mapped());
-
-			std::swap(packed[it_idx_to_data->second], packed[node_last_idx.mapped()]);
-			packed.pop_back();
-
-			//Update the info
-
-			node_last_component.key() = it_idx_to_data->second;
-			node_last_idx.mapped() = it_idx_to_data->second;
-
-			packed_to_sparse.erase(it_idx_to_data->second);
-			sparse_to_packed.erase(it_idx_to_data);
-
-			sparse_to_packed.insert(std::move(node_last_idx));
-			packed_to_sparse.insert(std::move(node_last_component));
-
-			return true;
 		}
+
 
 		/*
-		* Return the data associated to idx. If idx is not present, throw out_of_range.
+		* Return the value at idx in the packed array.
+		* No bounds are checked.
 		* Complexity: O(1).
 		*/
-		auto operator[](TIndex idx) -> TData&
+		[[nodiscard]]
+		auto operator[](size_type idx) const -> T
 		{
-			return packed[sparse_to_packed.at(idx)];
+			assert(idx < packed.size());
+			return packed[idx];
 		}
+
+
 
 		/*
-		* Return the data associated to idx. If idx is not present, throw out_of_range.
+		* Return the size of the packed array.
 		* Complexity: O(1).
 		*/
-		auto operator[](TIndex idx) const -> const TData&
+		[[nodiscard]]
+		auto size() -> size_type
 		{
-			return packed[sparse_to_packed.at(idx)];
+			return packed.size();
 		}
 
+
+		/*
+		* Return if the packed array is empty.
+		* Complexity: O(1).
+		*/
+		[[nodiscard]]
+		auto empty() const noexcept -> bool
+		{
+			return packed.empty();
+		}
+
+
+		/*
+		* Check if value is present in the packed array.
+		* Complexity: O(1).
+		*/
+		[[nodiscard]]
+		auto contains(T value) const -> bool
+		{
+			return value < sparse.size() && sparse[value] != std::numeric_limits<T>::max();
+		}
+
+
+		/*
+		* Reserve space for the packed array.
+		* Complexity: O(size()) if reallocation is done.
+		*/
+		auto reserve(size_type new_capacity) -> void
+		{
+			packed.reserve(new_capacity);
+		}
+
+
+		/*
+		* Return the capacity of the packed array.
+		* Complexity: O(1).
+		*/
+		[[nodiscard]]
+		auto capacity() const noexcept -> size_type
+		{
+			return packed.capacity();
+		}
+
+
+
+		/*
+		* Swap the sparse set.
+		* Complexity: O(1).
+		*/
+		auto swap(SparseSet& s) -> void
+		{
+			using std::swap;
+			swap(sparse, s.sparse);
+			swap(packed, s.packed);
+		}
+
+
+		/*
+		Shrink
+		*/
+		auto shrink_to_fit() -> void
+		{
+			sparse.shrink_to_fit();
+			packed.shrink_to_fit();
+		}
+
+		
+		/*
+		Return the index of value in the packed array. If value is not in the sparse set the behavior is undefined.
+		Complexity: O(1).
+		*/
+		[[nodiscard]]
+		auto index_of(const T value) -> difference_type
+		{
+			return sparse[value];
+		}
 
 
 		//********************* ITERATORS FOR PACKED *************************************
 		
-		auto begin() noexcept -> std::vector<TData>::iterator
+		[[nodiscard]]
+		auto begin() noexcept -> iterator
 		{
 			return packed.begin();
 		}
 
-		auto end() noexcept -> std::vector<TData>::iterator
+		[[nodiscard]]
+		auto end() noexcept -> iterator
 		{
 			return packed.end();
 		}
 
-
-		auto cbegin() const noexcept -> std::vector<TData>::const_iterator
+		[[nodiscard]]
+		auto cbegin() const noexcept -> const_iterator
 		{
 			return packed.cbegin();
 		}
 
-		auto cend() const noexcept -> std::vector<TData>::const_iterator
+		[[nodiscard]]
+		auto cend() const noexcept -> const_iterator
 		{
 			return packed.cend();
 		}
@@ -166,8 +235,30 @@ export namespace gargantua::datastructures
 
 
 	private:
-		std::unordered_map<TIndex, natural_t> sparse;
-		std::vector<TIndex> packed;
-		std::vector<TData> data;
+		using alc_traits = std::allocator_traits<TAlloc>;
+		using sparse_container_t = std::vector<typename alc_traits::pointer, typename alc_traits::template rebind_alloc<typename alc_traits::pointer>>;
+		using packed_container_t = std::vector<T, TAlloc>;
+
+		packed_container_t sparse;
+		packed_container_t packed;
+
+
+	private:
+		
+		/*
+		* TODO: temporary solution. What is the optimal way to expand the sparse set? 
+		* Or maybe it is better to use an unordered_map?
+		*/
+		auto try_insert(T value) -> void
+		{
+			if (sparse.size() <= value)
+			{
+				//TODO: check if n is greater than the maximum value representable by T.
+				auto n = (value + 1) * 2;
+				sparse.resize(n, std::numeric_limits<T>::max());
+			}
+			packed.emplace_back(value);
+			sparse[value] = static_cast<T>(packed.size()) - 1;
+		}
 	};
 } //namespace gargantua::datastructures

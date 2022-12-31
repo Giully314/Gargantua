@@ -27,9 +27,9 @@ import <condition_variable>;
 import <queue>;
 import <concepts>;
 
-namespace gargantua::datastructures
+export namespace gargantua::datastructures
 {
-	export template <std::movable T>
+	template <std::movable T>
 	class ConcurrentQueue
 	{
 	public:

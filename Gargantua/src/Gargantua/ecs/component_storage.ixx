@@ -11,15 +11,17 @@ USAGE:
 
 */
 
-export module gargantua.ecs.component_storage;
+export module gargantua.ecs.ecs:component_storage;
 
 import <concepts>;
 import <vector>;
-import <unordered_map>;
 import <utility>;
 import <memory>;
 
-import gargantua.ecs.ecs_types;
+
+import :entity;
+import gargantua.types;
+import gargantua.datastructures.sparse_set;
 
 
 export namespace gargantua::ecs
@@ -37,111 +39,151 @@ export namespace gargantua::ecs
 	* TComponent: type of the component
 	* TAlloc: allocator used by std::vector for the TComponent
 	*/
-	template <std::semiregular TComponent, typename TAlloc = std::allocator<TComponent>>
+	template <std::semiregular TComponent, typename TAllocComp = std::allocator<TComponent>, 
+		typename TAllocSet = std::allocator<entity_t>>
 	class ComponentStorage : public ComponentStorageHandler
 	{
-	public:
-		using ComponentType = TComponent;
-		using AllocatorType = TAlloc;
+	public:	
+		using iterator = std::vector<TComponent, TAllocComp>::iterator;
+		using const_iterator = std::vector<TComponent, TAllocComp>::const_iterator;
 
 
 		/*
-		* Emplace a component associated to an entity id and return it.
-		* If the entity already has a component, return the component.
 		* 
-		* Complexity: O(1). (Depends only on the complexity of construction of the component)
+		* Emplace a component for the entity e.
+		* If the entity is already in the container the behavior is undefined.
+		* Complexity: O(construction of component). For simple types is O(1).
 		*/
+
 		template <typename ...Args>
-			requires std::constructible_from<ComponentType, Args...>
-		auto Emplace(entity_t e, Args&& ...args) -> ComponentType&
+			requires std::constructible_from<TComponent, Args...> 
+		[[nodiscard]]
+		auto Emplace(entity_t e, Args&& ...args) -> TComponent&
 		{
-			if (Contains(e)) [[unlikely]]
-			{
-				return components[sparse[e]];
-			}
-
-			
-			auto idx = packed.size();
-			sparse[idx] = 
+			auto id = EntityManipulation::ExtractID(e);
+			entities_registered.insert(id);
+			components.emplace_back(std::forward<Args>(args)...);
+			return components.back();
 		}
 
 
 		/*
-		* Erase a component associated to the entity e.
-		* If the component is not present, return false.
-		* The order of components is not maintained because to allow fast erase, the component to be erased is swapped
-		* with the last component and popped back.
-		* 
-		* Complexity: O(1). 
+		* Erase the component associated to entity e.
+		* If the entity has no component the behavior is undefined.
+		* Complexity: O(1).
 		*/
-		auto Erase(entity_t e) -> void  
+		auto Erase(entity_t e) -> void
 		{
-				
+			using std::swap;
+			auto id = EntityManipulation::ExtractID(e);
+			auto idx = entities_registered.index_of(id);
+			entities_registered.erase(id);
+			swap(components[idx], components.back());
+			components.pop_back();
 		}
 
+		//temp function for test
+		[[nodiscard]]
+		auto IndexOf(entity_t e) -> natural_t
+		{
+			/*
+			* Note on cast: i know that the id is less than 32 bit so there at most 2^32 idxs.
+			*/
+			auto id = EntityManipulation::ExtractID(e);
+			return static_cast<natural_t>(entities_registered.index_of(id));
+		}
 
 
 		/*
-		
+		* Check if a entity has a component.
+		* Complexity: O(1).
 		*/
 		[[nodiscard]]
-		auto operator[](entity_t e) -> ComponentType&
+		auto Contains(entity_t e) -> bool
 		{
-			
+			auto id = EntityManipulation::ExtractID(e);
+			return entities_registered.contains(id);
 		}
 
 
 		[[nodiscard]]
-		auto Size() const noexcept -> std::vector<entity_t>::size_type
+		auto Size() const noexcept -> natural_t
 		{
-			return packed.size();
+			return components.size();
 		}
 
 
+		/*
+		* Access the component of entity e.
+		* If the entity has not the component, the behavior is undefined.
+		* Complexity: O(1).
+		*/
 		[[nodiscard]]
-		auto Contains(entity_t e) const noexcept -> bool
+		auto operator[](entity_t e) -> TComponent&
 		{
-			return packed[sparse[e]] == e;
+			auto id = EntityManipulation::ExtractID(e);
+			return components[entities_registered.index_of(id)];
 		}
 
 
-		//*********** ITERATORS ********************************
+		/*
+		* Get the sparse set that contains all the entities that have the component.
+		*/
+		[[nodiscard]]
+		auto GetEntities() const noexcept -> const datastructures::SparseSet<entity_t>&
+		{
+			return entities_registered;
+		}
+
+
+		//******************** ITERATORS FOR COMPONENTS ***********************
 		
+		/*
+		* Begin iterator for the vector of components.
+		*/
 		[[nodiscard]]
-		auto begin() noexcept -> std::vector<entity_t>::iterator
+		auto begin() noexcept -> iterator
 		{
-			return packed.begin();
+			return components.begin();
 		}
 
+		/*
+		* End iterator for the vector of components.
+		*/
 		[[nodiscard]]
-		auto end() noexcept -> std::vector<entity_t>::iterator
+		auto end() noexcept -> iterator
 		{
-			return packed.end();
-		}
-
-
-		[[nodiscard]]
-		auto cbegin() const noexcept -> std::vector<entity_t>::const_iterator
-		{
-			return packed.cbegin();
-		}
-
-		[[nodiscard]]
-		auto cend() const noexcept -> std::vector<entity_t>::const_iterator
-		{
-			return packed.cend();
+			return components.end();
 		}
 
 
-		//*********** ITERATORS ********************************
+		/*
+		* Constant begin iterator for the vector of components.
+		*/
+		[[nodiscard]]
+		auto cbegin() const noexcept -> const_iterator
+		{
+			return components.cbegin();
+		}
+
+		/*
+		* Constant end iterator for the vector of components.
+		*/
+		[[nodiscard]]
+		auto cend() const noexcept -> const_iterator
+		{
+			return components.cend();
+		}
+		
+		
+		//******************** ITERATORS FOR COMPONENTS ***********************
 
 
 	private:
-		std::unordered_map<entity_t, natural_t> sparse;
-
-		//packed and components are in sync. 
-		std::vector<entity_t> packed; //entities
-		std::vector <T, TAlloc> components;
+		//Note that the packed array and the components array are in sync.
+		//packed[0] is the entity that has the component in components[0].
+		datastructures::SparseSet<entity_t, TAllocSet> entities_registered;
+		std::vector<TComponent, TAllocComp> components;
 	};
 
 } //namespace gargantua::ecs

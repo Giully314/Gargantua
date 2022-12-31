@@ -44,6 +44,24 @@ namespace gargantua::test
 		PrintEntities();
 		PrintEntitiesBinary();
 
+
+		logger.Debug("Destroy entities and recreate them");
+
+		for (auto e : entities)
+		{
+			mng.DestroyEntity(e);
+		}
+
+		entities.clear();
+
+		for (int i = 0; i < N; ++i)
+		{
+			entities.emplace_back(mng.CreateEntity());
+		}
+
+		PrintEntities();
+		PrintEntitiesBinary();
+
 		logger.Debug("End of test");
 	}
 
@@ -53,7 +71,9 @@ namespace gargantua::test
 		const int n = entities.size();
 		for (int i = 0; i < n; ++i)
 		{
-			logger.Debug("Entity id: {}", entities[i]);
+			logger.Debug("Entity: {}", entities[i]);
+			/*logger.Debug("Entity: {},  id: {},  gen: {}", entities[i], 
+				ecs::EntityManipulation::ExtractID(entities[i]), ecs::EntityManipulation::ExtractGeneration(entities[i]));*/
 		}
 	}
 

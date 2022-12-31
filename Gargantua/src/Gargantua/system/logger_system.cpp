@@ -7,23 +7,27 @@ module gargantua.system.logger_system;
 
 namespace gargantua::system
 {
-
-	UniqueRes<logging::Logger<logging::ConsoleStream>> LoggerSystem::logger{ nullptr };
-
+	UniqueRes<logging::Logger<logging::ConsoleStream>> LoggerSystem::console_logger{ nullptr };
+	UniqueRes<logging::Logger<logging::MutexConsoleStream>> mutex_console_logger{ nullptr };
 
 	LoggerSystem::LoggerSystem()
 	{
-		Init();
+		InitConsoleLogger();
+		InitMutexConsoleLogger();
 	}
 
-	void LoggerSystem::Init()
+	auto LoggerSystem::InitConsoleLogger() -> void 
 	{
-		if (!logger)
-		{
-			logger = CreateUniqueRes<logging::Logger<logging::ConsoleStream>>();
-			logger->SetLevel(logging::Level::debug);
-			logger->SetLoggerName("Engine");
-		}
+		console_logger = CreateUniqueRes<logging::Logger<logging::ConsoleStream>>();
+		console_logger->SetLevel(logging::Level::debug);
+		console_logger->SetLoggerName("Console");
+	}
+
+	auto LoggerSystem::InitMutexConsoleLogger() -> void
+	{
+		mutex_console_logger = CreateUniqueRes<logging::Logger<logging::MutexConsoleStream>>();
+		mutex_console_logger->SetLevel(logging::Level::debug);
+		mutex_console_logger->SetLoggerName("MutexConsole");
 	}
 
 } //namespace gargantua::system

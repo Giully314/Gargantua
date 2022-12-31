@@ -9,7 +9,7 @@ module;
 
 export module gargantua.types;
 
-import <memory>;
+export import <memory>;
 import <string>;
 import <utility>;
 import <cstdint>;
@@ -45,6 +45,8 @@ export namespace gargantua
 	//**********************************
 
 
+
+
 	/*
 	Make it a wrapper class that can be init from unique, shared and pointers
 	but simply avoid to delete a pointer.
@@ -62,7 +64,7 @@ export namespace gargantua
 	using UniqueRes = std::unique_ptr<T>;
 
 	template <typename T, typename ...Args>
-	inline constexpr UniqueRes<T> CreateUniqueRes(Args&& ...args)
+	inline auto CreateUniqueRes(Args&& ...args) -> UniqueRes<T>
 	{
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
@@ -73,7 +75,7 @@ export namespace gargantua
 	using SharedRes = std::shared_ptr<T>;
 
 	template <typename T, typename ...Args>
-	inline constexpr SharedRes<T> CreateSharedRes(Args&& ...args)
+	inline auto CreateSharedRes(Args&& ...args) -> SharedRes<T>
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}

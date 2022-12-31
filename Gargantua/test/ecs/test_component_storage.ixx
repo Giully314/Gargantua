@@ -13,9 +13,7 @@ import <memory>;
 import gargantua.test.test_base;
 import gargantua.test.ecs.components;
 
-import gargantua.ecs.component_storage;
-import gargantua.ecs.ecs_types;
-
+import gargantua.ecs.ecs;
 
 
 export namespace gargantua::test
@@ -35,7 +33,7 @@ export namespace gargantua::test
 		template <typename T>
 		auto RegisterComponent() -> void
 		{
-			m[std::type_index(typeid(Position))] = std::make_unique<ecs::ComponentStorage<T>>();
+			m[std::type_index(typeid(T))] = std::make_unique<ecs::ComponentStorage<T>>();
 		}
 
 		template <typename T>

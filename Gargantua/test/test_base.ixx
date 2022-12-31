@@ -14,12 +14,16 @@ export namespace gargantua::test
 			logger.SetLoggerName("TestBaseLogger");
 
 			logger.Debug("Creation of test class");
+
+			mutex_logger.SetLevel(logging::Level::debug);
+			mutex_logger.SetLoggerName("TestBaseMutexLog");
 		}
 
 		virtual auto RunTest() -> void = 0;
 
 	protected:
 		logging::Logger<logging::ConsoleStream> logger;
+		logging::Logger<logging::MutexConsoleStream> mutex_logger;
 	};
 
 } // namespace gargantua::test

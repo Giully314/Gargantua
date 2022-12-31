@@ -1,10 +1,17 @@
 /*
 gargantua/ecs/component_manager.ixx
 
+PURPOSE:
+
+CLASSES:
+
+DESCRIPTION:
+
+
 
 */
 
-export module gargantua.ecs.component_manager;
+export module gargantua.ecs.ecs:component_manager;
 
 import <concepts>;
 import <unordered_map>;
@@ -12,46 +19,51 @@ import <typeinfo>;
 import <typeindex>;
 
 import gargantua.types;
-import gargantua.ecs.ecs_types;
-import gargantua.ecs.component_storage;
-
+import :component_storage;
 
 export namespace gargantua::ecs
 {
 	class ComponentManager
 	{
 	public:
-		
-		template <std::semiregular T>
+
+		/*
+		* 
+		*/
+		template <std::semiregular TComponent>
 		auto RegisterComponent() -> void
 		{
-			if (!components.contains(std::type_index(typeid(T)))) [[likely]]
+			auto i = std::type_index(typeid(TComponent));
+			if (!components.contains(i)) [[likely]]
 			{
-				components[std::type_index(typeid(T))] = CreateUniqueRes<ComponentStorage<T>>();
+				components[i] = CreateUniqueRes<ComponentStorage<TComponent>>();
 			}
 		}
 
 
-		template <std::semiregular T>
+		/*
+		* 
+		*/
+		template <std::semiregular TComponent>
 		auto UnregisterComponent() -> void
 		{
-			if (components.contains(std::type_index(typeid(T)))) [[likely]]
+			auto i = std::type_index(typeid(TComponent));
+			if (components.contains(i)) [[likely]]
 			{
-				components.erase(std::type_index(typeid(T)));
+				components.erase(i);
 			}
 		}
 
-
-		template <typename T>
-		auto GetComponentStorage() -> ComponentStorage<T>&
+		/*
+		* 
+		*/
+		template <std::semiregular TComponent>
+		auto GetComponentStorage() -> ComponentStorage<TComponent>&
 		{
-			return static_cast<ComponentStorage<T>&>(*components.at(std::type_index(typeid(T))));
+			return static_cast<ComponentStorage<TComponent>&>(*components.at(std::type_index(typeid(TComponent))));
 		}
-
-
 
 	private:
 		std::unordered_map<std::type_index, UniqueRes<ComponentStorageHandler>> components;
 	};
-
 } //namespace gargantua::ecs

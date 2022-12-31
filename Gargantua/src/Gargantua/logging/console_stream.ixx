@@ -13,6 +13,7 @@ DESCRIPTION:
 export module gargantua.logging.log:console_stream;
 
 import <iostream>;
+import <string_view>;
 
 import :stream_type;
 

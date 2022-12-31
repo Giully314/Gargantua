@@ -4,8 +4,7 @@ export module gargantua.test.ecs.test_component_manager;
 import gargantua.test.test_base;
 import gargantua.test.ecs.components;
 
-import gargantua.ecs.component_manager;
-import gargantua.ecs.component_storage;
+import gargantua.ecs.ecs;
 
 export namespace gargantua::test
 {
@@ -17,7 +16,12 @@ export namespace gargantua::test
 		auto RunTest() -> void override
 		{
 			m.RegisterComponent<Position>();
-			auto s = m.GetComponentStorage<Position>();
+			m.RegisterComponent<Velocity>();
+			m.RegisterComponent<Acceleration>();
+
+			auto& ps = m.GetComponentStorage<Position>();
+			auto& vs = m.GetComponentStorage<Velocity>();
+			auto& as = m.GetComponentStorage<Acceleration>();
 		}
 
 	private:

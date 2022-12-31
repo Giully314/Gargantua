@@ -8,8 +8,7 @@ import <vector>;
 
 import gargantua.test.test_base;
 
-import gargantua.ecs.entity_manager;
-import gargantua.ecs.ecs_types;
+import gargantua.ecs.ecs;
 
 
 export namespace gargantua::test

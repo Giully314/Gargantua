@@ -8,6 +8,7 @@ namespace gargantua::test
 {
 	auto TestComponentStorage::RunTest() -> void
 	{
+		ecs::entity_t e0 = 0;
 		ecs::entity_t e1 = 1;
 		ecs::entity_t e2 = 2;
 		ecs::entity_t e3 = 3;
@@ -29,18 +30,15 @@ namespace gargantua::test
 		
 		auto& p4 = p_storage.Emplace(e4, 4.0f, 4.0f);
 
+		logger.Debug("index of e1 {}", p_storage.IndexOf(e1));
 
 		p_storage.Erase(e1);
 
+
 		p4 = p_storage[e4];
-
 		logger.Debug("{}", p4.p.ToString());
-
-
 		p_storage.Erase(e4);
-
 		p3 = p_storage[e3];
-
 		logger.Debug("{}", p3.p.ToString());
 	}
 

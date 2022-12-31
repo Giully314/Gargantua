@@ -23,6 +23,7 @@ import <string_view>;
 import <source_location>;
 import <string>;
 import <unordered_map>;
+import <format>;
 
 import :level;
 import :stream_concepts;
@@ -40,21 +41,25 @@ namespace gargantua::logging
 
 		}
 
+		//TODO: make the type of OutputStream a template
 		template <OutputStream<std::string> Stream>
 		friend auto operator<<(Stream& s, LogMessage lm) -> Stream&
 		{
 			/*std::string out;
-			out.reserve(lm.level_to_string[lm.level].size() + lm.msg.size() + 3);
+			out.reserve(lm.level_to_string[lm.level].size() + lm.msg.size() + 
+				lm.logger_name.size() + 3);
 			out += lm.level_to_string[lm.level];
+			out += lm.logger_name;
 			out += " ";
 			out += lm.msg;
-			out += "\n";
-			s << out; */
+			out += "\n";*/
+			s << std::format("{}{} {}\n", lm.level_to_string[lm.level], lm.logger_name, lm.msg);
 
-			s << lm.level_to_string[lm.level] << lm.logger_name
+
+			/*s << lm.level_to_string[lm.level] << lm.logger_name
 				<< lm.location.file_name() << " "
 				<< lm.location.function_name() << " : "
-				<< lm.msg << "\n";
+				<< lm.msg << "\n";*/
 
 			return s;
 		}
