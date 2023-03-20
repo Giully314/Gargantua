@@ -42,7 +42,7 @@ export namespace gargantua::time
 
 		}
 
-		TimeStep(real64_t time_step_) : time_step(time_step_)
+		TimeStep(f64 time_step_) : time_step(time_step_)
 		{
 
 		}
@@ -64,12 +64,12 @@ export namespace gargantua::time
 		}
 
 
-		auto GetInMilliSec() const noexcept -> real64_t
+		auto GetInMilliSec() const noexcept -> f64
 		{
 			return time_step.count() * 1000;
 		}
 
-		auto GetInSec() const noexcept -> real64_t
+		auto GetInSec() const noexcept -> f64
 		{
 			return time_step.count();
 		}

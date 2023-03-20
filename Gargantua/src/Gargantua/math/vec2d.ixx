@@ -38,13 +38,13 @@ export namespace gargantua::math
 
 
 		//TODO: CHANGE THIS CODE. DON'T USE REINTERPRET_CAST
-		auto operator[](std::size_t idx) -> T& 
+		auto operator[](u32 idx) -> T& 
 		{ 
 			return reinterpret_cast<T*>(&x)[idx]; 
 		}
 
 
-		auto operator[](std::size_t idx) const -> T 
+		auto operator[](u32 idx) const -> T
 		{ 
 			return reinterpret_cast<const T*>(&x)[idx]; 
 		}
@@ -141,8 +141,8 @@ export namespace gargantua::math
 	}; //class Vec2d
 
 	/**************** TYPE ALIAS ************************/
-	using Vec2di = Vec2d<integer_t>;
-	using Vec2df = Vec2d<real_t>;
+	using Vec2di = Vec2d<i32>;
+	using Vec2df = Vec2d<f32>;
 	/**************** TYPE ALIAS ************************/
 
 

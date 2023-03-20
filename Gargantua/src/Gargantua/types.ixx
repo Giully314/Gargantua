@@ -16,17 +16,16 @@ import <cstdint>;
 
 export namespace gargantua
 {
-	using byte_t = std::uint8_t;
+	using u8 = std::uint8_t;
+	using u16 = std::uint16_t;
+	using u32 = std::uint32_t;
+	using u64 = std::uint64_t;
 
-	using natural16_t = std::uint16_t;
+	using i32 = std::int32_t;
+	using i64 = std::int64_t;
 
-	using real_t = float;
-	using natural_t = std::uint32_t;
-	using integer_t = std::int32_t;
-
-	using real64_t = double;
-	using natural64_t = std::uint64_t;
-	using integer64_t = std::int64_t;
+	using f32 = float;
+	using f64 = double;
 
 
 	//************ INPUT ***************
@@ -52,19 +51,19 @@ export namespace gargantua
 	but simply avoid to delete a pointer.
 	*/
 	template <typename T>
-	using NonOwnedRes = T*;
+	using non_owned_res = T*;
 
 	//This is just a type alias. Using this communicates that there is no check for nullptr.
 	template <typename T>
-	using NonNullableRes = T*;
+	using non_nullable_res = T*;
 
 
 	//Unique resource owned.
 	template <typename T>
-	using UniqueRes = std::unique_ptr<T>;
+	using unique_res = std::unique_ptr<T>;
 
 	template <typename T, typename ...Args>
-	inline auto CreateUniqueRes(Args&& ...args) -> UniqueRes<T>
+	inline auto CreateUniqueRes(Args&& ...args) -> unique_res<T>
 	{
 		return std::make_unique<T>(std::forward<Args>(args)...);
 	}
@@ -72,10 +71,10 @@ export namespace gargantua
 
 	//Shared resource between multiple objects.
 	template <typename T>
-	using SharedRes = std::shared_ptr<T>;
+	using shared_res = std::shared_ptr<T>;
 
 	template <typename T, typename ...Args>
-	inline auto CreateSharedRes(Args&& ...args) -> SharedRes<T>
+	inline auto CreateSharedRes(Args&& ...args) -> shared_res<T>
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}

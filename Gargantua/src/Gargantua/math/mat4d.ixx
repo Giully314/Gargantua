@@ -40,7 +40,7 @@ export namespace gargantua::math
 		using value_type = T;
 		using col_t = Vec4d<T>; //column type
 		using row_t = Vec4d<T>; //row type
-		inline static constexpr natural_t dim = 4;
+		inline static constexpr u32 dim = 4;
 
 		Mat4d() = default;
 
@@ -62,24 +62,24 @@ export namespace gargantua::math
 		}
 
 
-		auto operator()(const natural_t i, const natural_t j) -> T&
+		auto operator()(const u32 i, const u32 j) -> T&
 		{
 			return m[i][j];
 		}
 
-		auto operator()(const natural_t i, const natural_t j) const -> T
+		auto operator()(const u32 i, const u32 j) const -> T
 		{
 			return m[i][j];
 		}
 
 
 		//return row i
-		auto operator()(const natural_t i) -> row_t&
+		auto operator()(const u32 i) -> row_t&
 		{
 			return m[i];
 		}
 
-		auto operator()(const natural_t i) const -> const row_t&
+		auto operator()(const u32 i) const -> const row_t&
 		{
 			return m[i];
 		}
@@ -269,8 +269,8 @@ export namespace gargantua::math
 
 
 	/**************** TYPE ALIAS ************************/
-	using Mat4df = Mat4d<real_t>;
-	using Mat4di = Mat4d<integer_t>;
+	using Mat4di = Mat4d<i32>;
+	using Mat4df = Mat4d<f32>;
 	/**************** TYPE ALIAS ************************/
 
 

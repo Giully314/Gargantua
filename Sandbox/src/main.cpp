@@ -1,19 +1,31 @@
-import gargantua.engine.engine;
+import <iostream>;
 
-import sandbox.app;
+import gargantua.platform.platform_manager;
+import gargantua.platform.window;
 
+import gargantua.core.engine;
 
-import gargantua.test.ecs.test_component_manager;
+using namespace gargantua;
 
 int main()
 {
+	core::Engine engine;
 
-	/*gargantua::engine::Engine e{ []() {return new sandbox::App{}; }, 1280, 720 };
-	e.Run();*/
+	engine.Run();
 
-	gargantua::test::TestComponentManager test;
+	/*try
+	{
+		gargantua::platform::Window window{ 720, 480, "Test" };
+		while (true)
+		{
+			window.Update();
+		}
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+	}*/
 
-	test.RunTest();
 
 	return 0;
 }

@@ -49,7 +49,11 @@ interesting how simulations are created. I also want start to develop a game bas
 I minimized the usage of external libraries because i find really funny to design and develop the core functionalities.
 At first i also wanted to avoid the usage of glfw (and even of opengl, after i followed the beautiful project tinyrenderer)
 but then i realized that the focus of the project would shift too much. 
-In the end, i hope to learn as much as possible and become better at design and develop software!
+In the end, i hope to learn as much as possible and become better at design and develop software!  
+Sadly i failed to implement a small physics engine (my physics knowledge is mediocre); 
+i only implemented the physics based on Newton's laws and impulse resolution but no rotations. 
+The result was really bad, but it was really fun and i learned a lot.  
+
 
 
 # Resource that i found useful
@@ -94,6 +98,8 @@ CppCon 2016: Jason Jurecka “Game engine using STD C++ 11": https://youtu.be/8A
 
 Physics:  
 https://gafferongames.com/categories/game-physics/  
+https://gamedevelopment.tutsplus.com/series/how-to-create-a-custom-physics-engine--gamedev-12715  
+
 
 
 STD containers, custom containers and iterators:  

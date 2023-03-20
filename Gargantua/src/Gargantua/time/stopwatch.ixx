@@ -39,7 +39,7 @@ namespace gargantua::time
 		TimeStep Tick()
 		{
 			auto temp = std::chrono::steady_clock::now();
-			TimeStep ts{ std::chrono::duration<real64_t>(temp - s) };
+			TimeStep ts{ std::chrono::duration<f64>(temp - s) };
 			s = temp;
 
 			return ts;

@@ -11,6 +11,8 @@ import <iostream>;
 import <fstream>;
 import <sstream>;
 
+import <stdexcept>;
+
 import <string>;
 import <string_view>;
 import <format>;

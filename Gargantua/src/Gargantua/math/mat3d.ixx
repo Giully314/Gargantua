@@ -55,24 +55,24 @@ export namespace gargantua::math
 		}
 
 
-		auto operator()(const natural_t i, const natural_t j) -> T&
+		auto operator()(const u32 i, const u32 j) -> T&
 		{
 			return m[i][j];
 		}
 
-		auto operator()(const natural_t i, const natural_t j) const -> T
+		auto operator()(const u32 i, const u32 j) const -> T
 		{
 			return m[i][j];
 		}
 
 
 		//return row i
-		auto operator()(const natural_t i) -> row_t&
+		auto operator()(const u32 i) -> row_t&
 		{
 			return m[i];
 		}
 
-		auto operator()(const natural_t i) const -> const row_t&
+		auto operator()(const u32 i) const -> const row_t&
 		{
 			return m[i];
 		}
@@ -207,8 +207,8 @@ export namespace gargantua::math
 
 
 	/**************** TYPE ALIAS ************************/
-	using Mat3df = Mat3d<real_t>;
-	using Mat3di = Mat3d<integer_t>;
+	using Mat3di = Mat3d<i32>;
+	using Mat3df = Mat3d<f32>;
 	/**************** TYPE ALIAS ************************/
 
 

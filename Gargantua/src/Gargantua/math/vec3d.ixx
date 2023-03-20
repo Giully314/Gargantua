@@ -44,13 +44,13 @@ export namespace gargantua::math
 
 
 		//TODO: CHANGE THIS CODE. DON'T USE REINTERPRET_CAST
-		auto operator[](std::size_t idx) -> T& 
+		auto operator[](u32 idx) -> T& 
 		{ 
 			return reinterpret_cast<T*>(&x)[idx]; 
 		}
 
 
-		auto operator[](std::size_t idx) const -> T 
+		auto operator[](u32 idx) const -> T
 		{ 
 			return reinterpret_cast<const T*>(&x)[idx]; 
 		}
@@ -155,8 +155,8 @@ export namespace gargantua::math
 
 
 	/**************** TYPE ALIAS ************************/
-	using Vec3di = Vec3d<integer_t>;
-	using Vec3df = Vec3d<real_t>;
+	using Vec3di = Vec3d<i32>;
+	using Vec3df = Vec3d<f32>;
 	/**************** TYPE ALIAS ************************/
 
 

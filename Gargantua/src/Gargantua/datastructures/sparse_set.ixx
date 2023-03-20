@@ -197,7 +197,7 @@ export namespace gargantua::datastructures
 		Complexity: O(1).
 		*/
 		[[nodiscard]]
-		auto index_of(const T value) -> difference_type
+		auto index_of(const T value) -> size_type
 		{
 			return sparse[value];
 		}

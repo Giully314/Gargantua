@@ -1,0 +1,23 @@
+#Directories
+.vs/
+bin/
+bin-int/
+out/
+Sandbox/resources/
+
+#Files
+*.user
+ProjectGeneration.bat
+CMakeLists.txt
+
+
+# visual studio files and dirs
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
+**.hint
+**.imi
+
+.gitignore
