@@ -26,6 +26,12 @@ namespace gargantua::render
 	{
 	public:
 		OpenGLObject() = default;
+		
+		// can't be defaulted because noncopyable
+		auto operator==(const OpenGLObject& other) const -> bool
+		{
+			return id == other.id;
+		}
 
 		auto GetID() const noexcept -> GLuint
 		{

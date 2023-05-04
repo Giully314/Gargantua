@@ -19,6 +19,7 @@ export module gargantua.math.math_functions;
 import <cmath>;
 import <numbers>;
 import <type_traits>;
+import <concepts>;
 
 import gargantua.types;
 import gargantua.math.vector;
@@ -28,10 +29,13 @@ import gargantua.math.matrix;
 export namespace gargantua::math
 {
 
+	template <typename T>
+	concept Number = std::integral<T> && std::floating_point<T>;
+
 	struct Product
 	{
-		template <typename T>
-		static T Dot(const Vec2d<T>& v1, const Vec2d<T>& v2)
+		template <Number T>
+		static auto Dot(const Vec2d<T>& v1, const Vec2d<T>& v2) -> T
 		{
 			return v1.Dot(v2);
 		}
@@ -52,7 +56,7 @@ export namespace gargantua::math
 	struct Projection
 	{
 
-		//https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
+		// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
 		template <typename T>
 		static Mat4d<T> Orthographic(const T l, const T b, const T r, const T t, const T n, const T f)
 		{

@@ -33,7 +33,7 @@ namespace gargantua::log
 	class Logger
 	{
 	public:
-		Logger() : level(Level::info), stream(), logger_name("Base")
+		Logger() : level(Level::debug), stream(), logger_name("Base")
 		{
 
 		}

@@ -55,12 +55,12 @@ namespace gargantua::render
 			Destroy();
 		}
 
-		auto Bind() -> void
+		auto Bind() const -> void
 		{
 			glBindVertexArray(id);
 		}
 
-		auto Unbind() -> void
+		auto Unbind() const -> void
 		{
 			glBindVertexArray(0);
 		}
@@ -69,22 +69,39 @@ namespace gargantua::render
 		auto AddBuffer(const VertexBuffer& vbo, u32 idx) -> void
 		{
 			const auto& layout = vbo.GetLayout();
+			/*glEnableVertexArrayAttrib(id, idx);
 			glVertexArrayVertexBuffer(id, 0, vbo.GetID(), 0, layout.GetVertexSize());
-			glEnableVertexArrayAttrib(id, idx);
 			glVertexArrayAttribFormat(id, idx, layout.num_of_elements, GL_FLOAT, GL_FALSE, 0);
+			glVertexArrayAttribBinding(id, idx, 0);*/
+			glBindVertexArray(id);
+			vbo.Bind();
+
+			glEnableVertexAttribArray(idx);
+			glVertexAttribPointer(idx, layout.num_of_elements, GL_FLOAT, GL_FALSE, 0, 0);
+			glBindVertexArray(0);
 		}
 
 
 		auto AddBuffer(const IndexBuffer& ibo) -> void
 		{
 			glVertexArrayElementBuffer(id, ibo.GetID());
+			index_count = ibo.GetCount();
 		}
+
+
+		auto GetCount() const noexcept -> u32
+		{
+			return index_count;
+		}
+
 
 	private:
 		auto Destroy() -> void
 		{
 			glDeleteVertexArrays(1, &id);
 		}
-	};
 
+	private:
+		u32 index_count = 0;
+	};
 } // namespace gargantua::render

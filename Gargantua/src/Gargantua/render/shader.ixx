@@ -21,7 +21,7 @@ import <utility>;
 import <string>;
 import <string_view>;
 
-import gargantua.logging.logger_system;
+import gargantua.log.logger_system;
 import gargantua.render.opengl_object;
 import gargantua.resource.file_reader;
 
@@ -56,6 +56,8 @@ namespace gargantua::render
 	class Shader : public OpenGLObject
 	{
 	public:
+
+		// Precondition: an opengl context must exist.
 		Shader(std::string_view filename, ShaderType type_) : type(type_)
 		{
 			id = glCreateShader(ShaderTypeToGL(type));
@@ -100,7 +102,7 @@ namespace gargantua::render
 
 		auto Compile(const char* source_code) -> void
 		{
-			GRG_CORE_DEBUG("Source code\n{}", source_code);
+			//GRG_CORE_DEBUG("Source code\n{}", source_code);
 			glShaderSource(id, 1, &source_code, nullptr);
 			glCompileShader(id);
 

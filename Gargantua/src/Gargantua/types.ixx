@@ -1,7 +1,9 @@
 /*
-gargantua/types.ixx
-
-PURPOSE: Define uniform types  to use across the engine.
+* gargantua/types.ixx
+* 
+* PURPOSE: 
+*	Define uniform types  to use across the engine.
+* 
 */
 module;
 
@@ -46,17 +48,14 @@ export namespace gargantua
 
 
 
-	/*
-	Make it a wrapper class that can be init from unique, shared and pointers
-	but simply avoid to delete a pointer.
-	*/
+	// Note: It must be guaranteed that the resource passed has a lifespan larger than the use.
 	template <typename T>
 	using non_owned_res = T*;
+	
 
-	//This is just a type alias. Using this communicates that there is no check for nullptr.
-	template <typename T>
-	using non_nullable_res = T*;
-
+	////This is just a type alias. Using this communicates that there is no check for nullptr.
+	//template <typename T>
+	//using non_nullable_res = T*;
 
 	//Unique resource owned.
 	template <typename T>
@@ -85,15 +84,35 @@ export namespace gargantua
 	struct NonCopyable
 	{
 		NonCopyable() = default;
+		NonCopyable(NonCopyable&&) = default;
+		NonCopyable& operator=(NonCopyable&&) = default;
 		NonCopyable(const NonCopyable&) = delete;
-		NonCopyable& operator=(const NonCopyable&) = delete;
+		NonCopyable& operator=(const NonCopyable&) = delete;	
 	};
 
 
 	struct NonMovable
 	{
 		NonMovable() = default;
-		NonMovable(const NonMovable&) = delete;
-		NonMovable& operator=(const NonMovable&) = delete;
+		NonMovable(NonMovable&&) = delete;
+		NonMovable& operator=(NonMovable&&) = delete;
+		NonMovable(const NonMovable&) = default;
+		NonMovable& operator=(const NonMovable&) = default;
 	};
+
+
+	template<typename T>
+	class Singleton : private NonCopyable, private NonMovable
+	{
+	protected:
+		Singleton() = default;
+	
+	public:
+		static auto Instance() -> T&
+		{
+			static T instance;
+			return instance;
+		}
+	};
+
 } //namespace gargantua

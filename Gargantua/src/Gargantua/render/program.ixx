@@ -7,7 +7,9 @@
 * 
 * DESCRIPTION:
 * 
-* 
+* TODO:
+*	- cache the uniform for better performance.
+*	
 */
 
 module;
@@ -17,9 +19,13 @@ module;
 
 export module gargantua.render.program;
 
+import <span>;
 import <utility>;
+import <string_view>;
 
-import gargantua.logging.logger_system;
+import gargantua.log.logger_system;
+import gargantua.math.matrix;
+import gargantua.math.vector;
 import gargantua.render.opengl_object;
 import gargantua.render.shader;
 
@@ -29,6 +35,13 @@ namespace gargantua::render
 	class Program : public OpenGLObject
 	{
 	public:
+		// Precondition: an opengl context must exist.
+
+		Program()
+		{
+			id = glCreateProgram();
+		}
+
 		Program(Shader& vertex_shader, Shader& fragment_shader)
 		{
 			id = glCreateProgram();
@@ -56,10 +69,17 @@ namespace gargantua::render
 		}
 
 		// Activate the program.
-		auto Use() -> void
+		auto Bind() const -> void
 		{
 			glUseProgram(id);
 		}
+
+		auto Unbind() const -> void
+		{
+			glUseProgram(0);
+		}
+
+
 
 		// Destroy the program.
 		auto Destroy() -> void
@@ -68,7 +88,72 @@ namespace gargantua::render
 			id = 0;
 		}
 
-	private:
+		auto SetUniformArrayInt(std::string_view name, std::span<int> values)
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform1iv(location, values.size(), values.data());
+		}
+
+
+		auto SetUniform1f(std::string_view name, f32 v) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform1f(location, v);
+		}
+
+
+		auto SetUniform2f(std::string_view name, f32 v0, f32 v1) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform2f(location, v0, v1);
+		}
+
+		auto SetUniform2f(std::string_view name, const math::Vec2df& v) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform2f(location, v[0], v[1]);
+		}
+
+
+		auto SetUniform3f(std::string_view name, f32 v0, f32 v1, f32 v2) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform3f(location, v0, v1, v2);
+		}
+
+		auto SetUniform3f(std::string_view name, const math::Vec3df& v) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform3f(location, v[0], v[1], v[2]);
+		}
+
+
+		auto SetUniform4f(std::string_view name, f32 v0, f32 v1, f32 v2, f32 v3) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform4f(location, v0, v1, v2, v3);
+		}
+
+		auto SetUniform4f(std::string_view name, const math::Vec4df& v) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform4f(location, v[0], v[1], v[2], v[3]);
+		}
+
+
+		auto SetUniformMatrix4f(std::string_view name, const math::Mat4df& m) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniformMatrix4fv(location, 1, GL_TRUE, m.GetAddress());
+		}
+
+
+		auto SetUniform1i(std::string_view name, i32 v) const -> void
+		{
+			GLint location = glGetUniformLocation(id, name.data());
+			glUniform1i(location, v);
+		}
+
 
 		auto LinkShaders(Shader& vertex_shader, Shader& fragment_shader) -> void
 		{

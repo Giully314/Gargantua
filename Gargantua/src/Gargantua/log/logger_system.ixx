@@ -6,7 +6,7 @@
 * DESCRIPTION:
 */
 
-export module gargantua.logging.logger_system;
+export module gargantua.log.logger_system;
 
 import gargantua.types;
 import gargantua.log.logger;
@@ -22,7 +22,6 @@ namespace gargantua::log
 		static auto GetEngineLogger() -> Logger<ConsoleStream>&
 		{
 			static Logger<ConsoleStream> logger;
-			logger.SetLevel(Level::debug);
 			return logger;
 		}
 	};

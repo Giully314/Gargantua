@@ -13,7 +13,7 @@ module gargantua.platform.platform_system;
 
 
 import gargantua.types;
-
+import gargantua.platform.input_system;
 
 namespace gargantua::platform
 {
@@ -41,14 +41,14 @@ namespace gargantua::platform
 
 	auto PlatformSystem::Startup(const u16 width, const u16 height, std::string_view title) -> void
 	{
-		input_system.Startup(&event_dispatcher);
+		InputSystem::Instance().Startup(&event_dispatcher);
 		window = CreateUniqueRes<Window>(width, height, title, &event_dispatcher);
 	}
 
 
 	auto PlatformSystem::Run() -> void
 	{
-		input_system.Run();
+		InputSystem::Instance().Run();
 		window->Update();
 	}
 

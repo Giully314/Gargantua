@@ -13,11 +13,15 @@
 
 export module gargantua.core.engine;
 
+import <concepts>;
 import <string_view>;
 
 import gargantua.types;
 import gargantua.platform.platform;
 import gargantua.log.log;
+import gargantua.render.render;
+import gargantua.app.application;
+
 
 namespace gargantua::core
 {
@@ -25,9 +29,23 @@ namespace gargantua::core
 	class Engine
 	{
 	public:
-		Engine();
+		//Engine();
 		Engine(const u32 width, const u32 height, std::string_view title);
+		~Engine();
 
+		template <typename T>
+			requires std::derived_from<T, app::Application>
+		auto CreateApplication()
+		{
+			// If there is already an application, shutdown it before creating a new one.
+			if (application)
+			{
+				application->Shutdown();
+			}
+
+			application = CreateUniqueRes<T>();
+			application->Startup();
+		}
 
 		// Game loop
 		auto Run() -> void;
@@ -37,13 +55,11 @@ namespace gargantua::core
 		auto RegisterListenersToEvents() -> void;
 		 
 	private:
-		platform::InitGLFW glfw_init;
-		shared_res<platform::Window> window;
-		shared_res<platform::PlatformEventDispatcher> plat_event_dispatcher;
-
-		shared_res<platform::InputSystem> input_peripheral;
+		platform::PlatformSystem platform_system;
 
 		bool should_close;
+
+		unique_res<app::Application> application;
 	};
 } // namespace gargantua::core
 

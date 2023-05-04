@@ -12,7 +12,6 @@
 * 
 * TODO: 
 * - Share context between multiple windows.
-* - Monitor events.
 * - 
 * 
 */
@@ -45,8 +44,8 @@ export namespace gargantua::platform
 		}
 
 		explicit WindowProperties(const u16 width_, const u16 height_, std::string_view title_,
-									shared_res<PlatformEventDispatcher> event_dispatcher_) :
-			width(width_), height(height_), title(title_), vsync(false), event_dispatcher(std::move(event_dispatcher_))
+									non_owned_res<PlatformEventDispatcher> event_dispatcher_) :
+			width(width_), height(height_), title(title_), vsync(false), event_dispatcher(event_dispatcher_)
 		{
 
 		}
@@ -55,7 +54,7 @@ export namespace gargantua::platform
 		u16 height;
 		std::string title;
 		bool vsync;
-		shared_res<PlatformEventDispatcher> event_dispatcher;
+		non_owned_res<PlatformEventDispatcher> event_dispatcher;
 	};
 
 
@@ -65,9 +64,9 @@ export namespace gargantua::platform
 		// Create a window with the specified width, height and title.
 		// Precondition: the library glfw must be initialized before contructing Window.
 		// Can throw if the creation of the window has errors.
-		Window(const u16 width, const u16 height, std::string_view title);
+		//Window(const u16 width, const u16 height, std::string_view title);
 		Window(const u16 width, const u16 height, std::string_view title, 
-				shared_res<PlatformEventDispatcher> event_dispatcher);
+				non_owned_res<PlatformEventDispatcher> event_dispatcher);
 
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
@@ -80,7 +79,6 @@ export namespace gargantua::platform
 		// Update the window swapping buffers.
 		auto Update() -> void
 		{
-			glfwPollEvents();
 			glfwSwapBuffers(window);
 		}
 
@@ -92,9 +90,9 @@ export namespace gargantua::platform
 		}
 
 
-		auto SetEventDispatcher(shared_res<PlatformEventDispatcher> event_dispatcher) -> void
+		auto SetEventDispatcher(non_owned_res<PlatformEventDispatcher> event_dispatcher) -> void
 		{
-			properties.event_dispatcher = std::move(event_dispatcher);
+			properties.event_dispatcher = event_dispatcher;
 		}
 		
 		auto GetProperties() const noexcept -> const WindowProperties&
@@ -103,10 +101,11 @@ export namespace gargantua::platform
 		}
 
 
-		auto RegisterEvents() -> void;
 
 	private:
 		GLFWwindow* window;
 		WindowProperties properties;
+
+		auto RegisterEventsCallbacks() -> void;
 	};
 } // namespace gargantua::platform

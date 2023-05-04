@@ -1,20 +1,20 @@
 /*
-gargantua/log/log_message.ixx
-
-PURPOSE: Message information.
-
-CLASSES:
-	LogMessage: Class that contatins the message and output it to a stream.
-
-DESCRIPTION:
-	This class is a wrapper for a string that represents a message, adding other informations like time,
-	thread, ecc.
-
-USAGE:
-
-
-TODO: fix time, add thread id.
-
+* gargantua/log/log_message.ixx
+* 
+* PURPOSE: Message information.
+* 
+* CLASSES:
+* 	LogMessage: Class that contatins the message and output it to a stream.
+* 
+* DESCRIPTION:
+* 	This class is a wrapper for a string that represents a message, adding other informations like time,
+* 	thread, ecc.
+* 
+* USAGE:
+* 
+* 
+* TODO: fix time, add thread id.
+* 
 */
 
 export module gargantua.log.logger:log_message;
@@ -44,22 +44,7 @@ namespace gargantua::log
 		template <typename Stream>
 		friend auto operator<<(Stream& s, LogMessage lm) -> Stream&
 		{
-			/*std::string out;
-			out.reserve(lm.level_to_string[lm.level].size() + lm.msg.size() + 
-				lm.logger_name.size() + 3);
-			out += lm.level_to_string[lm.level];
-			out += lm.logger_name;
-			out += " ";
-			out += lm.msg;
-			out += "\n";*/
 			s << std::format("{}{} {}\n", lm.level_to_string[lm.level], lm.logger_name, lm.msg);
-
-
-			/*s << lm.level_to_string[lm.level] << lm.logger_name
-				<< lm.location.file_name() << " "
-				<< lm.location.function_name() << " : "
-				<< lm.msg << "\n";*/
-
 			return s;
 		}
 

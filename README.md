@@ -2,35 +2,18 @@
 A 2d game engine under development.
 
 
-# How to build
-Clone the repository with the option --recurse-submodules (or --recursive).
-Run premake.
-
 
 # Project structure and directories
 ## Gargantua
-Concepts: files for the definition of various concepts.  
-Core: Core components of the engine.  
-ECS: entity component system implementation.  
-DataStructures: Personal implementation of datastructures.  
-Event: Basic building blocks for handling events.  
-Generators: Number generators.  
-Input: Low level input state.  
-Log: Basic logging system.  
-Math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
-Parallel: Components for parallel code. Only prototypes and various ideas. (Not for use yet)  
-Renderer: Low level components for handling renderer objects.  
-Physics: Implementation of the newtonian mechanics.  
-Streams: Input and output streams.  
-Systems: The core systems of the engine implementing core functionalities.  
-Time: Handling time.
+app: Base class application.  
+core: Core components of the engine.    
+datastructure: personal implementation of data structures.  
+log: Basic logging system.  
+math: Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
+render: Low level components for handling render objects.    
+time: Handling time.  
+mpl: meta programming library.  
 
-Note: there are 2 types of systems, the systems in the Systems directory and the ecs systems (that start with 
-the prefix ECS). Even though the names are similar they should not be confused with each other.
-
-## GargantuaEditor
-Implementation of a game editor using Gargantua.
-For now is still in hard development.
 
 
 # TODO
@@ -40,7 +23,6 @@ https://trello.com/b/c2i4BD7O/gargantua
 
 # Language 
 The project is based on C++20.
-I wanted to use modules but they are impossible to use even in visual studio :(. Too much bugs and cryptic errors when i started the project.
 
 
 # Personal considerations
@@ -50,10 +32,6 @@ I minimized the usage of external libraries because i find really funny to desig
 At first i also wanted to avoid the usage of glfw (and even of opengl, after i followed the beautiful project tinyrenderer)
 but then i realized that the focus of the project would shift too much. 
 In the end, i hope to learn as much as possible and become better at design and develop software!  
-Sadly i failed to implement a small physics engine (my physics knowledge is mediocre); 
-i only implemented the physics based on Newton's laws and impulse resolution but no rotations. 
-The result was really bad, but it was really fun and i learned a lot.  
-
 
 
 # Resource that i found useful

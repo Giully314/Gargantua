@@ -21,6 +21,7 @@ import <memory>;
 
 import <algorithm>;
 import <ranges>;
+import <numeric>;
 
 import <type_traits>;
 import <concepts>;

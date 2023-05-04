@@ -11,6 +11,7 @@ CLASSES:
 DESCRIPTION:
 	The internal format used is row-major order. Consider that this is only relevant in terms of
 	HOW operations are executed and not what they mean.
+	So for example C = A * B means that the matrix B is applied first and then A.
 
 	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
 */
@@ -195,7 +196,7 @@ export namespace gargantua::math
 		}
 
 
-		auto ToString() -> std::string
+		auto ToString() const -> std::string
 		{
 			return std::format("{}\n{}\n{}", m[0].ToString(), m[1].ToString(),
 				m[2].ToString());
@@ -279,8 +280,7 @@ export namespace gargantua::math
 		com_t x = lhs(0).Dot(rhs);
 		com_t y = lhs(1).Dot(rhs);
 		com_t z = lhs(2).Dot(rhs);
-		com_t w = lhs(3).Dot(rhs);
-		return Vec3d<com_t>{x, y};
+		return Vec3d<com_t>{x, y, z};
 	}
 
 } //namespace gargantua::math

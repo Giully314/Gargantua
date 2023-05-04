@@ -24,6 +24,7 @@ import <utility>;
 
 import gargantua.types;
 import gargantua.render.opengl_object;
+import gargantua.render.render_info;
 
 namespace gargantua::render
 {
@@ -31,6 +32,8 @@ namespace gargantua::render
 	class BaseBuffer : public OpenGLObject
 	{
 	public:
+
+		// Precondition: an opengl context must exist.
 		BaseBuffer()
 		{
 			glCreateBuffers(1, &id);
@@ -65,11 +68,25 @@ namespace gargantua::render
 		}
 
 
-	protected:
-		auto Load(void* data, u64 num_of_bytes) -> void
+		auto GetDrawMode() const noexcept -> BufferDraw
 		{
-			glNamedBufferData(id, num_of_bytes, data, GL_STATIC_DRAW);
+			return draw_mode;
 		}
-		
+
+	protected:
+		auto Load(const void* data, u64 num_of_bytes, BufferDraw draw) -> void
+		{
+			draw_mode = draw;
+			glNamedBufferData(id, num_of_bytes, data, static_cast<GLenum>(draw_mode));
+		}
+
+
+		auto LoadSubData(const void* data, u64 num_of_bytes) -> void
+		{
+			glNamedBufferSubData(id, 0, num_of_bytes, data);
+		}
+
+	protected:
+		BufferDraw draw_mode;
 	};
 } // namespace gargantua::render

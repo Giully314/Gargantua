@@ -26,7 +26,6 @@ import gargantua.platform.keyboard;
 import gargantua.platform.key_codes;
 import gargantua.platform.mouse;
 import gargantua.platform.mouse_codes;
-import gargantua.platform.input_system;
 
 
 namespace gargantua::platform
@@ -53,14 +52,8 @@ namespace gargantua::platform
 
 		auto Run() -> void;
 
-		auto IsKeyPressed(Key key) const noexcept -> bool
-		{
-			return input_system.keyboard.IsPressed(key);
-		}
-
 	public:
 		PlatformEventDispatcher event_dispatcher;
-		InputSystem input_system;
 		unique_res<Window> window;
 
 	private:

@@ -141,7 +141,7 @@ export namespace gargantua::math
 		}
 
 
-		auto ToString() -> std::string
+		auto ToString() const -> std::string
 		{
 			return std::format("( {}  {}  {})", x, y, z);
 		}

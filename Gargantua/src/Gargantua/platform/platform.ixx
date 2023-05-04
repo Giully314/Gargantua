@@ -11,10 +11,10 @@ export module gargantua.platform.platform;
 
 export import gargantua.platform.event_dispatcher;
 export import gargantua.platform.platform_events;
-export import gargantua.platform.platform_manager;
 export import gargantua.platform.window;
 export import gargantua.platform.keyboard;
 export import gargantua.platform.key_codes;
 export import gargantua.platform.mouse;
 export import gargantua.platform.mouse_codes;
 export import gargantua.platform.input_system;
+export import gargantua.platform.platform_system;

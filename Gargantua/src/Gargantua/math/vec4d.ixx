@@ -152,11 +152,11 @@ export namespace gargantua::math
 
 		auto Dot(const Vec4d& rhs) const noexcept -> T
 		{
-			return x * rhs.x + y * rhs.y + z * rhs.z;
+			return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
 		}
 
 
-		auto ToString() -> std::string
+		auto ToString() const -> std::string
 		{
 			return std::format("( {}  {}  {}  {} )", x, y, z, w);
 		}
