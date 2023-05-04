@@ -3,7 +3,7 @@
 bin/
 bin-int/
 out/
-Sandbox/resources/
+Sandbox/src/assets/
 
 #Files
 *.user
