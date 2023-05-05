@@ -78,12 +78,23 @@ namespace gargantua::render
 	}
 
 
+	auto Texture2d::Empty(u32 width, u32 height) -> void
+	{
+		info.width = width;
+		info.height = height;
+		info.data_format = GL_RGBA;
+		info.internal_format = GL_RGBA8;
+		glTextureStorage2D(id, 1, info.internal_format, info.width, info.height);
+	}
+
+
 	auto Texture2d::Fill(u32 width, u32 height, void* data) -> void
 	{
 		// First create an empty texture.
 		info.width = width;
 		info.height = height;
 		info.data_format = GL_RGBA;
+		info.internal_format = GL_RGBA8;
 
 		glBindTexture(GL_TEXTURE_2D, id);
 

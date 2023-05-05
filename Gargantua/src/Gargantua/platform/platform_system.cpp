@@ -41,8 +41,8 @@ namespace gargantua::platform
 
 	auto PlatformSystem::Startup(const u16 width, const u16 height, std::string_view title) -> void
 	{
-		InputSystem::Instance().Startup(&event_dispatcher);
-		window = CreateUniqueRes<Window>(width, height, title, &event_dispatcher);
+		InputSystem::Instance().Startup();
+		window = CreateUniqueRes<Window>(width, height, title);
 	}
 
 

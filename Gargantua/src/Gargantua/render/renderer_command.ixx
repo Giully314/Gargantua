@@ -34,6 +34,12 @@ namespace gargantua::render
 			glClearColor(color.x, color.y, color.z, color.w);
 		}
 
+		static auto EnableBlending() -> void
+		{
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		}
+
 		static auto Clear() -> void
 		{
 			glClear(GL_COLOR_BUFFER_BIT);

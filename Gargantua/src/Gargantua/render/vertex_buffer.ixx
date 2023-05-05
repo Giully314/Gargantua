@@ -69,7 +69,7 @@ namespace gargantua::render
 		template <typename T> 
 		auto Load(std::span<T> data, u8 num_of_elements, BufferDraw draw = BufferDraw::Static) -> void
 		{
-			BaseBuffer::Load(static_cast<void*>(data.data()), data.size_bytes(), draw);
+			BaseBuffer::Load(static_cast<const void*>(data.data()), data.size_bytes(), draw);
 			layout = VertexLayout{ num_of_elements, sizeof(T) };
 		}
 

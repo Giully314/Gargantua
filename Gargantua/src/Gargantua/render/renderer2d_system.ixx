@@ -36,6 +36,8 @@ import gargantua.render.texture2d;
 import gargantua.render.orthographic_camera;
 import gargantua.render.batch;
 import gargantua.render.batch_system;
+import gargantua.render.frame_buffer;
+
 
 import gargantua.math.matrix;
 import gargantua.math.vector;
@@ -45,6 +47,15 @@ import gargantua.log.logger_system;
 
 namespace gargantua::render
 {
+	struct FrameBufferData
+	{
+		Program program;
+		VertexArray vao;
+		VertexBuffer screen_vbo;
+		VertexBuffer texture_vbo;
+		FrameBuffer screen_fb;
+	};
+
 	// Keeps the info about the quad that it's used as primitive to draw.
 	struct Quad2dData
 	{
@@ -62,11 +73,7 @@ namespace gargantua::render
 		auto Shutdown() -> void;
 
 		
-		auto BeginScene(const math::Mat4df& camera) -> void
-		{
-			this->camera = camera;
-			data.batch_system.Clear();
-		}
+		auto BeginScene(const math::Mat4df& camera) -> void;
 
 
 		auto EndScene() -> void;
@@ -90,6 +97,7 @@ namespace gargantua::render
 
 	
 	private:
+		FrameBufferData fb_data;
 		Quad2dData data;
 		math::Mat4df camera;
 	};

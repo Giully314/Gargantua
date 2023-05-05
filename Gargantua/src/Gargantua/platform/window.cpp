@@ -20,9 +20,8 @@ namespace gargantua::platform
 		
 	}*/
 
-	Window::Window(const u16 width, const u16 height, std::string_view title,
-		non_owned_res<PlatformEventDispatcher> event_dispatcher) 
-		: properties(width, height, title, event_dispatcher), window(nullptr)
+	Window::Window(const u16 width, const u16 height, std::string_view title) 
+		: properties(width, height, title), window(nullptr)
 	{
 		// TODO: set hints before window creation.
 
@@ -48,11 +47,7 @@ namespace gargantua::platform
 
 		SetVsync(true);
 
-		// TODO: is this code good? 
-		if (properties.event_dispatcher)
-		{
-			RegisterEventsCallbacks();
-		}
+		RegisterEventsCallbacks();
 	}
 
 

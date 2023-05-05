@@ -55,8 +55,6 @@ namespace gargantua::core
 		auto RegisterListenersToEvents() -> void;
 		 
 	private:
-		platform::PlatformSystem platform_system;
-
 		bool should_close;
 
 		unique_res<app::Application> application;

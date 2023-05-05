@@ -33,18 +33,18 @@ namespace gargantua::render
 			return id == other.id;
 		}
 
-		auto GetID() const noexcept -> GLuint
+		auto GetID() const noexcept -> render_id_t
 		{
 			return id;
 		}
 
 	protected:
-		OpenGLObject(GLuint id_) : id(id_)
+		OpenGLObject(render_id_t id_) : id(id_)
 		{
 
 		}
 
 	protected:
-		GLuint id = 0;
+		render_id_t id = 0;
 	};
 } // namespace gargantua::render

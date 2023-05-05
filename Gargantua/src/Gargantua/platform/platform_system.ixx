@@ -39,7 +39,7 @@ namespace gargantua::platform
 
 
 	export 
-	class PlatformSystem
+	class PlatformSystem : public Singleton<PlatformSystem>
 	{
 	public:
 
@@ -52,12 +52,20 @@ namespace gargantua::platform
 
 		auto Run() -> void;
 
-	public:
-		PlatformEventDispatcher event_dispatcher;
-		unique_res<Window> window;
 
+		auto GetWindow() const noexcept -> const Window&
+		{
+			return *window;
+		}
+
+		auto GetWindowProperties() const noexcept -> const WindowProperties&
+		{
+			return window->GetProperties();
+		}
+	
 	private:
 		InitGLFW glfw_init;
+		unique_res<Window> window;
 	};
 
 

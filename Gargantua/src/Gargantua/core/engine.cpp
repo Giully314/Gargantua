@@ -24,7 +24,7 @@ namespace gargantua::core
 		GRG_CORE_DEBUG("Start engine");
 		
 		// Platform system must be the first one to be initialized.
-		platform_system.Startup(width, height, title);
+		platform::PlatformSystem::Instance().Startup(width, height, title);
 
 		render::Renderer2dSystem::Instance().Startup();
 
@@ -37,12 +37,13 @@ namespace gargantua::core
 		// Order does matter.
 		application->Shutdown();
 		render::Renderer2dSystem::Instance().Shutdown();
-		platform_system.Shutdown();
+		platform::PlatformSystem::Instance().Shutdown();
 	}
 
 	auto Engine::RegisterListenersToEvents() -> void
 	{
-		platform_system.event_dispatcher.RegisterListener<platform::WindowCloseEvent>([this](const platform::WindowCloseEvent& e)
+		platform::PlatformEventDispatcher::Instance()
+			.RegisterListener<platform::WindowCloseEvent>([this](const platform::WindowCloseEvent& e)
 			{
 				should_close = e.is_closed;
 			});
@@ -56,14 +57,12 @@ namespace gargantua::core
 		while (!should_close && !input_sys.IsPressed(platform::Key::ESCAPE) && 
 			state == app::ApplicationState::Running)
 		{
-			platform_system.Run();
+			platform::PlatformSystem::Instance().Run();
 
 			application->Begin();
 			state = application->Run();
 			application->End();
 		}
-
-		application->Shutdown();
 	}
 }
 

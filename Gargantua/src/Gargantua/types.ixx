@@ -101,6 +101,9 @@ export namespace gargantua
 	};
 
 
+
+	// TODO: refactor the singletons to make the constructors private.
+	// Remove this after.
 	template<typename T>
 	class Singleton : private NonCopyable, private NonMovable
 	{

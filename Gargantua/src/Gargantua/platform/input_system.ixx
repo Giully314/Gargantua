@@ -29,7 +29,7 @@ export namespace gargantua::platform
 	{
 	public:
 		// Register listeners for all keyboard/mouse events.
-		auto Startup(non_owned_res<PlatformEventDispatcher> event_dispatcher) -> void;
+		auto Startup() -> void;
 
 
 		auto Run() -> void

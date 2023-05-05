@@ -37,17 +37,10 @@ export namespace gargantua::platform
 {
 	struct WindowProperties
 	{
-		explicit WindowProperties(const u16 width_, const u16 height_, std::string_view title_) : 
-									WindowProperties(width_, height_, title_, nullptr)
+		explicit WindowProperties(const u16 width_, const u16 height_, std::string_view title_)
+			: width(width_), height(height_), title(title_), vsync(false)
 		{
-
-		}
-
-		explicit WindowProperties(const u16 width_, const u16 height_, std::string_view title_,
-									non_owned_res<PlatformEventDispatcher> event_dispatcher_) :
-			width(width_), height(height_), title(title_), vsync(false), event_dispatcher(event_dispatcher_)
-		{
-
+			event_dispatcher = &PlatformEventDispatcher::Instance();
 		}
 
 		u16 width;
@@ -65,8 +58,7 @@ export namespace gargantua::platform
 		// Precondition: the library glfw must be initialized before contructing Window.
 		// Can throw if the creation of the window has errors.
 		//Window(const u16 width, const u16 height, std::string_view title);
-		Window(const u16 width, const u16 height, std::string_view title, 
-				non_owned_res<PlatformEventDispatcher> event_dispatcher);
+		Window(const u16 width, const u16 height, std::string_view title);
 
 		Window(const Window&) = delete;
 		Window& operator=(const Window&) = delete;
@@ -89,12 +81,6 @@ export namespace gargantua::platform
 			properties.vsync = set_vsync;
 		}
 
-
-		auto SetEventDispatcher(non_owned_res<PlatformEventDispatcher> event_dispatcher) -> void
-		{
-			properties.event_dispatcher = event_dispatcher;
-		}
-		
 		auto GetProperties() const noexcept -> const WindowProperties&
 		{
 			return properties;

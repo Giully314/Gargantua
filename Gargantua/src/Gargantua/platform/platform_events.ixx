@@ -31,7 +31,6 @@ export module gargantua.platform.platform_events;
 import <concepts>;
 
 import gargantua.types;
-import gargantua.mpl.type_list;
 import gargantua.platform.key_codes;
 import gargantua.platform.mouse_codes;
 
@@ -160,13 +159,5 @@ export namespace gargantua::platform
 	}; 
 
 	// **************** MOUSE EVENTS **********************************
-
-
-	// Typelist used inside the event dispatcher to register at compile time all the platform events.
-	using PlatformEvents = mpl::TypeList<
-		KeyEvent, KeyPressedEvent, KeyReleasedEvent,
-		WindowResizeEvent, WindowCloseEvent,
-		MouseButtonEvent, MouseButtonPressedEvent, MouseButtonReleasedEvent, MouseCursorEvent,
-		MouseWheelScrollEvent>;
 
 } // namespace gargantua::platform

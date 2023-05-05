@@ -27,11 +27,20 @@ import <concepts>;
 import <utility>;
 
 
+
 import gargantua.platform.platform_events;
+import gargantua.types;
 import gargantua.mpl.type_list;
 
 namespace gargantua::platform
 {
+	// Typelist used inside the event dispatcher to register at compile time all the platform events.
+	using PlatformEvents = mpl::TypeList<
+		KeyEvent, KeyPressedEvent, KeyReleasedEvent,
+		WindowResizeEvent, WindowCloseEvent,
+		MouseButtonEvent, MouseButtonPressedEvent, MouseButtonReleasedEvent, MouseCursorEvent,
+		MouseWheelScrollEvent>;
+
 	template <Event TEvent>
 	struct IsEvent
 	{
@@ -58,7 +67,7 @@ namespace gargantua::platform
 
 
 	export 
-	class PlatformEventDispatcher
+	class PlatformEventDispatcher : public Singleton<PlatformEventDispatcher>
 	{
 	public:
 		template <Event TEvent> 
@@ -90,8 +99,9 @@ namespace gargantua::platform
 			}
 		}
 
-		// TODO: check at compile time that the argument of F is of type TEvent. Should be easy to do.
+		
 		template <Event TEvent, typename F>
+			requires std::invocable<F, TEvent>
 		auto RegisterListener(F&& listener) -> void
 		{
 			auto& e = GetTupleElement<TEvent>();
@@ -100,6 +110,7 @@ namespace gargantua::platform
 
 	private:
 		template <Event TEvent> 
+		[[nodiscard]] 
 		auto GetTupleElement() -> TupleElementType<TEvent>&
 		{
 			return std::get<TupleElementType<TEvent>>(event_listeners);

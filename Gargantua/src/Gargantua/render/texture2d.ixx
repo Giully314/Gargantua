@@ -85,6 +85,8 @@ namespace gargantua::render
 		// Precondition: the texture must not be in use. 
 		auto Load(std::string_view filename) -> void;
 
+
+		auto Empty(u32 width, u32 height) -> void;
 		
 		// TODO: i don't like the void* data. Try something else in the interface.
 		// Create a texture of size width, height and fill with data.
@@ -97,6 +99,12 @@ namespace gargantua::render
 		{
 			glDeleteTextures(1, &id);
 			id = 0;
+		}
+
+
+		auto GetInfo() const noexcept -> const Texture2dInfo&
+		{
+			return info;
 		}
 
 	private:
