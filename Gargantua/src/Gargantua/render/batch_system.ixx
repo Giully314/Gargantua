@@ -19,6 +19,7 @@ import gargantua.types;
 
 import gargantua.render.batch;
 import gargantua.render.texture2d;
+import gargantua.render.subtexture2d;
 
 import gargantua.math.vec4d;
 import gargantua.math.mat4d;
@@ -62,6 +63,18 @@ namespace gargantua::render
 			}
 
 			quad_batches.back().Add(transform, texture, tiling_factor);
+		}
+
+		auto Add(const math::Mat4df& transform, const SubTexture2d& subtexture,
+			f32 tiling_factor) -> void
+		{
+			if (quad_batches.back().IsFull()) [[unlikely]]
+			{
+				// Create a new batch.
+				quad_batches.emplace_back(max_num_of_quads);
+			}
+
+			quad_batches.back().Add(transform, subtexture, tiling_factor);
 		}
 
 		// Load the data into the vertex buffers.

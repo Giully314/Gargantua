@@ -24,6 +24,7 @@ import gargantua.types;
 import gargantua.render.buffer;
 import gargantua.render.vertex_array;
 import gargantua.render.texture2d;
+import gargantua.render.subtexture2d;
 
 import gargantua.math.vector;
 import gargantua.math.matrix;
@@ -45,6 +46,7 @@ namespace gargantua::render
 			math::Vec4df{ -0.5f,  0.5f, 0.0f, 1.0f },
 		};
 
+		
 		std::array<math::Vec2df, 4> texture_coords = {
 			math::Vec2df{ 0.0f, 0.0f },
 			math::Vec2df{ 1.0f, 0.0f },
@@ -103,6 +105,9 @@ namespace gargantua::render
 		// Precondition: current number of textures < MAX_NUMBER_OF_TEXTURES (32).
 		auto Add(const math::Mat4df& transform, const shared_res<Texture2d>& texture,
 					f32 tiling_factor) -> void;
+
+
+		auto Add(const math::Mat4df& transform, const SubTexture2d& subtexture, f32 tiling_factor) -> void;
 
 
 		// Setup the vertices into the vertex buffer for a draw call.

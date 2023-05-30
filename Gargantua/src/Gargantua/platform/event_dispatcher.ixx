@@ -16,6 +16,10 @@
 * 
 */
 
+module;
+
+#include <gargantua/log/logger_macro.hpp>
+
 export module gargantua.platform.event_dispatcher;
 
 import <tuple>;
@@ -25,12 +29,13 @@ import <typeindex>;
 import <functional>;
 import <concepts>;
 import <utility>;
-
+import <typeinfo>;
 
 
 import gargantua.platform.platform_events;
 import gargantua.types;
 import gargantua.mpl.type_list;
+import gargantua.log.logger_system;
 
 namespace gargantua::platform
 {
@@ -104,6 +109,7 @@ namespace gargantua::platform
 			requires std::invocable<F, TEvent>
 		auto RegisterListener(F&& listener) -> void
 		{
+			GRG_CORE_DEBUG("Listener for: {}", typeid(TEvent).name());
 			auto& e = GetTupleElement<TEvent>();
 			e.listeners.emplace_back(std::forward<F>(listener));
 		}

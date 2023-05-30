@@ -33,10 +33,11 @@ import gargantua.time.time_step;
 namespace gargantua::time
 {
 
-	export class Stopwatch
+	export 
+	class Stopwatch
 	{
 	public:
-		TimeStep Tick()
+		auto Tick() -> TimeStep
 		{
 			auto temp = std::chrono::steady_clock::now();
 			TimeStep ts{ std::chrono::duration<f64>(temp - s) };
@@ -47,8 +48,7 @@ namespace gargantua::time
 
 	private:
 		std::chrono::time_point<std::chrono::steady_clock> s{ std::chrono::steady_clock::now() };
-	}; //class Stopwatch
-
+	}; 
 
 } //namespace gargantua::time
 

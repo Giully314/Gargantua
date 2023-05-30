@@ -18,3 +18,4 @@ export import gargantua.platform.mouse;
 export import gargantua.platform.mouse_codes;
 export import gargantua.platform.input_system;
 export import gargantua.platform.platform_system;
+export import gargantua.platform.imgui_system;

@@ -26,9 +26,11 @@ namespace gargantua::render
 		// Repeat along y axis.
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
+
 		// Interpolation when rescaling.
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	}
 
 
@@ -65,11 +67,11 @@ namespace gargantua::render
 
 			glTextureSubImage2D(id, 0, 0, 0, info.width, info.height, info.data_format, GL_UNSIGNED_BYTE, buffer);
 
-			/*glBindTexture(GL_TEXTURE_2D, id);
-			glTexImage2D(GL_TEXTURE_2D, 0, info.internal_format, info.width, info.height, 0, info.data_format, GL_UNSIGNED_BYTE, buffer);
-			*/
+			/*Bind();
+			glGenerateMipmap(GL_TEXTURE_2D);
+			Unbind();*/
+
 			stbi_image_free(buffer);
-			//glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		else
 		{

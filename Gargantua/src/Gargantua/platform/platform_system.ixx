@@ -2,10 +2,15 @@
 * gargantua/platform/platform_system.ixx
 * 
 * PURPOSE: Initialiaze the resources of platform.
+* 
 * CLASSES:
+* 
 * DESCRIPTION:
 * 
-* TODO: make a platform system with startup, shutdown and update.
+* 
+* USAGE:
+*	Must be used only by the engine.
+*	
 * 
 */
 
@@ -19,7 +24,6 @@ export module gargantua.platform.platform_system;
 import <string_view>;
 
 import gargantua.types;
-import gargantua.platform.event_dispatcher;
 import gargantua.platform.platform_events;
 import gargantua.platform.window;
 import gargantua.platform.keyboard;
@@ -27,6 +31,7 @@ import gargantua.platform.key_codes;
 import gargantua.platform.mouse;
 import gargantua.platform.mouse_codes;
 
+import gargantua.app.application;
 
 namespace gargantua::platform
 {
@@ -45,9 +50,7 @@ namespace gargantua::platform
 
 		auto Startup(const u16 width, const u16 height, std::string_view title) -> void;
 		
-		auto Shutdown() -> void
-		{
-		}
+		auto Shutdown() -> void;
 
 
 		auto Run() -> void;
@@ -62,7 +65,10 @@ namespace gargantua::platform
 		{
 			return window->GetProperties();
 		}
-	
+
+		
+		auto RenderGUI(non_owned_res<app::Application> application) -> void;
+
 	private:
 		InitGLFW glfw_init;
 		unique_res<Window> window;

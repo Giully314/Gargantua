@@ -31,12 +31,36 @@ namespace gargantua::render
 			ComputeViewProjection();
 		}
 
-		auto SetPosition(math::Vec3df position) -> void
+		auto SetPosition(const math::Vec3df& position) -> void
 		{
 			this->position = position;
 			ComputeViewProjection();
 		}
 
+		auto SetPositionRotation(const math::Vec3df& position, f32 rotation)
+		{
+			this->position = position;
+			this->rotation = rotation;
+			ComputeViewProjection();
+		}
+
+		auto GetPosition() const noexcept -> const math::Vec3df&
+		{
+			return position;
+		}
+
+		auto GetRotation() const noexcept -> f32
+		{
+			return rotation;
+		}
+
+
+		auto SetProjection(f32 l, f32 b, f32 r, f32 t) -> void
+		{
+			projection = math::Projection::Orthographic(l, b, r, t, -1.0f, 1.0f);
+			ComputeViewProjection();
+		}
+		
 
 		auto GetViewProjection() const noexcept -> const math::Mat4df&
 		{

@@ -107,6 +107,16 @@ namespace gargantua::render
 			return info;
 		}
 
+		auto GetWidth() const noexcept -> u32
+		{
+			return info.width;
+		}
+
+		auto GetHeight() const noexcept -> u32
+		{
+			return info.height;
+		}
+
 	private:
 		Texture2dInfo info;
 	};

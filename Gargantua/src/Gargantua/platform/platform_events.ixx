@@ -15,6 +15,8 @@
 *	MouseButtonPressedEvent: Information about the mouse button pressed.
 *	MouseButtonReleasedEvent: Information about the mouse button released.
 *	MouseWheelScrollEvent: Stores the offset of the wheel.
+*	ImGuiEvent: ImGui event base.
+*	ImGuiPanelResizeEvent: Information about the resize of the imgui panel.
 * 
 * CONCEPTS:
 *	Event: Check if a class is derived from the BaseEvent. Used to check a compile time if the type passed to the event dispatcher
@@ -159,5 +161,26 @@ export namespace gargantua::platform
 	}; 
 
 	// **************** MOUSE EVENTS **********************************
+
+	// ****************** IMGUI EVENTS ********************************
+
+	struct ImGuiEvent : public BaseEvent
+	{
+		
+	};
+	
+	struct ImGuiPanelResizeEvent : public ImGuiEvent
+	{
+		ImGuiPanelResizeEvent(u32 new_width_, u32 new_height_) :
+			new_width(new_width_), new_height(new_height_)
+		{
+
+		}
+
+		const u32 new_width;
+		const u32 new_height;
+	};
+
+	// ****************** IMGUI EVENTS ********************************
 
 } // namespace gargantua::platform

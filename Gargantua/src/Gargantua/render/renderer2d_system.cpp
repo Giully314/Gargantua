@@ -72,10 +72,9 @@ namespace gargantua::render
 		// Register events
 		auto& event_dispatcher = platform::PlatformEventDispatcher::Instance();
 		event_dispatcher.RegisterListener<platform::WindowResizeEvent>(
-			[&](const platform::WindowResizeEvent& event)
+			[this](const platform::WindowResizeEvent& event)
 			{
-				fb_data.screen_fb.Resize(event.new_width, event.new_height);
-				RendererCommand::SetViewport(0, 0, event.new_width, event.new_height);
+				Resize(event.new_width, event.new_height);
 			});
 
 
@@ -114,6 +113,13 @@ namespace gargantua::render
 		RendererCommand::DrawArray(fb_data.vao, 6);
 	}
 
+	
+	auto Renderer2dSystem::Resize(u32 width, u32 height) -> void
+	{
+		fb_data.screen_fb.Resize(width, height);
+		RendererCommand::SetViewport(0, 0, width, height);
+	}
+
 
 
 	auto Renderer2dSystem::DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
@@ -134,6 +140,15 @@ namespace gargantua::render
 			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
 		
 		data.batch_system.Add(transform, texture, tiling_factor);
+	}
+
+	auto Renderer2dSystem::DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
+		const SubTexture2d& subtexture, f32 tiling_factor) -> void
+	{
+		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
+			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
+
+		data.batch_system.Add(transform, subtexture, tiling_factor);
 	}
 
 

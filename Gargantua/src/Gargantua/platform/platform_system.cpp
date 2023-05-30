@@ -13,7 +13,9 @@ module gargantua.platform.platform_system;
 
 
 import gargantua.types;
+import gargantua.platform.event_dispatcher;
 import gargantua.platform.input_system;
+import gargantua.platform.imgui_system;
 
 namespace gargantua::platform
 {
@@ -41,8 +43,17 @@ namespace gargantua::platform
 
 	auto PlatformSystem::Startup(const u16 width, const u16 height, std::string_view title) -> void
 	{
-		InputSystem::Instance().Startup();
+		PlatformEventDispatcher::Instance();
 		window = CreateUniqueRes<Window>(width, height, title);
+		InputSystem::Instance().Startup();
+		ImGuiSystem::Instance().Startup(window.get());
+	}
+
+	auto PlatformSystem::Shutdown() -> void
+	{
+		ImGuiSystem::Instance().Shutdown();
+		InputSystem::Instance().Shutdown();
+		window.reset();
 	}
 
 
@@ -50,6 +61,15 @@ namespace gargantua::platform
 	{
 		InputSystem::Instance().Run();
 		window->Update();
+	}
+
+
+	auto PlatformSystem::RenderGUI(non_owned_res<app::Application> application) -> void
+	{
+		auto& imgui = ImGuiSystem::Instance();
+		imgui.BeginScene();
+		application->RenderGUI();
+		imgui.EndScene();
 	}
 
 

@@ -11,6 +11,8 @@ module;
 module gargantua.core.engine;
 
 import gargantua.render.renderer2d_system;
+import gargantua.platform.platform;
+import gargantua.ecs.ecs;
 
 namespace gargantua::core
 {
@@ -25,8 +27,11 @@ namespace gargantua::core
 		
 		// Platform system must be the first one to be initialized.
 		platform::PlatformSystem::Instance().Startup(width, height, title);
-
+		ecs::ECSSystem::Instance();
 		render::Renderer2dSystem::Instance().Startup();
+
+		time_system.Startup();
+
 
 		// Register to the events after the initialization of platform system.
 		RegisterListenersToEvents();
@@ -54,14 +59,21 @@ namespace gargantua::core
 		application->Startup();
 		app::ApplicationState state = app::ApplicationState::Running;
 		auto& input_sys = platform::InputSystem::Instance();
+		auto& plat_sys = platform::PlatformSystem::Instance();
 		while (!should_close && !input_sys.IsPressed(platform::Key::ESCAPE) && 
 			state == app::ApplicationState::Running)
 		{
-			platform::PlatformSystem::Instance().Run();
+			auto ts = time_system.Tick();
+			plat_sys.Run();
 
+			// Update application.
 			application->Begin();
-			state = application->Run();
+			state = application->Run(ts);
 			application->End();
+
+			
+			// Render ImGui.
+			plat_sys.RenderGUI(application.get());
 		}
 	}
 }

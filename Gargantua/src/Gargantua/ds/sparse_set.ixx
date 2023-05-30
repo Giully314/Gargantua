@@ -1,5 +1,5 @@
 /*
-gargantua/datastructures/sparse_set.ixx
+gargantua/ds/sparse_set.ixx
 
 PURPOSE: Implementation of sparse set.
 
@@ -31,7 +31,7 @@ USAGE:
 	s.erase(2);
 */
 
-export module gargantua.datastructures.sparse_set;
+export module gargantua.ds.sparse_set;
 
 import <concepts>;
 import <memory>;
@@ -42,7 +42,7 @@ import <limits>;
 
 import gargantua.types;
 
-export namespace gargantua::datastructures
+export namespace gargantua::ds
 {
 	template <std::unsigned_integral T, typename TAlloc = std::allocator<T>>
 	class SparseSet

@@ -31,6 +31,11 @@ export namespace gargantua::platform
 		// Register listeners for all keyboard/mouse events.
 		auto Startup() -> void;
 
+		auto Shutdown() -> void
+		{
+
+		}
+
 
 		auto Run() -> void
 		{

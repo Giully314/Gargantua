@@ -87,6 +87,46 @@ namespace gargantua::render
 	}
 
 
+	auto QuadBatch::Add(const math::Mat4df& transform, const SubTexture2d& subtexture,
+		f32 tiling_factor) -> void
+	{
+		// Check if the texture is already present.
+		u32 texture_idx = 0;
+		const auto& texture = subtexture.GetTexture();
+
+		// start from 1 because 0 is the white texture.
+		for (u32 i = 1; i < current_num_of_textures; ++i)
+		{
+			if (*texture == *texture_slots[i])
+			{
+				texture_idx = i;
+				break;
+			}
+		}
+
+
+		if (texture_idx == 0)
+		{
+			texture_idx = current_num_of_textures;
+			texture_slots[texture_idx] = texture;
+			++current_num_of_textures;
+		}
+
+		const math::Vec4df white{ 1.0f, 1.0f, 1.0f, 1.0f };
+		const auto texture_coords = subtexture.GetCoords();
+		for (u32 i = 0; i < data.vertices.size(); ++i)
+		{
+			auto v = transform * data.vertices[i];
+			positions.push_back(std::move(v));
+			colors.push_back(white);
+			textures.push_back(texture_coords[i]);
+			texture_idxs.push_back(texture_idx);
+			tiling_factors.push_back(tiling_factor);
+		}
+		++current_num_of_quads;
+	}
+
+
 	// ********************************** PRIVATE ********************************
 
 	auto QuadBatch::SetupVertexArray() -> void

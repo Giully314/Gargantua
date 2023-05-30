@@ -87,6 +87,21 @@ export namespace gargantua::platform
 		}
 
 
+		auto GetNative() -> non_owned_res<GLFWwindow>
+		{
+			return window;
+		}
+
+
+		auto GetHeight() const noexcept -> u32
+		{
+			return properties.height;
+		}
+
+		auto GetWidth() const noexcept -> u32
+		{
+			return properties.width;
+		}
 
 	private:
 		GLFWwindow* window;

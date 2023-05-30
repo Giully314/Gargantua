@@ -5,6 +5,7 @@ export import gargantua.render.buffer;
 export import gargantua.render.render_info;
 export import gargantua.render.vertex_array;
 export import gargantua.render.texture2d;
+export import gargantua.render.subtexture2d;
 export import gargantua.render.shader;
 export import gargantua.render.program;
 export import gargantua.render.orthographic_camera;

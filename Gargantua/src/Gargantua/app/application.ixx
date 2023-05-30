@@ -8,6 +8,7 @@
 
 export module gargantua.app.application;
 
+import gargantua.time.time_step;
 
 namespace gargantua::app
 {
@@ -48,6 +49,14 @@ namespace gargantua::app
 
 		}
 
-		virtual auto Run() -> ApplicationState = 0;
+		// Execute a step inside the application. This function is called inside the 
+		// main loop between Begin and End.
+		virtual auto Run(const time::TimeStep& ts) -> ApplicationState = 0;
+
+		// Render ImGui.
+		virtual auto RenderGUI() -> void
+		{
+
+		}
 	};
 } // namespace gargantua::app

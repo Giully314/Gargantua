@@ -37,6 +37,7 @@ import gargantua.render.orthographic_camera;
 import gargantua.render.batch;
 import gargantua.render.batch_system;
 import gargantua.render.frame_buffer;
+import gargantua.render.subtexture2d;
 
 
 import gargantua.math.matrix;
@@ -73,10 +74,14 @@ namespace gargantua::render
 		auto Shutdown() -> void;
 
 		
+		// Setup the batches, set the camera.
 		auto BeginScene(const math::Mat4df& camera) -> void;
 
-
+		// Draw the batches.
 		auto EndScene() -> void;
+
+		// Resize the frame buffer and set the viewport.
+		auto Resize(u32 width, u32 height) -> void;
 
 
 		// Precondition: all draw calls must be done between BeginScene() and EndScene().
@@ -86,14 +91,16 @@ namespace gargantua::render
 			const math::Vec4df& color) -> void;
 		
 		auto DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
-			const shared_res<render::Texture2d>& texture, f32 tiling_factor=1.0f) -> void;
+			const shared_res<Texture2d>& texture, f32 tiling_factor=1.0f) -> void;
 
+		auto DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
+			const SubTexture2d& subtexture, f32 tiling_factor = 1.0f) -> void;
 
 		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
 			const math::Vec4df& color) -> void;
 
 		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
-			const shared_res<render::Texture2d>& texture, f32 tiling_factor = 1.0f) -> void;
+			const shared_res<Texture2d>& texture, f32 tiling_factor = 1.0f) -> void;
 
 	
 	private:

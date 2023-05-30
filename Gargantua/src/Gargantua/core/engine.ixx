@@ -17,10 +17,9 @@ import <concepts>;
 import <string_view>;
 
 import gargantua.types;
-import gargantua.platform.platform;
 import gargantua.log.log;
-import gargantua.render.render;
 import gargantua.app.application;
+import gargantua.time.time;
 
 
 namespace gargantua::core
@@ -57,6 +56,7 @@ namespace gargantua::core
 	private:
 		bool should_close;
 
+		time::TimeSystem time_system;
 		unique_res<app::Application> application;
 	};
 } // namespace gargantua::core
