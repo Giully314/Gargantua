@@ -55,6 +55,8 @@ import <atomic>;
 import <future>;
 import <stop_token>;
 
+import <initializer_list>;
+
 import <span>;
 import <array>;
 import <vector>;
