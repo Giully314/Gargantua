@@ -4,6 +4,8 @@ bin/
 bin-int/
 out/
 Sandbox/src/assets/
+GargantuaEditor/src/assets/*
+GargantuaEditor/x64/
 
 #Files
 *.user
@@ -19,5 +21,6 @@ CMakeLists.txt
 **.vcxproj.user
 **.hint
 **.imi
-
-.gitignore
+**.png
+**.jpg
+**.ini
