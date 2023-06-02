@@ -14,4 +14,6 @@ include "Gargantua/vendor/Glad"
 include "Gargantua/vendor/imgui"
 include "Gargantua/vendor/stb_image"
 include "Gargantua"
+include "GargantuaEditor"
 include "Sandbox"
+
