@@ -27,7 +27,7 @@ export namespace gargantua::physics
 
 		}
 
-		auto operator()(Force& f, Mass& m, Velocity& v) -> void
+		auto operator()(ForceComponent& f, MassComponent& m, VelocityComponent& v) -> void
 		{
 			v.v += f.f * m.inv_m * dt;
 		}
@@ -43,7 +43,7 @@ export namespace gargantua::physics
 		}
 
 
-		auto operator()(Position& p, Velocity& v) -> void
+		auto operator()(PositionComponent& p, VelocityComponent& v) -> void
 		{
 			p.p += v.v * dt;
 		}

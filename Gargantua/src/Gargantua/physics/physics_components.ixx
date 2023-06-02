@@ -1,13 +1,23 @@
 /*
 * gargantua/physics/physics_components.ixx
 * 
-* PURPSOSE:
-* 
+* PURPSOSE: Define physical properties of an entity with components.
+*	
 * CLASSES:
+*	PositionComponent:	
+*	VelocityComponent:	
+*	ForceComponent:	
+*	MassComponent:	
+*	
+	QuadComponent:	
+*	CircleComponent:	
+* 
 * 
 * DESCRIPTION:
 * 
 * TODO:
+*	- defines coordinate system.
+*	- defines baricenter and other info related to shape.
 * 
 * USAGE:
 */
@@ -19,10 +29,11 @@ import gargantua.math.vec2d;
 
 export namespace gargantua::physics
 {
-	struct Position
+	// Position refers to baricenter? 
+	struct PositionComponent
 	{
-		Position() = default;
-		Position(const math::Vec2df& position) : p(position)
+		PositionComponent() = default;
+		PositionComponent(const math::Vec2df& position) : p(position)
 		{
 
 		}
@@ -30,10 +41,10 @@ export namespace gargantua::physics
 		math::Vec2df p;
 	};
 
-	struct Velocity
+	struct VelocityComponent
 	{
-		Velocity() = default;
-		Velocity(const math::Vec2df& velocity) : v(velocity)
+		VelocityComponent() = default;
+		VelocityComponent(const math::Vec2df& velocity) : v(velocity)
 		{
 
 		}
@@ -41,10 +52,10 @@ export namespace gargantua::physics
 		math::Vec2df v;
 	};
 
-	struct Acceleration
+	struct AccelerationComponent
 	{
-		Acceleration() = default;
-		Acceleration(const math::Vec2df& acceleration) : a(acceleration)
+		AccelerationComponent() = default;
+		AccelerationComponent(const math::Vec2df& acceleration) : a(acceleration)
 		{
 
 		}
@@ -52,10 +63,10 @@ export namespace gargantua::physics
 		math::Vec2df a;
 	};
 
-	struct Force
+	struct ForceComponent
 	{
-		Force() = default;
-		Force(const math::Vec2df& force) : f(force)
+		ForceComponent() = default;
+		ForceComponent(const math::Vec2df& force) : f(force)
 		{
 
 		}
@@ -63,11 +74,11 @@ export namespace gargantua::physics
 		math::Vec2df f;
 	};
 
-	struct Mass
+	struct MassComponent
 	{
-		Mass() = default;
+		MassComponent() = default;
 		// Check for m != 0?
-		Mass(f32 m) : inv_m(1.0f / m)
+		MassComponent(f32 m) : inv_m(1.0f / m)
 		{
 
 		}
@@ -75,5 +86,22 @@ export namespace gargantua::physics
 		// Inverse of mass, for faster computation of acceleration.
 		f32 inv_m;
 	};
+
+	//****************** SHAPES *************************************
+
+	struct QuadComponent
+	{
+		// width, height
+		math::Vec2df size;
+	};
+
+
+	struct CircleComponent
+	{
+
+	};
+
+	//****************** SHAPES *************************************
+
 
 } // namespace gargantua::physics

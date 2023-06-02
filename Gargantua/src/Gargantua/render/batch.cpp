@@ -8,7 +8,9 @@ module;
 
 module gargantua.render.batch;
 
+import gargantua.render.texture_system;
 import gargantua.log.logger_system;
+
 
 namespace gargantua::render
 {
@@ -25,7 +27,8 @@ namespace gargantua::render
 		SetupVertexArray();
 
 		// Load white texture
-		shared_res<Texture2d> texture = CreateSharedRes<Texture2d>();
+
+		shared_res<Texture2d> texture = TextureSystem::Instance().Get("WhiteTexture");
 		texture->Fill(1, 1, &white_color);
 		texture_slots[0] = std::move(texture);
 		++current_num_of_textures;

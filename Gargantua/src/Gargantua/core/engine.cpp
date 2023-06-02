@@ -11,8 +11,10 @@ module;
 module gargantua.core.engine;
 
 import gargantua.render.renderer2d_system;
+import gargantua.render.texture_system;
 import gargantua.platform.platform;
 import gargantua.ecs.ecs;
+import gargantua.physics.physics;
 
 namespace gargantua::core
 {
@@ -28,7 +30,9 @@ namespace gargantua::core
 		// Platform system must be the first one to be initialized.
 		platform::PlatformSystem::Instance().Startup(width, height, title);
 		ecs::ECSSystem::Instance();
+		render::TextureSystem::Instance();
 		render::Renderer2dSystem::Instance().Startup();
+		physics::PhysicsSystem::Instance().Startup();
 
 		time_system.Startup();
 
@@ -71,9 +75,9 @@ namespace gargantua::core
 			state = application->Run(ts);
 			application->End();
 
-			
 			// Render ImGui.
 			plat_sys.RenderGUI(application.get());
+			
 		}
 	}
 }

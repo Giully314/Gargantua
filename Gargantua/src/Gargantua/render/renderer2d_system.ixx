@@ -102,6 +102,11 @@ namespace gargantua::render
 		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
 			const shared_res<Texture2d>& texture, f32 tiling_factor = 1.0f) -> void;
 
+
+		auto GetFrameBuffer() -> FrameBuffer&
+		{
+			return fb_data.screen_fb;
+		}
 	
 	private:
 		FrameBufferData fb_data;
