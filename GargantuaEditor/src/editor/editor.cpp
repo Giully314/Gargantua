@@ -1,6 +1,10 @@
 /*
-* 
+* editor/editor.cpp
 */
+
+module;
+
+#include <gargantua/log/logger_macro.hpp>
 
 module gargantua.editor.editor;
 
@@ -11,9 +15,12 @@ namespace gargantua::editor
 {
 	auto Editor::Startup() -> void 
 	{
+		GRG_CORE_LOGGER_FILTER(log::Level::info);
 		context.Startup();
+		pipeline.AddStage<DemoStage>();
 		pipeline.AddStage<EditorGUI>(&context);
 		pipeline.AddStage<SceneStage>(&context);
+		
 		pipeline.Startup();
 	}
 
@@ -25,7 +32,9 @@ namespace gargantua::editor
 	auto Editor::Begin() -> void 
 	{
 		// Begin renderer
-		render::Renderer2dSystem::Instance().BeginScene(camera.GetViewProjection());
+		auto proj_view = context.GetActiveCameraMatrix();
+		GRG_CORE_DEBUG("Editor\n{}\n", proj_view.ToString());
+		render::Renderer2dSystem::Instance().BeginScene(proj_view);
 	}
 	
 	auto Editor::End() -> void 
@@ -36,6 +45,8 @@ namespace gargantua::editor
 	
 	auto Editor::Run(const time::TimeStep& ts) -> app::ApplicationState 
 	{
+		camera.camera = context.GetActiveCamera();
+		camera.Run(ts);
 		pipeline.Run(ts);
 		return app::ApplicationState::Running;
 	}

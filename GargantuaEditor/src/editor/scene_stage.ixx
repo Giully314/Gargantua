@@ -1,13 +1,14 @@
 /*
 * editor/scene_stage.ixx
 *
-* PURPOSE:
+* PURPOSE: stage for the scene.
 *
 * CLASSES:
+*	SceneStage: stage that handle the execution of the current scene.
 *
 * DESCRIPTION:
-*
-* USAGE:
+*	The SceneStage is the last stage executed in the pipeline and it basically interacts with 
+*	the current scene. Execute and render in the editor app the current scene.
 *
 */
 
@@ -28,9 +29,14 @@ namespace gargantua::editor
 
 		}
 
+		auto Startup() -> void override;
+
 		auto Run(const time::TimeStep& ts) -> void override;
 
 		auto RenderGUI() -> void override;
+
+	private:
+		auto HandleWindowResize() -> bool;
 
 	private:
 		non_owned_res<scene::SceneContext> context;
