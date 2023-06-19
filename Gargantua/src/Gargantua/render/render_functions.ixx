@@ -14,6 +14,7 @@
 export module gargantua.render.render_functions;
 
 import gargantua.types;
+import gargantua.math.math;
 import gargantua.render.render_components;
 import gargantua.physics.physics_components;
 import gargantua.render.renderer2d_system;
@@ -24,7 +25,7 @@ export namespace gargantua::render
 	{
 		auto operator()(const physics::PositionComponent& p, TransformComponent& t) -> void
 		{
-			t.position = p.p;
+			//t.position = math::Vec3df{ p.p, 0.0f };
 		}
 	};
 

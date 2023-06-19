@@ -71,12 +71,13 @@ namespace gargantua::render
 
 		// Register events
 		auto& event_dispatcher = platform::PlatformEventDispatcher::Instance();
+		
+		// THIS IS WRONG, now we are using imgui panels, so resize must be done in terms of that.
 		event_dispatcher.RegisterListener<platform::WindowResizeEvent>(
 			[this](const platform::WindowResizeEvent& event)
 			{
 				Resize(event.new_width, event.new_height);
 			});
-
 
 		RendererCommand::EnableBlending();
 	}
@@ -92,6 +93,11 @@ namespace gargantua::render
 		this->camera = camera;
 		data.batch_system.Clear();
 		fb_data.screen_fb.Bind();
+	}
+
+	auto Renderer2dSystem::BeginScene(const math::Mat4df& transform, const math::Mat4df& projection) -> void
+	{
+		BeginScene(projection * transform.Inverse());
 	}
 
 
@@ -125,52 +131,91 @@ namespace gargantua::render
 	auto Renderer2dSystem::DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
 		const math::Vec4df& color) -> void
 	{
-		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
-			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
-
-		data.batch_system.Add(transform, color);
+		DrawQuad(math::Vec3df{ position, 0.0f }, math::Vec3df{ size, 0.0f }, color);
 	}
 
 	
 
 	void Renderer2dSystem::DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
-		const shared_res<Texture2d>& texture, f32 tiling_factor)
+		const shared_res<Texture2d>& texture, const f32 tiling_factor)
 	{
-		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
-			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
-		
-		data.batch_system.Add(transform, texture, tiling_factor);
+		DrawQuad(math::Vec3df{ position, 0.0f }, math::Vec3df{ size, 0.0f }, texture, tiling_factor);
 	}
 
 	auto Renderer2dSystem::DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
-		const SubTexture2d& subtexture, f32 tiling_factor) -> void
+		const SubTexture2d& subtexture, const f32 tiling_factor) -> void
 	{
-		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
-			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
+		DrawQuad(math::Vec3df{ position, 0.0f }, math::Vec3df{ size, 0.0f }, subtexture, tiling_factor);
+	}
 
-		data.batch_system.Add(transform, subtexture, tiling_factor);
+
+	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, const f32 rotation,
+		const math::Vec4df& color) -> void
+	{
+		DrawRotatedQuad(math::Vec3df{ position, 0.0f }, math::Vec3df{ size, 0.0f }, rotation, color);
 	}
 
 
 	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
+		const shared_res<render::Texture2d>& texture, const f32 tiling_factor) -> void
+	{
+		DrawRotatedQuad(math::Vec3df{ position, 0.0f }, math::Vec3df{ size, 0.0f }, rotation, texture, tiling_factor);
+	}
+
+
+
+	auto Renderer2dSystem::DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
 		const math::Vec4df& color) -> void
 	{
-		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
-			math::Transform3d::RotateZ(rotation) *
-			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
+		auto transform = math::Transform3d::Translate(position) *
+			math::Transform3d::Scale(size);
 
 		data.batch_system.Add(transform, color);
 	}
 
 
-	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
-		const shared_res<render::Texture2d>& texture, f32 tiling_factor) -> void
+
+	void Renderer2dSystem::DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
+		const shared_res<Texture2d>& texture, const f32 tiling_factor)
 	{
-		auto transform = math::Transform3d::Translate(math::Vec3df{ position, 0.0f }) *
-			math::Transform3d::RotateZ(rotation) *
-			math::Transform3d::Scale(math::Vec3df{ size, 0.0f });
+		auto transform = math::Transform3d::Translate(position) *
+			math::Transform3d::Scale(size);
 
 		data.batch_system.Add(transform, texture, tiling_factor);
 	}
+
+	auto Renderer2dSystem::DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
+		const SubTexture2d& subtexture, const f32 tiling_factor) -> void
+	{
+		auto transform = math::Transform3d::Translate(position)*
+			math::Transform3d::Scale(size);
+
+		data.batch_system.Add(transform, subtexture, tiling_factor);
+	}
+
+
+	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+		const math::Vec4df& color) -> void
+	{
+		auto transform = math::Transform3d::Translate(position) *
+			math::Transform3d::RotateZ(rotation) *
+			math::Transform3d::Scale(size);
+
+		data.batch_system.Add(transform, color);
+	}
+
+
+	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+		const shared_res<render::Texture2d>& texture, const f32 tiling_factor) -> void
+	{
+		auto transform = math::Transform3d::Translate(position)*
+			math::Transform3d::RotateZ(rotation)*
+			math::Transform3d::Scale(size);
+
+		data.batch_system.Add(transform, texture, tiling_factor);
+	}
+
+
+
 
 } // namespace gargantua::render

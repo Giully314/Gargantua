@@ -26,6 +26,11 @@ namespace gargantua::scene
 	class Entity
 	{
 	public:
+		Entity() : Entity(ecs::null_entity, nullptr)
+		{
+
+		}
+
 		Entity(const ecs::entity_t id_, non_owned_res<SceneContext> context_) : id(id_),
 			context(context_)
 		{
@@ -36,19 +41,29 @@ namespace gargantua::scene
 		template <typename T, typename ...Args> 
 		auto Emplace(Args&& ...args) -> T&
 		{
-			return context.ECS().Emplace<T, Args...>(id, std::forward<Args>(args)...);
+			return context->ECS().Emplace<T, Args...>(id, std::forward<Args>(args)...);
 		}
 
 		template <typename T>
 		auto Erase() -> void
 		{
-			context.ECS().Erase<T>(id);
+			context->ECS().Erase<T>(id);
 		}
 
+		template <typename T>
+		auto Get() -> T&
+		{
+			return context->ECS().Get<T>(id);
+		}
 
+		template <typename T>
+		auto Has() -> bool
+		{
+			return context->ECS().Has<T>(id);
+		}
 
 	public:
-		const ecs::entity_t id;
+		ecs::entity_t id;
 
 	private:
 		non_owned_res<SceneContext> context;

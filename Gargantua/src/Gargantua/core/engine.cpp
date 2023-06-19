@@ -77,7 +77,6 @@ namespace gargantua::core
 
 			// Render ImGui.
 			plat_sys.RenderGUI(application.get());
-			
 		}
 	}
 }

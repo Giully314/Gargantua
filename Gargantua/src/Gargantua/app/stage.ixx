@@ -27,9 +27,11 @@ USAGE:
 	};
 
 
+	// Register the stages in the pipeline inside the Application.
+
 TODO:
-	add something to allow the stages to communicate?
-	consider to implement in the interface a function Save, that saves the state of the stage.
+	- add something to allow the stages to communicate?
+	- consider to implement in the interface a function Save, that saves the state of the stage.
 */
 
 export module gargantua.app.stage;

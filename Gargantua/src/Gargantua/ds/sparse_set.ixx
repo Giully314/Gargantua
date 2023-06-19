@@ -29,6 +29,9 @@ USAGE:
 	}
 	
 	s.erase(2);
+
+TODO:
+	- write a custom iterator (useful for sorting).
 */
 
 export module gargantua.ds.sparse_set;

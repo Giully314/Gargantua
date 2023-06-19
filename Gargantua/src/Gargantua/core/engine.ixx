@@ -43,7 +43,6 @@ namespace gargantua::core
 			}
 
 			application = CreateUniqueRes<T>();
-			application->Startup();
 		}
 
 		// Game loop

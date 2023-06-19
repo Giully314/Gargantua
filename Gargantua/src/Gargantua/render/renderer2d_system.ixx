@@ -77,6 +77,11 @@ namespace gargantua::render
 		// Setup the batches, set the camera.
 		auto BeginScene(const math::Mat4df& camera) -> void;
 
+		// Transform represents the position of the camera. 
+		// It is inverted in the functio to obtain view.
+		auto BeginScene(const math::Mat4df& transform, const math::Mat4df& projection) -> void;
+
+
 		// Draw the batches.
 		auto EndScene() -> void;
 
@@ -91,16 +96,33 @@ namespace gargantua::render
 			const math::Vec4df& color) -> void;
 		
 		auto DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
-			const shared_res<Texture2d>& texture, f32 tiling_factor=1.0f) -> void;
+			const shared_res<Texture2d>& texture, const f32 tiling_factor=1.0f) -> void;
 
 		auto DrawQuad(const math::Vec2df& position, const math::Vec2df& size,
-			const SubTexture2d& subtexture, f32 tiling_factor = 1.0f) -> void;
+			const SubTexture2d& subtexture, const f32 tiling_factor = 1.0f) -> void;
 
-		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
+		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, const f32 rotation,
 			const math::Vec4df& color) -> void;
 
 		auto DrawRotatedQuad(const math::Vec2df& position, const math::Vec2df& size, f32 rotation,
-			const shared_res<Texture2d>& texture, f32 tiling_factor = 1.0f) -> void;
+			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
+
+
+
+		auto DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
+			const math::Vec4df& color) -> void;
+
+		auto DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
+			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
+
+		auto DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
+			const SubTexture2d& subtexture, const f32 tiling_factor = 1.0f) -> void;
+
+		auto DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+			const math::Vec4df& color) -> void;
+
+		auto DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
 
 
 		auto GetFrameBuffer() -> FrameBuffer&

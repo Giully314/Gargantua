@@ -31,6 +31,7 @@ export module gargantua.ecs.component_group;
 import <concepts>;
 import <tuple>;
 import <limits>;
+import <ranges>;
 import <algorithm>;
 import <utility>;
 
@@ -39,6 +40,7 @@ import gargantua.ecs.entity;
 import gargantua.ecs.component_storage;
 import gargantua.ds.sparse_set;
 import gargantua.mpl.tuple;
+import gargantua.generator.coroutine_generator;
 
 namespace gargantua::ecs
 {
@@ -75,9 +77,7 @@ namespace gargantua::ecs
 			//requires std::invocable<F
 		auto ForEach(F&& f) -> void
 		{
-			MinComponentStorage m;
-
-			m = mpl::ForEach(components, m);
+			auto m = GetMinComponentStorage();
 
 			std::for_each(m.b, m.e, [&](entity_t e)
 				{
@@ -94,6 +94,32 @@ namespace gargantua::ecs
 				});
 		}
 
+
+		auto View() -> generator::Generator<entity_t>
+		{
+			auto m = GetMinComponentStorage();
+
+			for (auto e : std::ranges::subrange(m.b, m.e))
+			{
+				if (std::apply([e](const auto&... tuple_args)
+					{
+						return (tuple_args->Has(e) && ...);
+					}, components))
+				{
+					co_yield e;
+				}
+			}
+			co_return;
+		}
+
+	private:
+		// Return the component storage with less entities.
+		auto GetMinComponentStorage() -> MinComponentStorage
+		{
+			MinComponentStorage m;
+			m = mpl::ForEach(components, m);
+			return m;
+		}
 
 	private:
 		using ComponentTuple = std::tuple<non_owned_res<TComponents>...>;

@@ -15,3 +15,4 @@ export import gargantua.render.render_components;
 export import gargantua.render.render_functions;
 export import gargantua.render.renderer_system;
 export import gargantua.render.texture_system;
+export import gargantua.render.camera;

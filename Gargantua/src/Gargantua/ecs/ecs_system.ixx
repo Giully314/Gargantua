@@ -141,6 +141,12 @@ namespace gargantua::ecs
 			group.ForEach(std::forward<F>(f));
 		}
 
+		/*template <std::movable TComponent, std::movable ...TComponents>
+		auto View()
+		{
+			auto group = Group<TComponent, TComponents...>();
+		}*/
+
 	private:
 		EntityManager entity_mng;
 		ComponentManager component_mng;
