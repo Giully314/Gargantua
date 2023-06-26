@@ -124,6 +124,10 @@ namespace gargantua::render
 		auto DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
 			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
 
+		auto DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+			const math::Vec4df& color,
+			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
+
 
 		auto GetFrameBuffer() -> FrameBuffer&
 		{

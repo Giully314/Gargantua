@@ -35,7 +35,8 @@ export namespace gargantua::render
 		auto operator()(const TransformComponent& transf, const TextureComponent& t) -> void 
 		{
 			Renderer2dSystem::Instance().DrawRotatedQuad(transf.position, transf.scale,
-				transf.rotation, t.texture);
+				transf.rotation, 
+				t.color, t.texture, t.tiling_factor);
 		}
 	};
 

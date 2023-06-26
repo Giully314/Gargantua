@@ -24,22 +24,26 @@ namespace gargantua::scene
 		return Entity{ id, this };
 	}
 
-	auto SceneContext::CreateEntityFromID(const ecs::entity_t e) -> Entity
+
+	auto SceneContext::CreateEntity(const std::string_view name) -> Entity
 	{
-		return Entity{ e, this };
+		auto e = CreateEntity();
+		e.Emplace<TagComponent>(name);
+		return e;
 	}
 
 
-	auto SceneContext::DeleteEntity(Entity e) -> void
+	auto SceneContext::DestroyEntity(Entity e) -> void
 	{
-		DeleteEntity(e.id);
+		DestroyEntity(e.id);
 	}
+		
 
-
-	auto SceneContext::DeleteEntity(ecs::entity_t e) -> void
+	auto SceneContext::DestroyEntity(ecs::entity_t e) -> void
 	{
 		//Temporary, slow.
 		std::erase(entities, e);
+		ecs_system.Destroy(e);
 	}
 
 

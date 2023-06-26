@@ -15,6 +15,7 @@
 export module gargantua.render.texture_system;
 
 import <unordered_map>;
+import <ranges>;
 import <string>;
 
 import gargantua.types;
@@ -61,6 +62,14 @@ namespace gargantua::render
 			return texture;
 		}
 
+
+		/*
+		* Return a view of the names of all textures registered.
+		*/
+		auto GetTextureNames()
+		{
+			return std::views::keys(textures);
+		}
 
 	private:
 		std::unordered_map<std::string, shared_res<Texture2d>> textures;

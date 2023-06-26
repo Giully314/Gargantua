@@ -11,7 +11,7 @@
 export module gargantua.scene.scene_components;
 
 import <string>;
-
+import <string_view>;
 
 export namespace gargantua::scene
 {
@@ -19,7 +19,12 @@ export namespace gargantua::scene
 	{
 		TagComponent() = default;
 
-		TagComponent(const std::string& name_) : name(name_)
+		/*TagComponent(const std::string& name_) : name(std::move(name_))
+		{
+
+		}*/
+
+		explicit TagComponent(std::string_view name_) : name(name_)
 		{
 
 		}

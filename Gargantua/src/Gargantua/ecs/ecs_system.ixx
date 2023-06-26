@@ -67,6 +67,17 @@ namespace gargantua::ecs
 			entity_mng.Destroy(id);
 		}
 
+
+		/*
+		* Check if the entity is alive.
+		* Complexity: O(1).
+		*/
+		auto IsAlive(const entity_t id) -> bool
+		{
+			return entity_mng.IsAlive(id);
+		}
+
+
 		/*
 		* Register a new component type. If already present, do nothing.
 		*/

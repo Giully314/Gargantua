@@ -1,6 +1,7 @@
 /*
 * gargantua/render/batch.cpp
 * 
+* TODO: refactor the add calls. Most of the code is repeated, move it into a single function.
 */
 module;
 
@@ -56,6 +57,14 @@ namespace gargantua::render
 	auto QuadBatch::Add(const math::Mat4df& transform,  
 		const shared_res<Texture2d>& texture, f32 tiling_factor) -> void
 	{
+		const math::Vec4df white{ 1.0f, 1.0f, 1.0f, 1.0f };
+		Add(transform, white, texture, tiling_factor);
+	}
+
+
+	auto QuadBatch::Add(const math::Mat4df& transform, const math::Vec4df& color,
+		const shared_res<Texture2d>& texture, f32 tiling_factor) -> void
+	{
 		// Check if the texture is already present.
 		u32 texture_idx = 0;
 		// start from 1 because 0 is the white texture.
@@ -67,8 +76,8 @@ namespace gargantua::render
 				break;
 			}
 		}
-		
-		
+
+
 		if (texture_idx == 0)
 		{
 			texture_idx = current_num_of_textures;
@@ -76,18 +85,18 @@ namespace gargantua::render
 			++current_num_of_textures;
 		}
 
-		const math::Vec4df white{ 1.0f, 1.0f, 1.0f, 1.0f };
 		for (u32 i = 0; i < data.vertices.size(); ++i)
 		{
 			auto v = transform * data.vertices[i];
 			positions.push_back(std::move(v));
-			colors.push_back(white);
+			colors.push_back(color);
 			textures.push_back(data.texture_coords[i]);
 			texture_idxs.push_back(texture_idx);
 			tiling_factors.push_back(tiling_factor);
 		}
 		++current_num_of_quads;
 	}
+
 
 
 	auto QuadBatch::Add(const math::Mat4df& transform, const SubTexture2d& subtexture,

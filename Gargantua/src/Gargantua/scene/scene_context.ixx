@@ -32,7 +32,10 @@
 export module gargantua.scene.scene_context;
 
 import <string>;
+import <string_view>;
 import <vector>;
+import <ranges>;
+
 
 import gargantua.types;
 import gargantua.ecs.ecs;
@@ -64,7 +67,8 @@ namespace gargantua::scene
 		auto CreateEntity() -> Entity;
 
 		[[nodiscard]]
-		auto CreateEntityFromID(const ecs::entity_t e) -> Entity;
+		auto CreateEntity(const std::string_view name) -> Entity;
+
 
 		[[nodiscard]]
 		auto GetEntities() const -> const std::vector<ecs::entity_t>&
@@ -72,8 +76,8 @@ namespace gargantua::scene
 			return entities;
 		}
 
-		auto DeleteEntity(Entity e) -> void;
-		auto DeleteEntity(ecs::entity_t e) -> void;
+		auto DestroyEntity(Entity e) -> void;
+		auto DestroyEntity(ecs::entity_t e) -> void;
 
 
 		[[nodiscard]]
@@ -105,7 +109,9 @@ namespace gargantua::scene
 
 		auto CreateCamera(const std::string& name) -> ecs::entity_t
 		{
-			return camera_system.Create(name, viewport_width, viewport_height);
+			auto e = camera_system.Create(name, viewport_width, viewport_height);
+			entities.push_back(e);
+			return e;
 		}
 
 		// From 0 to num_of_cameras
@@ -135,6 +141,13 @@ namespace gargantua::scene
 		auto GetViewport() const noexcept -> math::Vec2d<u32>
 		{
 			return math::Vec2d<u32>{viewport_width, viewport_height};
+		}
+
+		
+		// Return a view of the alive entities.
+		auto GetEntities()
+		{
+			return std::views::all(entities);
 		}
 
 

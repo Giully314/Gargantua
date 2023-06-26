@@ -50,8 +50,8 @@ namespace gargantua::render
 		fb_data.vao.AddBuffer(fb_data.screen_vbo, 0);
 		fb_data.vao.AddBuffer(fb_data.texture_vbo, 1);
 
-		Shader fb_vert_shader{ "src/shaders/fb_shader.vert", ShaderType::Vertex };
-		Shader fb_frag_shader{ "src/shaders/fb_shader.frag", ShaderType::Fragment };
+		Shader fb_vert_shader{ "assets/shaders/fb_shader.vert", ShaderType::Vertex };
+		Shader fb_frag_shader{ "assets/shaders/fb_shader.frag", ShaderType::Fragment };
 		fb_data.program.LinkShaders(fb_vert_shader, fb_frag_shader);
 		fb_data.program.SetUniform1i("screen_texture", 0);
 
@@ -60,8 +60,8 @@ namespace gargantua::render
 		RendererCommand::SetViewport(0, 0, props.width, props.height);
 
 		// Setup Quad2dData
-		Shader vert_shader{ "src/shaders/quad_shader.vert", ShaderType::Vertex };
-		Shader frag_shader{ "src/shaders/quad_shader.frag", ShaderType::Fragment };
+		Shader vert_shader{ "assets/shaders/quad_shader.vert", ShaderType::Vertex };
+		Shader frag_shader{ "assets/shaders/quad_shader.frag", ShaderType::Fragment };
 		data.program.LinkShaders(vert_shader, frag_shader);
 
 		data.program.Bind();
@@ -184,6 +184,7 @@ namespace gargantua::render
 		data.batch_system.Add(transform, texture, tiling_factor);
 	}
 
+
 	auto Renderer2dSystem::DrawQuad(const math::Vec3df& position, const math::Vec3df& size,
 		const SubTexture2d& subtexture, const f32 tiling_factor) -> void
 	{
@@ -216,6 +217,14 @@ namespace gargantua::render
 	}
 
 
-
+	auto Renderer2dSystem::DrawRotatedQuad(const math::Vec3df& position, const math::Vec3df& size, const f32 rotation,
+		const math::Vec4df& color,
+		const shared_res<Texture2d>& texture, const f32 tiling_factor) -> void
+	{
+		auto transform = math::Transform3d::Translate(position) *
+			math::Transform3d::RotateZ(rotation) *
+			math::Transform3d::Scale(size);
+		data.batch_system.Add(transform, color, texture, tiling_factor);
+	}
 
 } // namespace gargantua::render

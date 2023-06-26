@@ -77,7 +77,9 @@ export namespace gargantua::render
 		{
 
 		}
-
+		
+		math::Vec4df color { 1.0f, 1.0f, 1.0f, 1.0f };
+		f32 tiling_factor = 1.0f;
 		shared_res<Texture2d> texture;
 	};
 

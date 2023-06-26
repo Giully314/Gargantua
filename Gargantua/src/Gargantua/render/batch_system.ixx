@@ -41,6 +41,7 @@ namespace gargantua::render
 			quad_batches.emplace_back(max_num_of_quads);
 		}
 
+
 		auto Add(const math::Mat4df& transform, const math::Vec4df& color) -> void
 		{
 			if (quad_batches.back().IsFull()) [[unlikely]]
@@ -64,6 +65,20 @@ namespace gargantua::render
 
 			quad_batches.back().Add(transform, texture, tiling_factor);
 		}
+
+
+		auto Add(const math::Mat4df& transform, const math::Vec4df& color, 
+			const shared_res<Texture2d>& texture, f32 tiling_factor) -> void
+		{
+			if (quad_batches.back().IsFull()) [[unlikely]]
+			{
+				// Create a new batch.
+				quad_batches.emplace_back(max_num_of_quads);
+			}
+
+			quad_batches.back().Add(transform, color, texture, tiling_factor);
+		}
+
 
 		auto Add(const math::Mat4df& transform, const SubTexture2d& subtexture,
 			f32 tiling_factor) -> void

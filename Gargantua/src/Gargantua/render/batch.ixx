@@ -106,6 +106,9 @@ namespace gargantua::render
 		auto Add(const math::Mat4df& transform, const shared_res<Texture2d>& texture,
 					f32 tiling_factor) -> void;
 
+		auto Add(const math::Mat4df& transform, const math::Vec4df& color, 
+			const shared_res<Texture2d>& texture, f32 tiling_factor) -> void;
+
 
 		auto Add(const math::Mat4df& transform, const SubTexture2d& subtexture, f32 tiling_factor) -> void;
 
