@@ -11,15 +11,15 @@ app:		Application API for the engine.
 core:		Core components of the engine.    
 ds:			Implementation of data structures.  
 ecs:		Implementation of the entity component system.
-generator:	Generators using coroutines.
+generator:	Generators using coroutines.  
 log:		Basic logging system.  
 math:		Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
 mpl:		Meta programming library.  
-physics:	Primitive physics system with collision resolution.
-platform:	Manage low level systems like I/O and event dispatcher.
+physics:	Primitive physics system with collision resolution.  
+platform:	Manage low level systems like I/O and event dispatcher.  
 render:		Low level components for handling render objects.   
-resource:	Utility.
-scene:		Scene components.
+resource:	Utility.  
+scene:		Scene components.  
 time:		Manage time in the engine.  
 
 
