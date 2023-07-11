@@ -1,12 +1,15 @@
 /*
 * gargantua/ecs/component_group.ixx
 *  
-* PURPOSE: Act on group of components.
+* PURPOSE: Group components.
 * 
 * CLASSES:
-*	ComponentGroup: group a set of components.
+*	ComponentGroup: group all the entites with a specific set of components.
+*	MinComponentStorage: utility class used to select the pool with the minimum size.	
 * 
 * DESCRIPTION:
+*	A group allows to group entities with specific components and act on them.
+*	We can apply a function using ForEach(f) or just iterate the entities ids with View().
 * 
 * TODO:
 *	- iterator.
@@ -23,6 +26,15 @@
 *	{	
 *		p += v * 0.1;
 *	});
+*	
+*	// NOTE: do not modify the underlyign storage in the loop!
+*	auto view = group.View();
+*	for (entity_t e : view)
+*	{
+*		auto& p1 = ecs.Get<Position>(e);
+* 
+*		...
+*	}
 *
 */
 
@@ -44,6 +56,12 @@ import gargantua.generator.coroutine_generator;
 
 namespace gargantua::ecs
 {
+	/*
+	* This struct is used to select the pool of components with the minimum size and 
+	* save the iterators. This is done to reduce the number of iterations based 
+	* on the property that the intersection of the sets of the components has the 
+	* size of the minimum of those sets.
+	*/
 	struct MinComponentStorage
 	{
 		template <typename T>
@@ -62,6 +80,7 @@ namespace gargantua::ecs
 		u32 current_min = std::numeric_limits<u32>::max();
 	};
 
+	// TODO: add requirements on the types.
 	export
 	template <typename ...TComponents>
 	class ComponentGroup
@@ -73,6 +92,12 @@ namespace gargantua::ecs
 		}
 
 
+		// TODO: Add requirements on F at compile time. F must be invocable with 
+		// the types passed in the Group.
+		/*
+		* Apply the function F to every entity that has the set of components 
+		* specified at the creation of the group.
+		*/
 		template <typename F>
 			//requires std::invocable<F
 		auto ForEach(F&& f) -> void
@@ -94,7 +119,9 @@ namespace gargantua::ecs
 				});
 		}
 
-
+		/*
+		* Return a generator (coroutine based) that lazily compute the next entity.
+		*/
 		auto View() -> generator::Generator<entity_t>
 		{
 			auto m = GetMinComponentStorage();

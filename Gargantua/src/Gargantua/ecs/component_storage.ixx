@@ -10,12 +10,11 @@
 *	This class manages the synchronization between the vector of component and the sparse set used to keep info
 *	about the entities registered. 
 * 
-* TODO:
 * 
 * USAGE:
 *	ComponentStorage<Position> s;
 * 
-*	// assume entities e1, e2, e3 have been created by EntityManager.
+*	// assume entity e1 have been created by EntityManager.
 * 
 *	// Note that we need to extract the entity to access the component storage. This is done by the ComponentManager once
 *	// to avoid repetition of extraction in case of accessing multiple component storages with the same entity.
@@ -56,7 +55,7 @@ namespace gargantua::ecs
 
 		/*
 		* Emplace a component for the entity e and return it.
-		* Precondition: e must be the entity part of a valid id.
+		* Precondition: e must be a valid entity.
 		* Complexity: O(construction of component). For simple types is O(1).
 		*/
 		template <typename ...Args>
@@ -77,7 +76,7 @@ namespace gargantua::ecs
 		/*
 		* Erase the component associated to entity e.
 		* If the entity is not registered does nothing.
-		* Precondition: e must be the entity part of a valid id.
+		* Precondition: e must be a valid entity.
 		* Complexity: O(1).
 		*/
 		auto Erase(const entity_t e) -> void override

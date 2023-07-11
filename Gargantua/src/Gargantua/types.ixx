@@ -12,6 +12,7 @@ module;
 export module gargantua.types;
 
 export import <memory>;
+import <type_traits>;
 import <string>;
 import <utility>;
 import <cstdint>;
@@ -77,7 +78,20 @@ export namespace gargantua
 	{
 		return std::make_shared<T>(std::forward<Args>(args)...);
 	}
+	
 
+
+	// Used to avoid boilerplate when converting enums to underlying type.
+	// For example, given an element e of an enum MyEnum, we can access its value
+	// as +e instaed of static_cast<bla bla>(e);
+	// Trick from: Andrei Alexandrescu.
+	// Note: in c++23 there is std::to_underlying, maybe it's better in terms of readability.
+	template <typename Enum>
+		requires std::is_enum_v<Enum>
+	auto operator+(Enum e) -> std::underlying_type_t<Enum>
+	{
+		return static_cast<std::underlying_type_t<Enum>>(e);
+	}
 
 
 	//Inherite private from this class to disable copy (and get errors at compile time).
@@ -99,7 +113,6 @@ export namespace gargantua
 		NonMovable(const NonMovable&) = default;
 		NonMovable& operator=(const NonMovable&) = default;
 	};
-
 
 
 	// TODO: refactor the singletons to make the constructors private.

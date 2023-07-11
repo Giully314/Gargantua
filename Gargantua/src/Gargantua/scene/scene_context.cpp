@@ -14,6 +14,7 @@ import gargantua.physics.physics;
 import gargantua.render.render;
 import gargantua.log.log;
 import gargantua.scene.scene_components;
+import gargantua.math.vector;
 
 namespace gargantua::scene
 {
@@ -76,9 +77,9 @@ namespace gargantua::scene
 	}
 
 
-	auto SceneContext::RegisterToPhysics(Entity e, f32 mass) -> void
+	auto SceneContext::RegisterToPhysics(Entity e, f32 mass, const math::Vec2df& size) -> void
 	{
-		physics::PhysicsSystem::Instance().Register(e.id, mass, ecs_system);
+		physics::PhysicsSystem::Instance().Register(e.id, mass, size, ecs_system);
 	}
 
 

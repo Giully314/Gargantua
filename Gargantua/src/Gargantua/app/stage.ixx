@@ -8,7 +8,7 @@ CLASSES:
 
 
 DESCRIPTION:
-	Basic building block of an Application. A Stage is like a big function with an internal state
+	Basic building block of an Application. A Stage is like a function with an internal state
 	that does only one thing. For example, a RendererStage is a stage that uses the renderer system
 	to draw the entities after the PhysicsStage has computed the physics.
 
@@ -28,6 +28,9 @@ USAGE:
 
 
 	// Register the stages in the pipeline inside the Application.
+	pipeline.AddStage<MyLevelGameStage>();
+	pipeline.AddStage<MyRenderingStage>();
+
 
 TODO:
 	- add something to allow the stages to communicate?

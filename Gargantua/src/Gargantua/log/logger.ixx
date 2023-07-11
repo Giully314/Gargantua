@@ -28,6 +28,7 @@ import <format>;
 
 namespace gargantua::log
 {
+	// TODO: requirements for StreamType.
 	export 
 	template <typename StreamType>
 	class Logger

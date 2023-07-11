@@ -1,9 +1,10 @@
 /*
 * gargantua/time/time_system.ixx
 * 
-* PURPOSE:
+* PURPOSE: manage and customize time.
 * 
 * CLASSES:
+*	TimeSystem: Manage multiple stopwatches with different timesteps.
 * 
 * DESCRIPTION:
 * 

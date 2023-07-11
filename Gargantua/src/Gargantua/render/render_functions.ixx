@@ -1,14 +1,11 @@
 /*
 * gargantua/render/render_functions.ixx
 *
-* PURPOSE: Functions for iterate ECS components.
+* PURPOSE: Functions for the logic of the system for the ecs.
 *
 * CLASSES:
-*
-* DESCRIPTION:
-*
-* USAGE:
-*
+*	UpdateTransform: get info from the physics components to update the transform component.
+*	DisplayEntity: Draw the entity using transform and texture components.
 */
 
 export module gargantua.render.render_functions;
@@ -23,9 +20,12 @@ export namespace gargantua::render
 {
 	struct UpdateTransform
 	{
-		auto operator()(const physics::PositionComponent& p, TransformComponent& t) -> void
+		auto operator()(const physics::PositionComponent& p, 
+			const physics::QuadComponent& q,
+			TransformComponent& t) -> void
 		{
-			//t.position = math::Vec3df{ p.p, 0.0f };
+			t.position = math::Vec3df{ p.p, 0.0f };
+			t.scale = { q.size, 0.0f };
 		}
 	};
 

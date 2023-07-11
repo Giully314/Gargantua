@@ -36,12 +36,12 @@ export namespace gargantua::platform
 
 		auto SetButton(MouseButton b, bool state) -> void
 		{
-			buttons[static_cast<mouse_t>(b)] = state;
+			buttons[+b] = state;
 		}
 
 		auto GetButton(MouseButton b) const -> bool
 		{
-			return buttons[static_cast<mouse_t>(b)];
+			return buttons[+b];
 		}
 
 

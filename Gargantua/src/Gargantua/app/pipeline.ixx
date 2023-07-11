@@ -19,10 +19,15 @@ USAGE:
 	p.AddStage<PhysicStage>(parameters);
 	p.AddStage<AnimationStage>(parameters);
 
+	p.Startup(); // Calls Startup() for every stage in order.
+	
 	p.Execute(timestep);
 
 	p.RenderGUI(); //For debug purpose, use a GUI to display the stage.
 
+	
+	// At the end of the program.
+	p.Shutdown(); // Can be used to save the state of the stages.
 
 TODO:
 	Make the pipeline parallel. This means that the user can specify if 2 or more stages can be

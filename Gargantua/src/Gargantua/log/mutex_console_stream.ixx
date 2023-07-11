@@ -1,5 +1,7 @@
 /*
 * gargantua/log/mutex_console_stream.ixx
+* 
+* PURPOSE: thread safe console stream.
 */
 
 export module gargantua.log.mutex_console_stream;

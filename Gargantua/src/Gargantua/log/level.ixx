@@ -5,20 +5,16 @@ PURPOSE: Level of log.
 
 CLASSES:
 	Level: enum for enumerate the level of logging messages.
-
-DESCRIPTION:
-
-USAGE:
-
 */
 
 export module gargantua.log.logger:level;
 
+import gargantua.types;
 
 namespace gargantua::log
 {
 	export
-	enum class Level
+	enum class Level : u8
 	{
 		debug = 0,   //For debug.
 		info,		 //For information about the status of the program.

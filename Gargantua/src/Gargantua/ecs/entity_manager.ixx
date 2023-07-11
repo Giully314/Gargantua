@@ -7,8 +7,8 @@
 *	EntityManager: Create and destroy id for entities.
 * 
 * DESCRIPTION:
-*	Create, destroy and check if an entity is alive. All the operations are done in constant time.
-* 
+*	Create, destroy and check if an entity is alive. All the operations are done in 
+*	constant time.
 * 
 * TODO:
 *	- Add checks for generation part overflow when destroy an entity? Or let it round to 0?	
@@ -71,7 +71,7 @@ namespace gargantua::ecs
 		* Complexity: O(1).
 		*/
 		[[nodiscard]]
-		auto IsAlive(entity_t e) -> bool
+		auto IsAlive(entity_t e) const -> bool
 		{
 			return entities[EntityManipulation::Entity(e)] == e;
 		}
@@ -84,6 +84,6 @@ namespace gargantua::ecs
 
 		//contains the entity (that is the index in the entities) that can be recycled.
 		id_t next;
-	}; //class EntityManager
+	}; 
 
 } // namespace gargantua::ecs

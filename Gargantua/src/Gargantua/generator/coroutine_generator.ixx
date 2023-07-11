@@ -1,9 +1,10 @@
 /*
 * gargantua/generator/coroutine_generator.ixx
 * 
-* PURPOSE:
+* PURPOSE: Generator class.
 * 
 * CLASSES:
+*   Generator: a template coroutine generator. Based on std::generator (available in c++23).
 * 
 * DESCRIPTION:
 *   Based on: 

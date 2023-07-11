@@ -29,12 +29,12 @@ export namespace gargantua::platform
 
 		auto SetKey(Key k, bool state) -> void
 		{
-			keyboard_state[static_cast<key_t>(k)] = state;
+			keyboard_state[+k] = state;
 		}
 
 		auto IsPressed(Key k) const -> bool
 		{
-			return keyboard_state[static_cast<key_t>(k)];
+			return keyboard_state[+k];
 		}
 
 	private:

@@ -10,10 +10,11 @@
 * 	This class is a wrapper for a string that represents a message, adding other informations like time,
 * 	thread, ecc.
 * 
-* USAGE:
 * 
+* TODO: 
+*	- fix time.
+*	- add thread id.
 * 
-* TODO: fix time, add thread id.
 * 
 */
 

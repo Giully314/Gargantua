@@ -1,14 +1,14 @@
 /*
 * gargantua/render/batch_system.ixx
 * 
-* PURPOSE:
+* PURPOSE: Manage batches.
 * 
 * CLASSES:
+*	BatchSystem: manage all the batches.
 * 
 * DESCRIPTION:
-* 
-* CONS:
-*	This approach could use too much memory.
+*	The batch system handles all the operations on a batch. If the batch is full, create a new one; setup
+*	the batches for the draw.
 */
 
 export module gargantua.render.batch_system;

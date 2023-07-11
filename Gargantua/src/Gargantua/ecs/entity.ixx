@@ -1,7 +1,7 @@
 /*
 * gargantua/ecs/entity.ixx
 * 
-* PURPOSE: Define the Entity type.
+* PURPOSE: Define what is an entity.
 * 
 * CLASSES:
 *	EntityManipulation: Contains a set of functions for id manipulation.
@@ -15,7 +15,6 @@
 *	The EntityManipulation struct is primarily used inside the ecs module to extract the generation and entity from an id.
 *	It can be used by the user too for additional checks.
 * 
-* TODO:
 * 
 * USAGE:
 *	entity_t e = create_entity();

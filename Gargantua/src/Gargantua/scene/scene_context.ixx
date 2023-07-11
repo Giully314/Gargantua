@@ -4,10 +4,17 @@
 * PURPOSE: Represent a scene.
 *
 * CLASSES:
-*	SceneContext: informations and API about the current scene.
+*	SceneContext: informations about the current scene.
 *
+* 
 * DESCRIPTION:
-*	The SceneContext is used to manage an instance of a scene. 
+*	The SceneContext is used to manage an instance of a scene. Every scene has an ECS
+*	and informations about width, height, current entitites and cameras. We can have 
+*	multiple scenes and switch between each as we want. An example is to have in the 
+*	background the setup of a scene for the next level while playing the current scene.
+*	
+*	The scene manages the physics and rendering systems to be executed in the right order.
+* 
 * 
 * USAGE:
 *	SceneContext context(width, height);
@@ -63,23 +70,38 @@ namespace gargantua::scene
 
 		}
 
+		/*
+		* Create an empty entity.
+		*/
 		[[nodiscard]]
 		auto CreateEntity() -> Entity;
 
+		/*
+		* Create an entity with the tag component attached.
+		*/
 		[[nodiscard]]
 		auto CreateEntity(const std::string_view name) -> Entity;
 
 
+		/*
+		* Get all the active entities in the scene.
+		*/
 		[[nodiscard]]
 		auto GetEntities() const -> const std::vector<ecs::entity_t>&
 		{
 			return entities;
 		}
 
+		/*
+		* Destroy the entity.
+		*/
 		auto DestroyEntity(Entity e) -> void;
 		auto DestroyEntity(ecs::entity_t e) -> void;
 
 
+		/*
+		* Get the ECS system used by this scene.
+		*/
 		[[nodiscard]]
 		auto ECS() -> ecs::ECSSystem&
 		{
@@ -87,26 +109,54 @@ namespace gargantua::scene
 		}
 
 
+		/*
+		* Initialize the scene. 
+		*/
 		auto Startup() -> void;
+
+		/*
+		* Close the scene.
+		*/
 		auto Shutdown() -> void;
 
+		/*
+		* Execute a step of the scene if possible. 
+		* This means to execute the physics and rendering system.
+		*/
 		auto Run(const time::TimeStep& ts) -> void;
 		
+		/*
+		* Run the scene.
+		*/
 		auto Play() -> void
 		{
 			is_running = true;
 		}
 		
+		/*
+		* Stop the scene.
+		*/
 		auto Stop() -> void
 		{
 			is_running = false;
 		}
 
 
-		auto RegisterToPhysics(Entity e, f32 mass) -> void;
+		/*
+		* Register an entity to the physics system; basically attaches all the physics 
+		* components to the entity.
+		*/
+		auto RegisterToPhysics(Entity e, f32 mass, const math::Vec2df& size) -> void;
+		
+		/*
+		* Register an entity to the rendering system; basically attaches all the render
+		* components to the entity.
+		*/
 		auto RegisterToRenderer(Entity e) -> void;
 
-
+		/*
+		* Create a camera.
+		*/
 		auto CreateCamera(const std::string& name) -> ecs::entity_t
 		{
 			auto e = camera_system.Create(name, viewport_width, viewport_height);
@@ -114,37 +164,52 @@ namespace gargantua::scene
 			return e;
 		}
 
-		// From 0 to num_of_cameras
+		/*
+		* Set the camera to be used for rendering.
+		*/
 		auto SetActiveCamera(const std::string& name) -> void
 		{
 			active_camera = camera_system.Get(name);
 		}
 
-
+		/*
+		* Get the camera system.
+		*/
 		auto GetCameraSystem() -> CameraSystem&
 		{
 			return camera_system;
 		}
 
-
+		/*
+		* Get the entity active camera.
+		*/
 		[[nodiscard]]
 		auto GetActiveCamera() -> Entity;
 
 
-		// Compute projection * view.
+		/*
+		* Compute projection* view from the active camera and returns it.
+		*/
 		[[nodiscard]]
 		auto GetActiveCameraMatrix() -> math::Mat4df;
 
-
+		/*
+		* Set the viewport matrix.
+		*/
 		auto SetViewport(u32 width, u32 height) -> void;
 		
+		/*
+		* Get the viewport dimensions.
+		*/
 		auto GetViewport() const noexcept -> math::Vec2d<u32>
 		{
 			return math::Vec2d<u32>{viewport_width, viewport_height};
 		}
 
 		
-		// Return a view of the alive entities.
+		/*
+		* Return a view of all the entities that are alive.
+		*/
 		auto GetEntities()
 		{
 			return std::views::all(entities);

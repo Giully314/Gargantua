@@ -1,12 +1,15 @@
 /*
 * gargantua/render/batch.ixx
 * 
-* PURPOSE:
+* PURPOSE: batch to render.
 * 
 * CLASSES:
+*	Quad2dData: info about the rendering of a 2d quad.
+*	QuadBatch:	batch for quads.
 * 
 * DESCRIPTION:
-*	
+*	A batch is a set of vertices that must be rendered. Instaed of doing a draw call for a single quad (slow),
+*	we precompute the vertices and store them, then do a single draw call on all the vertices.
 * 
 * TODO:
 *	- support for multiple shapes (circle, lines).
@@ -75,7 +78,7 @@ namespace gargantua::render
 		friend class Renderer2dSystem;
 
 		// NOTE: the default constructor must not be used so why it is defined? Because visual studio doesn't allow the usage of vector
-		// if there isn't the default constructor, clearly this is a bullshit because in the standard is not specified this requirement 
+		// if there isn't the default constructor, clearly this is a "scam" because in the standard is not specified this requirement 
 		// on the type (with clang it works in the expected way).
 		QuadBatch();
 

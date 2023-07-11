@@ -1,12 +1,16 @@
 /*
 * gargantua/core/engine.ixx
 * 
-* PURPOSE: Glue code for all the submodules.
+* PURPOSE: Glue code for all the modules.
 * 
 * CLASSES:
-*	Engine: Put together all the submodules and provide the glue code.
+*	Engine: Orchestrate all the modules to work together and in order.
 * 
 * DESCRIPTION:
+*	The Engine class is the brain of the project. Every module alone is "almost useless"; 
+*	the real power comes through combination with other modules, and that's the job of the 
+*	Engine. Glue code for communication between engines, right order of startup, shutdown and 
+*	execution. Manage the Application.
 *	
 */
 

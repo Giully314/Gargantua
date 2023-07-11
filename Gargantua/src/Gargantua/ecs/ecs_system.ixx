@@ -72,7 +72,7 @@ namespace gargantua::ecs
 		* Check if the entity is alive.
 		* Complexity: O(1).
 		*/
-		auto IsAlive(const entity_t id) -> bool
+		auto IsAlive(const entity_t id) const -> bool
 		{
 			return entity_mng.IsAlive(id);
 		}
@@ -121,6 +121,9 @@ namespace gargantua::ecs
 		}
 
 
+		/*
+		* Return a Group with the specified components.
+		*/
 		template <std::movable ...TComponents>
 		[[nodiscard]]
 		auto Group() // -> ComponentGroup<ComponentStorage<TComponents>...>
@@ -129,6 +132,10 @@ namespace gargantua::ecs
 		}
 
 
+		/*
+		* Get the component of the entity. 
+		* Precondition: entity must be valid and registered.
+		*/
 		template <std::movable TComponent>
 		[[nodiscard]]
 		auto Get(const entity_t id) -> TComponent&
@@ -136,6 +143,9 @@ namespace gargantua::ecs
 			return component_mng.Get<TComponent>(id);
 		}
 
+		/*
+		* Check if the entity has the component.
+		*/
 		template <std::movable TComponent>
 		[[nodiscard]]
 		auto Has(const entity_t id) -> bool
@@ -144,6 +154,10 @@ namespace gargantua::ecs
 		}
 
 
+		// TODO: requirements for F.
+		/*
+		* Apply a function f to every entity that has the set of components specified.
+		*/
 		template <std::movable ...TComponents, typename F>
 			//requires std::invocable<F, TComponents...>
 		auto ForEach(F&& f) -> void

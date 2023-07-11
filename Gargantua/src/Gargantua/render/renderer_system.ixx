@@ -1,15 +1,12 @@
-	/*
-	* gargantua/render/renderer_system.ixx
-	*
-	* PURPOSE: System for ECS components.
-	*
-	* CLASSES:
-	* 
-	* DESCRIPTION:
-	*
-	* USAGE:
-	*
-	*/
+/*
+* gargantua/render/renderer_system.ixx
+*
+* PURPOSE: run the rendering.
+*
+* CLASSES:
+*	RendererSystem: render all the entities that have TransformComponent and TextureComponent.
+* 
+*/
 
 export module gargantua.render.renderer_system;
 
@@ -58,13 +55,13 @@ namespace gargantua::render
 
 
 		/*
-		* Run phisycs simulation.
+		* Run rendering.
 		*/
 		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
 		{
 			UpdateTransform upt;
 			DisplayEntity draw;
-			ecs_s.ForEach<physics::PositionComponent, TransformComponent>(upt);
+			ecs_s.ForEach<physics::PositionComponent, physics::QuadComponent, TransformComponent>(upt);
 			ecs_s.ForEach<TransformComponent, TextureComponent>(draw);
 		}	
 	};

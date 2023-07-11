@@ -1,3 +1,9 @@
+/*
+* gargantua/scene/scene.ixx
+* 
+* This module is for the management of a scene in a game. 
+*/
+
 export module gargantua.scene.scene;
 
 export import gargantua.scene.scene_entity;

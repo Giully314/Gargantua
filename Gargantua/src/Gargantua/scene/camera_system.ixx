@@ -46,8 +46,15 @@ namespace gargantua::scene
 		}
 
 		//auto Destroy(ecs::entity_t id) -> void;
+		
+		/*
+		* Destroy a camera.
+		*/
 		auto Destroy(const std::string& name) -> void;
 
+		/*
+		* Get the number of cameras.
+		*/
 		[[nodiscard]]
 		auto Size() const noexcept -> u32
 		{
@@ -55,9 +62,15 @@ namespace gargantua::scene
 		}
 
 
+		/*
+		* Get the entity camera with the name passed.
+		*/
 		[[nodiscard]]
 		auto Get(const std::string& name) -> ecs::entity_t;
 
+		/*
+		* Create a camera.
+		*/
 		auto Create(const std::string& name, u32 viewport_width, u32 viewport_height) -> ecs::entity_t;
 	
 	private:

@@ -8,9 +8,6 @@ CLASSES:
 	TimeStep: Value in second or millisecond of time passed between 2 ticks.
 
 
-DESCRIPTION:
-
-
 USAGE:
 	Stopwatch s;
 
@@ -77,7 +74,7 @@ export namespace gargantua::time
 
 	private:
 		std::chrono::duration<double> time_step{ 0 };
-	}; //class TimeStep
+	};
 
 
 	//*************************** FRIEND OPERATORS ************************************

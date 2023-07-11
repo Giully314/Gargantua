@@ -1,16 +1,17 @@
 /*
 * gargantua/ecs/component_manager.ixx
 *  
-* PURPOSE: Manage multiple components.
+* PURPOSE: Manage pools of components.
 * 
 * CLASSES:
-*	ComponentManager: Register multiple component types at runtime.
+*	ComponentManager: Handle at runtime the storage of multiple components.
+* 
 * 
 * DESCRIPTION:
-*	Manage the ComponentStorage for the different type of components. It's important to access a component for an entity
-*	through this class because the correct idx is extracted from the id and passed to the component storage.
+*	Manage the ComponentStorage for the different type of components. It's important to access a component of 
+*	an entity through this class because the correct idx is extracted from 
+*	the id and passed to the component storage.
 * 
-* TODO:
 * 
 * USAGE:
 *	ComponentManager mng;
@@ -75,6 +76,7 @@ namespace gargantua::ecs
 
 		/*
 		* Emplace a component for the entity with id.
+		* Throw if the component is not registered.
 		* Return the component.
 		* Complexity: O(construction of component).
 		*/
@@ -89,6 +91,7 @@ namespace gargantua::ecs
 
 		/*
 		* Erase the component of the entity with id.
+		* Throw if the component is not registered.
 		* Complexity: O(destruction of component).
 		*/
 		template <std::movable TComponent>
@@ -110,7 +113,7 @@ namespace gargantua::ecs
 			}
 		}
 
-
+		// Get the component storage of TComponent.
 		// Throw if the component is not registered.
 		template <std::movable TComponent>
 		[[nodiscard]]
@@ -142,7 +145,7 @@ namespace gargantua::ecs
 
 
 		/*
-		* 
+		* Return true if the entity has the TComponent, false otherwise.
 		*/
 		template <std::movable TComponent>
 		[[nodiscard]]

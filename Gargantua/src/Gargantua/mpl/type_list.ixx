@@ -1,24 +1,19 @@
 /*
-gargantua/mpl/type_list.ixx
-
-
-PURPOSE:
-
-CLASSES:
-	TypeList:
-	Rebind:
-	Transform:
-
-
-DESCRIPTION:
-
-
-TODO:
-	Concepts for the meta functions and predicates?
-
-USAGE:
-
-
+* gargantua/mpl/type_list.ixx
+* 
+* PURPOSE: small metaprogramming library.
+* 
+* CLASSES:
+* 	TypeList: a list of types.
+* 	Rebind: rebind a list of types to another type (for example from TypeList to tuple.
+* 	Transform: Apply a metafunction to every type in the list.
+*	CheckPredicate: Check if a predicate is satisfied for every type in the list.
+*	IsPresent: Check if a type is present in the list.
+* 
+* TODO:
+* 	Concepts for the meta functions and predicates?
+* 
+* 
 */
 
 export module gargantua.mpl.type_list;

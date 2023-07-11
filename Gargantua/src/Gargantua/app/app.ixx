@@ -1,3 +1,8 @@
+/*
+* gargantua/app/app.ixx
+* 
+* The app module defines the API of the application that will be executed by the engine.
+*/
 export module gargantua.app.app;
 
 export import gargantua.app.application;

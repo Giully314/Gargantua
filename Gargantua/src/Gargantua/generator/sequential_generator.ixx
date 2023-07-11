@@ -1,17 +1,19 @@
 /*
 * gargantua/generator/sequential_generator.ixx
 * 
-* PURPOSE:
+* PURPOSE: Natural number generator.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
-* 
+*	SequentialGenerator: generate a sequence of numbers, starting from 0.
+*
 * TODO:
 *	- Add check of overflow.
+*	- Use the generator class.
 * 
 * USAGE:
-* 
+*	SequentialGenerator<int> sq;
+*	int i = sq.Next(); // 0
+*	i = sq.Next(); // 1
 */
 
 
