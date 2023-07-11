@@ -8,6 +8,8 @@ module;
 #include <imgui_internal.h>
 //#include <misc/cpp/imgui_stdlib.h>
 
+#include <gargantua/log/logger_macro.hpp>
+
 module gargantua.editor.editor_gui;
 
 import <ranges>;
@@ -125,10 +127,21 @@ namespace gargantua::editor
 
     auto EditorGUI::Startup() -> void
     {
+        using namespace physics;
         auto e1 = context->CreateEntity();
-        context->RegisterToPhysics(e1, 1.0f);
+        context->RegisterToPhysics(e1, 0.5f, {1.0f, 1.0f});
         context->RegisterToRenderer(e1);
         e1.Emplace<scene::TagComponent>("Square");
+        e1.Get<RigidBodyComponent>().restituition = 0.5f;
+        e1.Get<VelocityComponent>().v.x += 2.0f;
+
+        auto e2 = context->CreateEntity();
+        
+        context->RegisterToPhysics(e2, 1.0f, {15.0f, 1.0f});
+        context->RegisterToRenderer(e2);
+        e2.Emplace<scene::TagComponent>("Square floor");
+        e2.Get<MassComponent>().InfiniteMass();
+        e2.Get<PositionComponent>().p = { 0.0f, -3.0f };
     }
 
 	auto EditorGUI::RenderGUI() -> void 

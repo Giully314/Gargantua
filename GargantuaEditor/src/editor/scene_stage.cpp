@@ -5,6 +5,8 @@ module;
 
 #include <imgui.h>
 
+#include <gargantua/log/logger_macro.hpp>
+
 module gargantua.editor.scene_stage;
 
 
@@ -28,6 +30,12 @@ namespace gargantua::editor
 		////renderer.DrawRotatedQuad(position, size, 1.0f, texture);
 
 		context->Run(ts);
+		context->ECS().ForEach<physics::PositionComponent>(
+			[&](const physics::PositionComponent& p)
+			{
+				GRG_CORE_INFO("{}", p.p.ToString());
+			}
+		);
 	}
 
 	auto SceneStage::RenderGUI() -> void

@@ -15,9 +15,9 @@ namespace gargantua::editor
 {
 	auto Editor::Startup() -> void 
 	{
-		GRG_CORE_LOGGER_FILTER(log::Level::info);
+		GRG_CORE_LOGGER_FILTER(log::Level::debug);
 		context.Startup();
-		pipeline.AddStage<DemoStage>();
+		//pipeline.AddStage<DemoStage>();
 		pipeline.AddStage<EditorGUI>(&context);
 		pipeline.AddStage<SceneStage>(&context);
 		
