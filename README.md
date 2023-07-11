@@ -1,5 +1,7 @@
 # Gargantua
-A 2d game engine under development.
+A 2d game engine under development.  
+
+![](images/editor2.gif)  
 
 
 
@@ -26,7 +28,7 @@ The project is based on C++20.
 
 
 # Personal considerations
-This is my first real project in C++ and my first engine. I'm developing this engine because i find really 
+This is my first game engine. I'm developing this engine because i find really 
 interesting how simulations are created. I also want start to develop a game based on pixel simulation.  
 I minimized the usage of external libraries because i find really funny to design and develop the core functionalities.
 At first i also wanted to avoid the usage of glfw (and even of opengl, after i followed the beautiful project tinyrenderer)
@@ -34,14 +36,21 @@ but then i realized that the focus of the project would shift too much.
 In the end, i hope to learn as much as possible and become better at design and develop software!  
 
 
+# Architecture 
+You will notice a lot of singleton. 
+Almost all the systems of the engine are singleton because we need only one instance and 
+this instance must be accessible from every point. I really don't like this approach because it 
+could be not safe (specially when multithreading will be implemented) but it is the most simple and 
+straightforward approach that came to my mind. Another approach is to have a System class that manages 
+all the systems and provides the access point. 
+
+
 # Resource that i found useful
 
 ## Other engines 
 TheCerno game engine series.  
 Godot engine source code.  
-Spring RTS source code.  
 Ogre engine source code.  
-https://github.com/cocos-creator/engine-native  
 
 
 ## Books
@@ -73,16 +82,22 @@ https://vkguide.dev/docs/extra-chapter/multithreading/ (useful additional resour
 GCAP 2016: Parallel Game Engine Design - Brooke Hodgman: https://www.youtube.com/watch?v=JpmK0zu4Mts   
 CppCon 2016: Jason Jurecka “Game engine using STD C++ 11": https://youtu.be/8AjRD6mU96s   
 
+ECS:  
+https://skypjack.github.io/2019-02-14-ecs-baf-part-1/  
+
 
 Physics:  
 https://gafferongames.com/categories/game-physics/  
 https://gamedevelopment.tutsplus.com/series/how-to-create-a-custom-physics-engine--gamedev-12715  
-
+[Building a Physics Engine with C++ and Simulating Machines](https://youtu.be/TtgS-b191V0)  
+[Runge-Kutta method for solving differential equations](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods)  
+[Semi implicit Euler, used in the engine](https://en.wikipedia.org/wiki/Semi-implicit_Euler_method)
 
 
 STD containers, custom containers and iterators:  
 https://www.internalpointers.com/post/writing-custom-iterators-modern-cpp   
 Mathieu Ropert “This Videogame Programmer Used the STL and You Will Never Guess What Happened Next”: https://youtu.be/6hC9IxqdDDw   
+
 
 
 Graphics:
