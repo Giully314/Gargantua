@@ -21,6 +21,7 @@ export namespace gargantua::log
 
 		auto Flush() -> MutexConsoleStream&
 		{
+			std::lock_guard l{ m };
 			std::cout.flush();
 			return *this;
 		}
