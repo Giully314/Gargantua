@@ -21,15 +21,16 @@ namespace gargantua::editor
 {
     // *********************************************** UTILITY FUNCTIONS IMGUI DRAW ******************************
     
-    static auto DrawFloatControl(std::string_view name, f32& f) -> void
+    static auto DrawFloatControl(std::string_view name, f32& f, const f32 min = -3.0f, const f32 max = 3.0f) -> void
     {
         //ImGui::PushID(name.data());
 
-        ImGui::DragFloat(name.data(), &f, 0.01f, -3.0f, 3.0f);
+        ImGui::DragFloat(name.data(), &f, 0.01f, min, max);
     }
     
-    static auto DrawVec3dControl(std::string_view name, math::Vec3df& v, 
-        f32 reset_value = 0.0f, f32 column_width = 100.0f) -> void
+    static auto DrawVec3dControl(std::string_view name, math::Vec3df& v, const f32 min = 0.0f, 
+        const f32 max = 10.0f,
+        const f32 reset_value = 0.0f, const f32 column_width = 100.0f) -> void
     {
         ImGuiIO& io = ImGui::GetIO();
         auto bold_font = io.Fonts->Fonts[0];
@@ -62,7 +63,7 @@ namespace gargantua::editor
         ImGui::PopFont();
         ImGui::PopStyleColor(3);
         ImGui::SameLine();
-        ImGui::DragFloat("##X", &v.x, 0.1f);
+        ImGui::DragFloat("##X", &v.x, 0.1f, min, max);
         ImGui::PopItemWidth();
         ImGui::SameLine();
 
@@ -78,7 +79,7 @@ namespace gargantua::editor
         ImGui::PopFont();
         ImGui::PopStyleColor(3);
         ImGui::SameLine();
-        ImGui::DragFloat("##Y", &v.y, 0.1f);
+        ImGui::DragFloat("##Y", &v.y, 0.1f, min, max);
         ImGui::PopItemWidth();
         ImGui::SameLine();
 
@@ -94,7 +95,7 @@ namespace gargantua::editor
         ImGui::PopFont();
         ImGui::PopStyleColor(3);
         ImGui::SameLine();
-        ImGui::DragFloat("##Z", &v.z, 0.1f);
+        ImGui::DragFloat("##Z", &v.z, 0.1f, min, max);
         ImGui::PopItemWidth();
         
 
@@ -129,66 +130,29 @@ namespace gargantua::editor
     {
         using namespace physics;
         auto e1 = context->CreateEntity();
-        context->RegisterToPhysics(e1, 0.5f, {1.0f, 1.0f});
+        context->RegisterToPhysics(e1, 0.5f, 0.5f, {1.0f, 1.0f});
         context->RegisterToRenderer(e1);
         e1.Emplace<scene::TagComponent>("Square");
         e1.Get<RigidBodyComponent>().restituition = 0.5f;
-        e1.Get<VelocityComponent>().v.x += 2.0f;
+        //e1.Get<VelocityComponent>().v.x += 2.0f;
+        //e1.Get<AngularVelocityComponent>().omega += 2.0f;
 
-        auto e2 = context->CreateEntity();
+        /*auto e2 = context->CreateEntity();
         
         context->RegisterToPhysics(e2, 1.0f, {15.0f, 1.0f});
         context->RegisterToRenderer(e2);
         e2.Emplace<scene::TagComponent>("Square floor");
         e2.Get<MassComponent>().InfiniteMass();
-        e2.Get<PositionComponent>().p = { 0.0f, -3.0f };
+        e2.Get<PositionComponent>().p = { 0.0f, -3.0f };*/
     }
 
 	auto EditorGUI::RenderGUI() -> void 
 	{
-
     	ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-        ImGuiIO& io = ImGui::GetIO();
-
-        //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-        ImGui::Begin("Scene manager");
-        /*static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | 
-            ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;*/
-        
-        if (ImGui::CollapsingHeader("Scene Hierarchy"))
-        {
-            EntityNode();
-        }
-
-
-        // Right click on a blank space in scene manager open a popup.
-        if (ImGui::BeginPopupContextWindow(0, 1, false))
-        {
-            if (ImGui::MenuItem("Create empty entity"))
-            {
-                context->CreateEntity("Empty entity");
-            }
-
-            ImGui::EndPopup();
-        }
-
-
-        ImGui::End();
-        //ImGui::PopStyleVar();
-
-
-
-        //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
-        ImGui::Begin("Properties");
-        
-        if (entity_selected.IsValid())
-        {
-            ShowComponents(entity_selected);
-        }
-
-        ImGui::End();
-        //ImGui::PopStyleVar();
+        UISceneManager();
+        UIProperties();
+        UIToolbar();
 	}
 
 
@@ -265,6 +229,11 @@ namespace gargantua::editor
             entity_selected.Emplace<render::TextureComponent>();
             ImGui::CloseCurrentPopup();
         }
+        else if (ImGui::MenuItem("Physics"))
+        {
+            context->RegisterToPhysics(entity_selected, 0.5f, 0.5f, { 1.0f, 1.0f });
+            ImGui::CloseCurrentPopup();
+        }
     }
 
 
@@ -300,9 +269,9 @@ namespace gargantua::editor
 
         ShowComponent<TransformComponent>("Transform", entity, [](TransformComponent& t)
             {
-                DrawVec3dControl("Position", t.position);
+                DrawVec3dControl("Position", t.position, -10.f, 10.0f);
                 DrawFloatControl("Rotation", t.rotation);
-                DrawVec3dControl("Scale", t.scale, 1.0f);
+                DrawVec3dControl("Scale", t.scale, 0.5f, 10.0f, 1.0f);
             });
 
         ShowComponent<TextureComponent>("Texture", entity, [=](TextureComponent& t)
@@ -318,5 +287,91 @@ namespace gargantua::editor
             {
 
             });
+
+
+        ShowPhysicsComponents(entity);
+    }
+
+
+    auto EditorGUI::ShowPhysicsComponents(scene::Entity entity) -> void
+    {
+        using namespace physics;
+        ShowComponent<MassComponent>("Mass", entity, [](MassComponent& c)
+            {
+                f32 m = c.m;
+                ImGui::SliderFloat("Mass", &m, 0.0f, 100.0f);
+                c.SetMass(m);
+            });
+
+        ShowComponent<RigidBodyComponent>("RigidBody", entity, [](RigidBodyComponent& b)
+            {
+                ImGui::SliderFloat("Static friction", &b.static_friction, 0.01f, 10.0f);
+                ImGui::SliderFloat("Dynamic friction", &b.dynamic_friction, 0.01f, 10.0f);
+                ImGui::SliderFloat("Restituition", &b.restituition, 0.01f, 10.0f);
+            });
+    }
+
+
+    auto EditorGUI::UISceneManager() -> void
+    {
+        //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+        ImGui::Begin("Scene manager");
+        /*static ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow |
+            ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_SpanAvailWidth;*/
+
+        if (ImGui::CollapsingHeader("Scene Hierarchy"))
+        {
+            EntityNode();
+        }
+
+
+        // Right click on a blank space in scene manager open a popup.
+        if (ImGui::BeginPopupContextWindow(0, 1, false))
+        {
+            if (ImGui::MenuItem("Create empty entity"))
+            {
+                context->CreateEntity("Empty entity");
+            }
+
+            ImGui::EndPopup();
+        }
+
+
+        ImGui::End();
+        //ImGui::PopStyleVar();
+    }
+
+    auto EditorGUI::UIProperties() -> void
+    {
+        //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+        ImGui::Begin("Properties");
+
+        if (entity_selected.IsValid())
+        {
+            ShowComponents(entity_selected);
+        }
+
+        ImGui::End();
+        //ImGui::PopStyleVar();
+    }
+
+
+
+    auto EditorGUI::UIToolbar() -> void
+    {
+        ImGui::Begin("##toolbar", nullptr, ImGuiWindowFlags_NoDecoration |
+            ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+        if (ImGui::Button("Play"))
+        {   
+            context->SimulationMode();
+        }
+
+        if (ImGui::Button("Stop"))
+        {
+            context->EditorMode();
+        }
+
+        ImGui::End();
     }
 } // namespace gargantua::editor

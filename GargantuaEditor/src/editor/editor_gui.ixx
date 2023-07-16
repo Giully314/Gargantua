@@ -97,9 +97,13 @@ namespace gargantua::editor
 		auto EntityNode() -> void;
 		auto ShowComponents(scene::Entity e) -> void;
 		
+		auto ShowPhysicsComponents(scene::Entity e) -> void;
 
 		auto AddComponentNode() -> void;
 
+		auto UISceneManager() -> void;
+		auto UIProperties() -> void;
+		auto UIToolbar() -> void;
 
 	private:
 		non_owned_res<scene::SceneContext> context;
