@@ -59,6 +59,21 @@ export namespace gargantua::physics
 		}
 
 
+		/*
+		* Update orientation.
+		*/
+		auto operator()(RotationComponent& r, const AngularVelocityComponent& o) -> void
+		{
+			r.theta += o.omega * dt;
+		}
+
+
+		auto operator()(AngularVelocityComponent& o, const TorqueComponent& t, const MomentInertiaComponent& i) -> void
+		{
+			o.omega += t.t * i.inv_i * dt;
+		}
+
+
 		const f32 dt;
 	};
 

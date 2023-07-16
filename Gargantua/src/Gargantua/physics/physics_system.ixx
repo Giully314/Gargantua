@@ -14,6 +14,7 @@
 * TODO:
 *	- Improve the collision detection.
 *	- Implement collision resolution for oriented rigid bodies.
+*	- Support for different shapes.
 * 
 * DOUBTS:
 *	I think the collision detection and resolve must be done in the same step to be accurate. 
@@ -60,6 +61,12 @@ namespace gargantua::physics
 			ecs_s.Register<VelocityComponent>();
 			ecs_s.Register<ForceComponent>();
 			ecs_s.Register<MassComponent>();
+			
+			ecs_s.Register<RotationComponent>();
+			ecs_s.Register<AngularVelocityComponent>();
+			ecs_s.Register<TorqueComponent>();
+			ecs_s.Register<MomentInertiaComponent>();
+
 			ecs_s.Register<QuadComponent>();
 			ecs_s.Register<QuadCollisionComponent>();
 			ecs_s.Register<RigidBodyComponent>();
@@ -70,13 +77,20 @@ namespace gargantua::physics
 		* Attach Position, Velocity, Force, Mass, RigidBody, QuadComponent, QuadCollision
 		* to the entity.
 		*/
-		auto Register(ecs::entity_t e, f32 mass, const math::Vec2df& size,
+		auto Register(ecs::entity_t e, const f32 mass, const f32 inertia, 
+			const math::Vec2df& size,
 			ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
 		{
 			ecs_s.Emplace<PositionComponent>(e);
 			ecs_s.Emplace<VelocityComponent>(e);
 			ecs_s.Emplace<ForceComponent>(e);
 			ecs_s.Emplace<MassComponent>(e, mass);
+
+			ecs_s.Emplace<RotationComponent>(e);
+			ecs_s.Emplace<AngularVelocityComponent>(e);
+			ecs_s.Emplace<TorqueComponent>(e);
+			ecs_s.Emplace<MomentInertiaComponent>(e, inertia);
+
 			ecs_s.Emplace<QuadComponent>(e, size);
 			ecs_s.Emplace<RigidBodyComponent>(e);
 			ecs_s.Emplace<QuadCollisionComponent>(e);
@@ -93,6 +107,15 @@ namespace gargantua::physics
 			ecs_s.Erase<VelocityComponent>(e);
 			ecs_s.Erase<ForceComponent>(e);
 			ecs_s.Erase<MassComponent>(e);
+
+			ecs_s.Erase<RotationComponent>(e);
+			ecs_s.Erase<AngularVelocityComponent>(e);
+			ecs_s.Erase<TorqueComponent>(e);
+			ecs_s.Erase<MomentInertiaComponent>(e);
+
+			ecs_s.Erase<QuadComponent>(e);
+			ecs_s.Erase<RigidBodyComponent>(e);
+			ecs_s.Erase<QuadCollisionComponent>(e);
 		}
 		
 

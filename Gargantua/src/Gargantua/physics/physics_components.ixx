@@ -4,22 +4,25 @@
 * PURPSOSE: Define physical properties of an entity with components.
 *	
 * CLASSES:
-*	PositionComponent:	info about the position of an entity.
-*	VelocityComponent:	info about the velocity of an entity.
-*	ForceComponent:		info about the force applied on an entity.
-*	MassComponent:		info about the mass of an entity.
+*	PositionComponent:	position of an entity.
+*	VelocityComponent:	velocity of an entity.
+*	ForceComponent:		force applied on an entity.
+*	MassComponent:		mass and inertia of an entity.
 *	
-*	QuadComponent:		size of the quad.
-*	CircleComponent:	
+*	RotationComponent:			orientation of an entity.
+*	AngularVelocityComponent:	angular velocity of an entity.
+*	TorqueComponent:			torque applied to an entity.
+* 
+*	QuadComponent: size of the quad.
 *	
 *	RigidBodyComponent:		info about the rigid body (coeff of restituion, frictions).
 *	QuadCollisionComponent: info about the collision between two quads.
 * 
 * 
-* TODO:
-*	- define coordinate system.
-*	- define baricenter and other info related to shape.
 * 
+* TODO:
+*	- check if 2 or more components can be packed into a singular component base on how the
+*		logic is implemented.
 */
 
 export module gargantua.physics.physics_components;
@@ -29,6 +32,7 @@ import <utility>;
 
 import gargantua.types;
 import gargantua.math.vec2d;
+import gargantua.math.math_functions;
 import gargantua.ecs.entity;
 
 export namespace gargantua::physics
@@ -41,8 +45,7 @@ export namespace gargantua::physics
 	};
 
 
-
-	// Position refers to baricenter? 
+ 
 	struct PositionComponent
 	{
 		PositionComponent() = default;
@@ -51,6 +54,7 @@ export namespace gargantua::physics
 
 		}
 
+		// Position referes to center of mass.
 		math::Vec2df p;
 	};
 
@@ -93,7 +97,7 @@ export namespace gargantua::physics
 	{
 		MassComponent() = default;
 		
-		MassComponent(f32 m_)
+		MassComponent(const f32 m_)
 		{
 			if (m_ == 0.0f)
 			{
@@ -107,15 +111,18 @@ export namespace gargantua::physics
 			}
 		}
 
-		constexpr 
 		auto SetMass(const f32 new_mass) -> void
 		{
+			if (new_mass == 0.0f)
+			{
+				SetInfinite();
+				return;
+			}
 			m = new_mass;
 			inv_m = 1.0f / new_mass;
 		}
 
-		constexpr
-		auto InfiniteMass() -> void
+		auto SetInfinite() -> void
 		{
 			inv_m = 0.0f;
 			m = 0.0f;
@@ -126,7 +133,97 @@ export namespace gargantua::physics
 		f32 inv_m = 1.0f;
 	};
 
+
+	struct MomentInertiaComponent
+	{
+		MomentInertiaComponent() = default;
+
+		MomentInertiaComponent(const f32 i_)
+		{
+			if (i_ == 0.0f)
+			{
+				inv_i = 0.0f;
+				i = 0.0f;
+			}
+			else
+			{
+				i = i_;
+				inv_i = 1.0f / i;
+			}
+		}
+
+
+		auto SetInfinite() -> void
+		{
+			i = 0.0f;
+			inv_i = 0.0f;
+		}
+
+
+		auto SetInertia(const f32 i) -> void
+		{
+			if (i == 0.0f)
+			{
+				SetInfinite();
+				return;
+			}
+
+			this->i = i;
+			inv_i = 1.0f / i;
+		}
+		
+		// z axis
+		f32 i = 1.0f; 
+		f32 inv_i = 1.0f;
+	};
+
+
+	struct RotationComponent
+	{
+		RotationComponent() = default;
+
+		RotationComponent(const f32 theta_) : theta(theta_)
+		{
+
+		}
+
+		//constexpr
+		auto FromDegree(const f32 d) -> void
+		{
+			theta = math::Angles::ToRad(d);
+		}
+
+		// In radians
+		f32 theta = 0.0f;
+	};
 	
+
+	struct AngularVelocityComponent
+	{
+		AngularVelocityComponent() = default;
+
+		AngularVelocityComponent(const f32 omega_) : omega(omega_)
+		{
+
+		}
+
+		f32 omega = 0.0f;
+	};
+
+
+	struct TorqueComponent
+	{
+		TorqueComponent() = default;
+
+		TorqueComponent(const f32 t_) : t(t_)
+		{
+
+		}
+
+		f32 t = 0.0f;
+	};
+
+
 	struct QuadComponent
 	{
 		QuadComponent() = default;
@@ -143,12 +240,6 @@ export namespace gargantua::physics
 
 		// width, height
 		math::Vec2df size{1.0f, 1.0f};
-	};
-
-
-	struct CircleComponent
-	{
-
 	};
 
 
@@ -171,7 +262,8 @@ export namespace gargantua::physics
 
 		}
 
-
+		// Usually dynamic_friction < static_friction. We can force this constraint using a setter,
+		// but i think it's better to let the free choice.
 		f32 static_friction = 0.5f;
 		f32 dynamic_friction = 0.1f;
 		f32 restituition = 1.0f;
@@ -215,7 +307,4 @@ export namespace gargantua::physics
 		std::vector<ecs::entity_t> entities_in_collision;
 		std::vector<CollisionInfoComponent> collisions_info;
 	};
-
-
-
 } // namespace gargantua::physics

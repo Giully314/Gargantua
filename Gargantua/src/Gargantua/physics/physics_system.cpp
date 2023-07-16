@@ -18,9 +18,16 @@ namespace gargantua::physics
 		const f32 dt = static_cast<f32>(ts.GetInSec());
 		Dynamics dynamics{ dt };
 		ApplyGravity grav;
+		
 		ecs_s.ForEach<ForceComponent, MassComponent>(grav);
+		
+		// The block update velocity/position and update angular vel/rotation can be 
+		// executed in parallel because they are independent.
 		ecs_s.ForEach<VelocityComponent, ForceComponent, MassComponent>(dynamics);
 		ecs_s.ForEach<PositionComponent, VelocityComponent>(dynamics);
+		
+		ecs_s.ForEach<AngularVelocityComponent, TorqueComponent, MomentInertiaComponent>(dynamics);
+		ecs_s.ForEach<RotationComponent, AngularVelocityComponent>(dynamics);
 
 		
 		DetectCollisions(ecs_s);
