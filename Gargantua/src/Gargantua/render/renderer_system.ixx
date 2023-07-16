@@ -15,6 +15,7 @@ import gargantua.render.render_components;
 import gargantua.render.render_functions;
 import gargantua.ecs.ecs;
 import gargantua.time.time_step;
+import gargantua.physics.physics_components;
 
 namespace gargantua::render
 {
@@ -59,10 +60,10 @@ namespace gargantua::render
 		*/
 		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
 		{
+			using namespace physics;
 			UpdateTransform upt;
-			DisplayEntity draw;
-			ecs_s.ForEach<physics::PositionComponent, physics::QuadComponent, TransformComponent>(upt);
-			ecs_s.ForEach<TransformComponent, TextureComponent>(draw);
+			ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(upt);
+			ecs_s.ForEach<TransformComponent, TextureComponent>(DrawEntity::Draw);
 		}	
 	};
 
