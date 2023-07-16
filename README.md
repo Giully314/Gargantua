@@ -15,6 +15,7 @@ generator:	Generators using coroutines.
 log:		Basic logging system.  
 math:		Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
 mpl:		Meta programming library.  
+parallel:	Thread pool and parallel algorithms.  
 physics:	Primitive physics system with collision resolution.  
 platform:	Manage low level systems like I/O and event dispatcher.  
 render:		Low level components for handling render objects.   
@@ -97,7 +98,8 @@ https://gafferongames.com/categories/game-physics/
 https://gamedevelopment.tutsplus.com/series/how-to-create-a-custom-physics-engine--gamedev-12715  
 [Building a Physics Engine with C++ and Simulating Machines](https://youtu.be/TtgS-b191V0)  
 [Runge-Kutta method for solving differential equations](https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods)  
-[Semi implicit Euler, used in the engine](https://en.wikipedia.org/wiki/Semi-implicit_Euler_method)
+[Semi implicit Euler, used in the engine](https://en.wikipedia.org/wiki/Semi-implicit_Euler_method)  
+[Various links](https://sketchpunklabs.github.io/gamephysics/)   
 
 
 STD containers, custom containers and iterators:  
