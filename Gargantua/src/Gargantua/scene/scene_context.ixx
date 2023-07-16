@@ -56,6 +56,13 @@ namespace gargantua::scene
 	class Entity;
 
 	export
+	enum class SceneMode : u8
+	{
+		Editor = 0,
+		Simulation,
+	};
+
+	export
 	class SceneContext
 	{
 	public:
@@ -65,7 +72,7 @@ namespace gargantua::scene
 		}
 
 		SceneContext(u32 width, u32 height) : viewport_width(width), viewport_height(height), 
-			camera_system(&ecs_system)
+			camera_system(&ecs_system), mode(SceneMode::Editor)
 		{
 
 		}
@@ -126,19 +133,19 @@ namespace gargantua::scene
 		auto Run(const time::TimeStep& ts) -> void;
 		
 		/*
-		* Run the scene.
+		* Run the simulation.
 		*/
-		auto Play() -> void
+		auto SimulationMode() -> void
 		{
-			is_running = true;
+			mode = SceneMode::Simulation;
 		}
 		
 		/*
-		* Stop the scene.
+		* Editor mode.
 		*/
-		auto Stop() -> void
+		auto EditorMode() -> void
 		{
-			is_running = false;
+			mode = SceneMode::Editor;
 		}
 
 
@@ -146,7 +153,7 @@ namespace gargantua::scene
 		* Register an entity to the physics system; basically attaches all the physics 
 		* components to the entity.
 		*/
-		auto RegisterToPhysics(Entity e, f32 mass, const math::Vec2df& size) -> void;
+		auto RegisterToPhysics(const Entity e, const f32 mass, const f32 inertia, const math::Vec2df& size) -> void;
 		
 		/*
 		* Register an entity to the rendering system; basically attaches all the render
@@ -226,6 +233,6 @@ namespace gargantua::scene
 		
 		u32 viewport_width;
 		u32 viewport_height;
-		bool is_running = true;
+		SceneMode mode = SceneMode::Editor;
 	};
 } // namespace gargantua::scene

@@ -10,6 +10,7 @@ module gargantua.scene.scene_context;
 
 import gargantua.ecs.ecs;
 import gargantua.scene.scene_entity;
+import gargantua.scene.editor_system;
 import gargantua.physics.physics;
 import gargantua.render.render;
 import gargantua.log.log;
@@ -67,19 +68,23 @@ namespace gargantua::scene
 
 	auto SceneContext::Run(const time::TimeStep& ts) -> void
 	{
-		if (!is_running)
+		if (mode == SceneMode::Editor)
 		{
-			return;
+			EditorSystem::Instance().Run(ecs_system);
 		}
-
-		physics::PhysicsSystem::Instance().Run(ts, ecs_system);
-		render::RendererSystem::Instance().Run(ts, ecs_system);
+		else
+		{
+			physics::PhysicsSystem::Instance().Run(ts, ecs_system);
+			render::RendererSystem::Instance().Run(ts, ecs_system);
+		}
 	}
 
 
-	auto SceneContext::RegisterToPhysics(Entity e, f32 mass, const math::Vec2df& size) -> void
+	auto SceneContext::RegisterToPhysics(const Entity e, const f32 mass, 
+		const f32 inertia,
+		const math::Vec2df& size) -> void
 	{
-		physics::PhysicsSystem::Instance().Register(e.id, mass, size, ecs_system);
+		physics::PhysicsSystem::Instance().Register(e.id, mass, inertia, size, ecs_system);
 	}
 
 
