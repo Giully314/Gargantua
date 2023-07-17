@@ -37,10 +37,10 @@ The project is based on C++20.
 # Personal considerations
 This is my first game engine. I'm developing this engine because i find really 
 interesting how simulations are created. I also want start to develop a game based on pixel simulation.  
-I minimized the usage of external libraries because i find really funny to design and develop the core functionalities.
-At first i also wanted to avoid the usage of glfw (and even of opengl, after i followed the beautiful project tinyrenderer)
-but then i realized that the focus of the project would shift too much. 
-In the end, i hope to learn as much as possible and become better at design and develop software!  
+I minimized the usage of external libraries because I enjoy to design and develop the core functionalities.
+At first I also wanted to avoid the usage of glfw (and even of opengl, after I followed the beautiful project tinyrenderer)
+but then I realized that the focus of the project would shift too much. 
+In the end, I hope to learn as much as possible and become better at design and develop software!  
 
 
 # Architecture 
