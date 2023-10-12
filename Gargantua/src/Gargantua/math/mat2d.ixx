@@ -1,17 +1,17 @@
 /*
-gargantua/math/mat2d.ixx
-
-
-PURPOSE: Matrix 2x2.
-
-
-CLASSES:
-	Mat2d: matrix 2x2 with row representation.
-
-DESCRIPTION:
-	The internal format used is row-major order. Consider that this is only relevant in terms of
-	HOW operations are executed and not what they mean.
-	So for example C = A * B means that the matrix B is applied first and then A.
+* gargantua/math/mat2d.ixx
+* 
+* 
+* PURPOSE: Matrix 2x2.
+* 
+* 
+* CLASSES:
+* 	Mat2d: matrix 2x2 with row representation.
+* 
+* DESCRIPTION:
+* 	The internal format used is row-major order. Consider that this is only relevant in terms of
+* 	HOW operations are executed and not what they mean.
+* 	So for example C = A * B means that the matrix B is applied first and then A.
 */
 
 export module gargantua.math.mat2d;

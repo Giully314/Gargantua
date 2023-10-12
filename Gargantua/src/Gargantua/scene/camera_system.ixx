@@ -31,7 +31,7 @@ import <string_view>;
 import <ranges>;
 
 import gargantua.types;
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import gargantua.scene.scene_components;
 
 namespace gargantua::scene

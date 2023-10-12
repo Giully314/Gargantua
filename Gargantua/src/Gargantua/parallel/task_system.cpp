@@ -2,8 +2,13 @@
 * gargantua/parallel/task_system.cpp
 */
 
+module;
+
+#include <gargantua/log/logger_macro.hpp>
+
 module gargantua.parallel.task_system;
 
+import gargantua.log.logger_system;
 
 namespace gargantua::parallel
 {
@@ -12,7 +17,7 @@ namespace gargantua::parallel
 	TaskSystem::TaskSystem()
 	{
 		u32 thread_count = std::thread::hardware_concurrency();
-
+		GRG_CORE_DEBUG("Start TaskSystem with {} threads.", thread_count);
 		try
 		{
 			for (u32 i = 0; i < thread_count; ++i)

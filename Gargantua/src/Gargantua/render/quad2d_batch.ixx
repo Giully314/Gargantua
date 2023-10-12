@@ -1,11 +1,11 @@
 /*
-* gargantua/render/batch.ixx
+* gargantua/render/quad2d_batch.ixx
 * 
 * PURPOSE: batch to render.
 * 
 * CLASSES:
 *	Quad2dData: info about the rendering of a 2d quad.
-*	QuadBatch:	batch for quads.
+*	Quad2dBatch: batch for quads.
 * 
 * DESCRIPTION:
 *	A batch is a set of vertices that must be rendered. Instaed of doing a draw call for a single quad (slow),
@@ -16,7 +16,7 @@
 *	- every quad has a single color. It's a waste of space to specify the same color for each of the 4 vertices.
 */
 
-export module gargantua.render.batch;
+export module gargantua.render.quad2d_batch;
 
 import <vector>;
 import <array>;
@@ -61,18 +61,18 @@ namespace gargantua::render
 		// TODO: is this relevant? Or it is enough to just load the indices in the IBO and delete this?
 		std::vector<u32> indices;
 
-		VertexBuffer position_vbo;
-		VertexBuffer color_vbo;
-		VertexBuffer texture_vbo;
-		VertexBuffer texture_idx_vbo;
-		VertexBuffer tiling_factor_vbo;
-		IndexBuffer ibo;
-		VertexArray vao;
+		render::VertexBuffer position_vbo;
+		render::VertexBuffer color_vbo;
+		render::VertexBuffer texture_vbo;
+		render::VertexBuffer texture_idx_vbo;
+		render::VertexBuffer tiling_factor_vbo;
+		render::IndexBuffer ibo;
+		render::VertexArray vao;
 	};
 
 
 	export
-	class QuadBatch
+	class Quad2dBatch
 	{
 	public:
 		friend class Renderer2dSystem;
@@ -80,9 +80,9 @@ namespace gargantua::render
 		// NOTE: the default constructor must not be used so why it is defined? Because visual studio doesn't allow the usage of vector
 		// if there isn't the default constructor, clearly this is a "scam" because in the standard is not specified this requirement 
 		// on the type (with clang it works in the expected way).
-		QuadBatch();
+		Quad2dBatch();
 
-		QuadBatch(u32 max_num_of_quads_);
+		Quad2dBatch(u32 max_num_of_quads_);
 
 
 		// Call this at the beginning of a scene to clear the batch.
@@ -162,4 +162,4 @@ namespace gargantua::render
 		u16 current_num_of_textures;
 	};
 
-} // namespace gargantua::render
+} // namespace gargantua::render2d

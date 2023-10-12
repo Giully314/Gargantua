@@ -1,5 +1,10 @@
 /*
 * gargantua/platform/mouse.ixx
+* 
+* PURPOSE: Mouse functionalities.
+* 
+* CLASSES:
+*	Mouse: Manage all the mouse related functionalities and info.
 */
 
 export module gargantua.platform.mouse;

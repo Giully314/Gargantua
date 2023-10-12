@@ -1,7 +1,5 @@
 /*
 * gargantua/platform/platform_system.cpp
-* 
-*
 */
 module;
 
@@ -16,6 +14,7 @@ import gargantua.types;
 import gargantua.platform.event_dispatcher;
 import gargantua.platform.input_system;
 import gargantua.platform.imgui_system;
+//import gargantua.parallel.parallel;
 
 namespace gargantua::platform
 {
@@ -47,6 +46,7 @@ namespace gargantua::platform
 		window = CreateUniqueRes<Window>(width, height, title);
 		InputSystem::Instance().Startup();
 		ImGuiSystem::Instance().Startup(window.get());
+		//parallel::TaskSystem::Instance();
 	}
 
 	auto PlatformSystem::Shutdown() -> void

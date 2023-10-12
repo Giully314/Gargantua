@@ -1,12 +1,10 @@
 /*
 * gargantua/render/shared.ixx
 * 
-* PURPOSE:
+* PURPOSE: Abstraction for OpenGL shader.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
-* 
+*	Shader: Wrapper for an OpenGL shader.
 * 
 */
 

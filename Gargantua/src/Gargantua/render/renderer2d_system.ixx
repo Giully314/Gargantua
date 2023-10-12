@@ -4,7 +4,7 @@
 * PURPOSE: API for 2d rendering.
 *
 * CLASSES:
-*	Renderer2dSystem: Singleton for 2d rendering.	
+*	Renderer2dSystem: Singleton for 2d rendering using opengl commands.	
 * 
 * DESCRIPTION:
 *	This module provides basic API for simple 2d rendering.
@@ -32,19 +32,16 @@ import gargantua.render.buffer;
 import gargantua.render.vertex_array;
 import gargantua.render.program;
 import gargantua.render.shader;
-import gargantua.render.texture2d;
-import gargantua.render.orthographic_camera;
-import gargantua.render.batch;
-import gargantua.render.batch_system;
+import gargantua.render.quad2d_batch;
+import gargantua.render.quad2d_batch_system;
 import gargantua.render.frame_buffer;
+import gargantua.render.orthographic_camera;
+import gargantua.render.texture2d;
 import gargantua.render.subtexture2d;
 
 
 import gargantua.math.matrix;
 import gargantua.math.vector;
-
-import gargantua.log.logger_system;
-
 
 namespace gargantua::render
 {
@@ -61,14 +58,22 @@ namespace gargantua::render
 	struct Quad2dData
 	{
 		Program program;
-		QuadBatchSystem batch_system;
+		Quad2dBatchSystem batch_system;
 	};
 
 
 	export
-	class Renderer2dSystem : public Singleton<Renderer2dSystem>
+	class Renderer2dSystem : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> Renderer2dSystem&
+		{
+			static Renderer2dSystem sys;
+			return sys;
+		}
+
 		// Precondition: the opengl context must be usable.	
 		auto Startup() -> void;
 		auto Shutdown() -> void;
@@ -133,6 +138,9 @@ namespace gargantua::render
 		{
 			return fb_data.screen_fb;
 		}
+
+	private:
+		Renderer2dSystem() = default;
 	
 	private:
 		FrameBufferData fb_data;

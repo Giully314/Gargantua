@@ -7,7 +7,7 @@
 *	resources such as the Window, I/O, memory and so on.
 */
 
-export module gargantua.platform.platform;
+export module gargantua.platform;
 
 export import gargantua.platform.event_dispatcher;
 export import gargantua.platform.platform_events;

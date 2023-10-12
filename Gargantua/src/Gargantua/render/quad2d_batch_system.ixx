@@ -1,25 +1,25 @@
 /*
-* gargantua/render/batch_system.ixx
+* gargantua/render/quad2dbatch_system.ixx
 * 
 * PURPOSE: Manage batches.
 * 
 * CLASSES:
-*	BatchSystem: manage all the batches.
+*	Quad2dBatchSystem: manage all the batches.
 * 
 * DESCRIPTION:
 *	The batch system handles all the operations on a batch. If the batch is full, create a new one; setup
-*	the batches for the draw.
+*	the batches for the draw. For more info about batch check quad2d_batch.ixx.
 */
 
-export module gargantua.render.batch_system;
+export module gargantua.render.quad2d_batch_system;
 
 import <vector>;
 
 import gargantua.types;
 
-import gargantua.render.batch;
 import gargantua.render.texture2d;
 import gargantua.render.subtexture2d;
+import gargantua.render.quad2d_batch;
 
 import gargantua.math.vec4d;
 import gargantua.math.mat4d;
@@ -27,16 +27,16 @@ import gargantua.math.mat4d;
 namespace gargantua::render
 {
 	export
-	class QuadBatchSystem
+	class Quad2dBatchSystem
 	{
 	public:
 
-		QuadBatchSystem() : QuadBatchSystem(10000)
+		Quad2dBatchSystem() : Quad2dBatchSystem(10000)
 		{
 
 		}
 
-		QuadBatchSystem(u32 max_num_of_quads_) : max_num_of_quads(max_num_of_quads_)
+		Quad2dBatchSystem(u32 max_num_of_quads_) : max_num_of_quads(max_num_of_quads_)
 		{
 			quad_batches.emplace_back(max_num_of_quads);
 		}
@@ -110,13 +110,13 @@ namespace gargantua::render
 		}
 
 
-		auto GetBatches() -> std::vector<QuadBatch>&
+		auto GetBatches() -> std::vector<Quad2dBatch>&
 		{
 			return quad_batches;
 		}
 
 	private:
-		std::vector<QuadBatch> quad_batches;
+		std::vector<Quad2dBatch> quad_batches;
 		u32 max_num_of_quads;
 	};
 	

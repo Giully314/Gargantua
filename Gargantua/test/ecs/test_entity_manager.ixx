@@ -8,7 +8,7 @@ import <vector>;
 
 import gargantua.test.base_test;
 
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 
 
 export namespace gargantua::test

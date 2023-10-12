@@ -10,8 +10,8 @@ module gargantua.render.camera;
 
 import <algorithm>;
 
-import gargantua.platform.platform;
-import gargantua.log.log;
+import gargantua.platform;
+import gargantua.log;
 
 namespace gargantua::render
 {
@@ -22,11 +22,11 @@ namespace gargantua::render
 
 		ev.RegisterListener<MouseWheelScrollEvent>([&](const MouseWheelScrollEvent& e)
 			{
-				GRG_CORE_DEBUG("Calling MouseWheelScroll listener with {}", e.y_offset);
+				//GRG_CORE_DEBUG("Calling MouseWheelScroll listener with {}", e.y_offset);
 				distance -= e.y_offset * 0.1f; // *ZoomSpeed();
 				distance = std::max(distance, 1.0f);
-				GRG_CORE_DEBUG("Camera distance {}", distance);
-				GRG_CORE_DEBUG("Projection\n{}", projection.ToString());
+				/*GRG_CORE_DEBUG("Camera distance {}", distance);
+				GRG_CORE_DEBUG("Projection\n{}", projection.ToString());*/
 				ComputeProjection();
 			});
 	}

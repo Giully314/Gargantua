@@ -32,17 +32,26 @@ import gargantua.parallel.task;
 namespace gargantua::parallel
 {
 	export
-	class TaskSystem : public Singleton<TaskSystem>
+	class TaskSystem : private NonCopyable, NonMovable
 	{
 	public:
-		TaskSystem();
+		static
+		auto Instance() -> TaskSystem&
+		{
+			static TaskSystem ts;
+			return ts;
+		}
 
 		~TaskSystem();
 
+		/*
+		* Register a task to be executed and returns a future that can be used as sync
+		* to wait for the task to finish.
+		*/
 		template <typename F>
 			requires std::invocable<F>
 		[[nodiscard]]
-		auto Submit(F f) -> std::future<std::invoke_result_t<F>>
+		auto RegisterWait(F f) -> std::future<std::invoke_result_t<F>>
 		{
 			using result_type = std::invoke_result_t<F>;
 			std::packaged_task<result_type()> task(f);
@@ -60,6 +69,9 @@ namespace gargantua::parallel
 		}
 
 
+		/*
+		* Register a task to be executed.
+		*/
 		template <typename F>
 			requires std::invocable<F>
 		auto Register(F f) -> void
@@ -85,6 +97,9 @@ namespace gargantua::parallel
 		{
 			stop_source.request_stop();
 		}
+
+	private:
+		TaskSystem();
 
 	private:
 		using local_queue_type = std::queue<Task>;

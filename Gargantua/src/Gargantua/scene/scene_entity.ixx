@@ -26,7 +26,7 @@ import <concepts>;
 import <compare>;
 
 import gargantua.types;
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import gargantua.scene.scene_context;
 
 

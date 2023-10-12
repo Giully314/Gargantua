@@ -1,17 +1,16 @@
 /*
 * gargantua/platform/platform_system.ixx
 * 
-* PURPOSE: Initialiaze the resources of platform.
+* PURPOSE: Initialize the resources of the platform.
 * 
 * CLASSES:
+*	PlatformSystem: Manage all the platform systems.
 * 
 * DESCRIPTION:
-* 
+*	Manage the I/O system, event dispatcher, window, thread pool and memory allocators (in future).
 * 
 * USAGE:
 *	Must be used only by the engine.
-*	
-* 
 */
 
 module;
@@ -35,7 +34,6 @@ import gargantua.app.application;
 
 namespace gargantua::platform
 {
-	export
 	struct InitGLFW
 	{
 		InitGLFW();
@@ -44,9 +42,16 @@ namespace gargantua::platform
 
 
 	export 
-	class PlatformSystem : public Singleton<PlatformSystem>
+	class PlatformSystem : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> PlatformSystem&
+		{
+			static PlatformSystem sys;
+			return sys;
+		}
 
 		auto Startup(const u16 width, const u16 height, std::string_view title) -> void;
 		

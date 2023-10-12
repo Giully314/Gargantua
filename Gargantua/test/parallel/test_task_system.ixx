@@ -24,13 +24,13 @@ namespace gargantua::test
 			using namespace std::chrono_literals;
 
 			mutex_logger.Info("START");
-			parallel::TaskSystem ts;
+			parallel::TaskSystem& ts = parallel::TaskSystem::Instance();
 
 			for (int i = 0; i < 10; ++i)
 			{
 				ts.Register([&, i]()
 					{
-						mutex_logger.Info("ECCOCI QUI {}", i);
+						mutex_logger.Info("Here {}", i);
 					});
 			}
 

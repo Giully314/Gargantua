@@ -1,13 +1,10 @@
 /*
 * gargantua/render/vertex_array.ixx
 * 
-* PURPOSE: Manage vertex array using DSA.
+* PURPOSE: Abstraction for OpenGL vertex array.
 * 
 * CLASSES:
-*	VertexArray:
-* 
-* DESCRIPTION:
-*	
+*	VertexArray: Manage vertex array.
 */
 
 module;

@@ -45,9 +45,9 @@ import <ranges>;
 
 
 import gargantua.types;
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import gargantua.time.time_step;
-import gargantua.math.math;
+import gargantua.math;
 import gargantua.scene.camera_system;
 
 namespace gargantua::scene

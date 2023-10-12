@@ -2,9 +2,6 @@
 * gargantua/log/logger_system.ixx
 * 
 * PURPOSE: global access to the game engine logger (used only for local debug).
-* 
-* TODO:
-*	- use the Singleton class.
 */
 
 export module gargantua.log.logger_system;

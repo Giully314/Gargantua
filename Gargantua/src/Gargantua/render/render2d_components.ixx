@@ -1,37 +1,35 @@
 /*
-* gargantua/render/render_components.ixx
-* 
-* PURPOSE: Render components for ECS.
-* 
+* gargantua/render/render2d_components.ixx
+*
+* PURPOSE: Render 2d components for ECS.
+*
 * CLASSES:
 *	TransformComponent: basic info for rendering an entity.
 *	TextureComponent: texture for an entity.
 *	CameraComponent: info about the camera.
-* 
+*
 * DESCRIPTION:
-*	A set of components used by the render system to work on entities that have them. 
+*	A set of components used by the 2d render system to work on entities that have them.
 *	The Transform and Texture components are necessary to every entity in the game that must
 *	be displayed in the screen.
 *	The CameraComponent contains all the information about the camera. This method allow to attach
 *	a camera to the player entity and have the camera looked.
-* 
+*
 * USAGE:
-*	
+*
 *	// Create an entity camera
 *	ecs.Emplace<TransformComponent>(camera);
 *	ecs.Emplace<CameraComponent>(camera);
-*	
-*	// now can use the camera
-*	
+*
 */
 
-export module gargantua.render.render_components;
+export module gargantua.render.components;
 
 import gargantua.types;
-import gargantua.render.texture2d;
-import gargantua.render.texture_system;
+import gargantua.math;
 import gargantua.render.camera;
-import gargantua.math.math;
+import gargantua.render.texture2d;
+import gargantua.render.texture2d_system;
 
 
 export namespace gargantua::render
@@ -61,14 +59,14 @@ export namespace gargantua::render
 		}
 
 		math::Vec3df position;
-		math::Vec3df scale{1.0f, 1.0f, 1.0f};
+		math::Vec3df scale{ 1.0f, 1.0f, 1.0f };
 		f32 rotation = 0.0f;
 	};
 
 
 	struct TextureComponent
 	{
-		TextureComponent() : texture(TextureSystem::Instance().Get("WhiteTexture"))
+		TextureComponent() : texture(Texture2dSystem::Instance().Get("WhiteTexture"))
 		{
 
 		}
@@ -77,8 +75,8 @@ export namespace gargantua::render
 		{
 
 		}
-		
-		math::Vec4df color { 1.0f, 1.0f, 1.0f, 1.0f };
+
+		math::Vec4df color{ 1.0f, 1.0f, 1.0f, 1.0f };
 		f32 tiling_factor = 1.0f;
 		shared_res<Texture2d> texture;
 	};
@@ -100,6 +98,6 @@ export namespace gargantua::render
 			return camera.GetProjection();
 		}
 
-		Camera camera;
+		render::Camera camera;
 	};
 } // namespace gargantua::render

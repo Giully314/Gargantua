@@ -1,12 +1,11 @@
 /*
-* gargantua/render/texture.ixx
+* gargantua/render/texture2d.ixx
 * 
-* PURPOSE:
+* PURPOSE: Abstraction for 2d texture.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
-* 
+*	Texture2dInfo: info about the texture.
+*	Texture2d: Wrapper for OpenGL texture.
 * 
 * TODO:
 *	- allow the specification of interpolation.
@@ -38,7 +37,7 @@ namespace gargantua::render
 
 
 	export
-	class Texture2d : public OpenGLObject
+	class Texture2d : public render::OpenGLObject
 	{
 	public:
 
@@ -46,7 +45,7 @@ namespace gargantua::render
 		Texture2d();
 
 
-		Texture2d(Texture2d&& other) : OpenGLObject(other.id)
+		Texture2d(Texture2d&& other) : render::OpenGLObject(other.id)
 		{
 			other.id = 0;
 		}

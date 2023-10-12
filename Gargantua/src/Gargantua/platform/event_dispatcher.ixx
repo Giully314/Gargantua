@@ -1,9 +1,12 @@
 /*
 * gargantua/platform/event_dispatcher.ixx
 * 
-* PURPOSE:
+* PURPOSE: Manage low level platform events.
 * 
 * CLASSES:
+*	TupleElementType: Used internally as type for the tuple of different events.
+*	GetTupleElementType: Meta function used internally.
+*	PlatformEventDispatcher: Blocking event dispatcher for handling listeners and event sending.
 * 
 * DESCRIPTION:
 * The event dispatcher is a blocking event handler used for platform events like input, window resize and so on.
@@ -46,12 +49,6 @@ namespace gargantua::platform
 		MouseButtonEvent, MouseButtonPressedEvent, MouseButtonReleasedEvent, MouseCursorEvent,
 		MouseWheelScrollEvent>;
 
-	template <Event TEvent>
-	struct IsEvent
-	{
-		static constexpr bool Value = true;
-	};
-
 	template <Event TEvent> 
 	struct TupleElementType
 	{
@@ -72,9 +69,17 @@ namespace gargantua::platform
 
 
 	export 
-	class PlatformEventDispatcher : public Singleton<PlatformEventDispatcher>
+	class PlatformEventDispatcher : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> PlatformEventDispatcher&
+		{
+			static PlatformEventDispatcher disp;
+			return disp;
+		}
+
 		template <Event TEvent> 
 		using ListenerFunction = std::function<void(const TEvent&)>;
 
@@ -109,12 +114,14 @@ namespace gargantua::platform
 			requires std::invocable<F, TEvent>
 		auto RegisterListener(F&& listener) -> void
 		{
-			GRG_CORE_DEBUG("Listener for: {}", typeid(TEvent).name());
+			//GRG_CORE_DEBUG("Listener for: {}", typeid(TEvent).name());
 			auto& e = GetTupleElement<TEvent>();
 			e.listeners.emplace_back(std::forward<F>(listener));
 		}
 
 	private:
+		PlatformEventDispatcher() = default;
+
 		template <Event TEvent> 
 		[[nodiscard]] 
 		auto GetTupleElement() -> TupleElementType<TEvent>&

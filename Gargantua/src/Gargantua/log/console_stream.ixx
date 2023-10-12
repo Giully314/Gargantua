@@ -18,7 +18,7 @@ import <string_view>;
 
 export namespace gargantua::log
 {
-	//To use ONLY for debug on local machine.
+	//To be used ONLY for debug on local machine.
 	class ConsoleStream
 	{
 	public:

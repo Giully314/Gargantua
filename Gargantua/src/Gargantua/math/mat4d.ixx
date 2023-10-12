@@ -1,23 +1,23 @@
 /*
-gargantua/math/mat4d.ixx
-
-
-PURPOSE: Matrix 4x4.
-
-
-CLASSES:
-	Mat4d: matrix 4x4 with row representation.
-
-DESCRIPTION:
-	The internal format used is row-major order. Consider that this is only relevant in terms of
-	HOW operations are executed and not what they mean.
-	So for example C = A * B means that the matrix B is applied first and then A.
-
-	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
-
-TODO:
-	is the static variable dim necessary?
-	
+* gargantua/math/mat4d.ixx
+* 
+* 
+* PURPOSE: Matrix 4x4.
+* 
+* 
+* CLASSES:
+* 	Mat4d: matrix 4x4 with row representation.
+* 
+* DESCRIPTION:
+* 	The internal format used is row-major order. Consider that this is only relevant in terms of
+* 	HOW operations are executed and not what they mean.
+* 	So for example C = A * B means that the matrix B is applied first and then A.
+* 
+* 	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
+* 
+* TODO:
+* 	is the static variable dim necessary?
+* 	
 */
 
 export module gargantua.math.mat4d;

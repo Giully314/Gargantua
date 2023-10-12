@@ -1,20 +1,20 @@
 /*
-gargantua/math/vec4d.ixx
-
-
-PURPOSE: Homogeneous Vector 4d.
-
-
-CLASSES:
-	Vec4d: vector 4d with x, y, z and w components.
-
-DESCRIPTION:
-	This can represent an Homogeneous vector 4d. This means that the ordinary operations between vectors are
-	defined only if w is equal to 0. Remember that we can't add 2 points (it has no meaning) but we can add 2 vectors or 1 point
-	with 1 vector. A vector (in homogeneous coord) is defined with w = 0.
-	For more: https://math.stackexchange.com/questions/376300/addition-of-homogeneous-vectors-with-different-w-component
-	So if this class is intended to be used as homogeneous vec, keep in mind the constraints.
-
+* gargantua/math/vec4d.ixx
+* 
+* 
+* PURPOSE: Vector 4d.
+* 
+* 
+* CLASSES:
+* 	Vec4d: vector 4d with x, y, z and w components.
+* 
+* DESCRIPTION:
+* 	This can represent an Homogeneous vector 4d. This means that the ordinary operations between vectors are
+* 	defined only if w is equal to 0. Remember that we can't add 2 points (it has no meaning) but we can add 2 vectors or 1 point
+* 	with 1 vector. A vector (in homogeneous coord) is defined with w = 0.
+* 	For more: https://math.stackexchange.com/questions/376300/addition-of-homogeneous-vectors-with-different-w-component
+* 	So if this class is intended to be used as homogeneous vec, keep in mind the constraints.
+* 
 */
 
 export module gargantua.math.vec4d;

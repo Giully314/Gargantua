@@ -1,5 +1,10 @@
 /*
 * gargantua/render/subtexture2d.ixx
+* 
+* PURPOSE: Manage 2d subtexture.
+* 
+* CLASSES:
+*	SubTexture2d: manage a texture2d used for multiple subtextures.
 */
 
 export module gargantua.render.subtexture2d;

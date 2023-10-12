@@ -8,12 +8,12 @@ module;
 
 module gargantua.scene.scene_context;
 
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import gargantua.scene.scene_entity;
 import gargantua.scene.editor_system;
-import gargantua.physics.physics;
-import gargantua.render.render;
-import gargantua.log.log;
+import gargantua.physics2d;
+import gargantua.render;
+import gargantua.log;
 import gargantua.scene.scene_components;
 import gargantua.math.vector;
 
@@ -51,7 +51,7 @@ namespace gargantua::scene
 
 	auto SceneContext::Startup() -> void
 	{
-		physics::PhysicsSystem::Instance().Startup(ecs_system);
+		physics2d::PhysicsSystem::Instance().Startup(ecs_system);
 		render::RendererSystem::Instance().Startup(ecs_system);
 		ecs_system.Register<render::CameraComponent>();
 		ecs_system.Register<TagComponent>();
@@ -74,7 +74,7 @@ namespace gargantua::scene
 		}
 		else
 		{
-			physics::PhysicsSystem::Instance().Run(ts, ecs_system);
+			physics2d::PhysicsSystem::Instance().Run(ts, ecs_system);
 			render::RendererSystem::Instance().Run(ts, ecs_system);
 		}
 	}
@@ -84,7 +84,7 @@ namespace gargantua::scene
 		const f32 inertia,
 		const math::Vec2df& size) -> void
 	{
-		physics::PhysicsSystem::Instance().Register(e.id, mass, inertia, size, ecs_system);
+		physics2d::PhysicsSystem::Instance().Register(e.id, mass, inertia, size, ecs_system);
 	}
 
 
@@ -116,8 +116,8 @@ namespace gargantua::scene
 	{
 		auto& transf = ecs_system.Get<render::TransformComponent>(active_camera);
 		auto& camera = ecs_system.Get<render::CameraComponent>(active_camera);
-		GRG_CORE_DEBUG("Scene distance{}\n{}", camera.camera.GetDistance(), 
-			camera.GetProjection().ToString());
+		/*GRG_CORE_DEBUG("Scene distance{}\n{}", camera.camera.GetDistance(), 
+			camera.GetProjection().ToString());*/
 
 		return camera.GetProjection() * transf.Transform().Inverse();
 	}

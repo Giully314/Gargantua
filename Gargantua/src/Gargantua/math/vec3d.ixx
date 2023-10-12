@@ -1,12 +1,10 @@
 /*
-gargantua/math/vec3d.ixx
-
-
-PURPOSE: Vector 3d.
-
-
-CLASSES:
-	Vec3d: vector 3d with x, y and z components.
+* gargantua/math/vec3d.ixx
+* 
+* PURPOSE: Vector 3d.
+* 
+* CLASSES:
+* 	Vec3d: vector 3d with x, y and z components.
 */
 
 export module gargantua.math.vec3d;

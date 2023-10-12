@@ -1,18 +1,17 @@
 /* 
 * gargantua/platform/window.ixx
 * 
-* PURPOSE:
+* PURPOSE: Manage a glfw window.
 * 
 * CLASSES:
-*	WindowProperties:
-*	Window: 
+*	WindowProperties: info about the window.
+*	Window: RAII wrapper for a glfw window.
 * 
 * DESCRIPTION:
-* The Window class implements RAII for the GLFWwindow.
+*	Manage all the functionalities of a window like update and events.
 * 
 * TODO: 
 * - Share context between multiple windows.
-* - 
 * 
 */
 
@@ -57,7 +56,6 @@ export namespace gargantua::platform
 		// Create a window with the specified width, height and title.
 		// Precondition: the library glfw must be initialized before contructing Window.
 		// Can throw if the creation of the window has errors.
-		//Window(const u16 width, const u16 height, std::string_view title);
 		Window(const u16 width, const u16 height, std::string_view title);
 
 		Window(const Window&) = delete;

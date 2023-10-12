@@ -6,11 +6,11 @@ module;
 
 #include <gargantua/log/logger_macro.hpp>
 
-module gargantua.physics.physics_system;
+module gargantua.physics2d.physics_system;
 
-import gargantua.log.log;
+import gargantua.log;
 
-namespace gargantua::physics
+namespace gargantua::physics2d
 {
 
 	auto PhysicsSystem::Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s) -> void
@@ -102,13 +102,13 @@ namespace gargantua::physics
 
 			for (auto e2 : ec.entities_in_collision)
 			{
-				GRG_CORE_DEBUG("{} collides with {}", e1, e2);
+				//GRG_CORE_DEBUG("{} collides with {}", e1, e2);
 				const auto& p2 = ecs_s.Get<PositionComponent>(e2);
 				const auto& q2 = ecs_s.Get<QuadComponent>(e2);
 				const auto info = CollisionDetection::CollisionNormal(p1, q1, p2, q2);
 				ec.collisions_info.emplace_back(info);
 			}
-			GRG_CORE_DEBUG("****************************\n");
+			//GRG_CORE_DEBUG("****************************\n");
 		}
 	}
 

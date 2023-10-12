@@ -32,30 +32,38 @@
 * 
 */
 
-export module gargantua.physics.physics_system;
+export module gargantua.physics2d.physics_system;
 
 import <vector>;
 import <utility>;
 
 import gargantua.types;
-import gargantua.ecs.ecs;
-import gargantua.physics.physics_components;
-import gargantua.physics.physics_functions;
+import gargantua.ecs;
+import gargantua.physics2d.components;
+import gargantua.physics2d.functions;
 import gargantua.time.time_step;
 import gargantua.math.vector;
 
 
-namespace gargantua::physics
+namespace gargantua::physics2d
 {
 	export 
-	class PhysicsSystem : public Singleton<PhysicsSystem>
+	class PhysicsSystem : private NonCopyable, NonMovable
 	{
 	public:
+
+		[[nodiscard]]
+		static
+		auto Instance() -> PhysicsSystem&
+		{
+			static PhysicsSystem sys;
+			return sys;
+		}
 
 		/*
 		* Register all the physics components.
 		*/
-		auto Startup(ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance())
+		auto Startup(ecs::ECSSystem& ecs_s)
 		{
 			ecs_s.Register<PositionComponent>();
 			ecs_s.Register<VelocityComponent>();
@@ -79,7 +87,7 @@ namespace gargantua::physics
 		*/
 		auto Register(ecs::entity_t e, const f32 mass, const f32 inertia, 
 			const math::Vec2df& size,
-			ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
+			ecs::ECSSystem& ecs_s) -> void
 		{
 			ecs_s.Emplace<PositionComponent>(e);
 			ecs_s.Emplace<VelocityComponent>(e);
@@ -101,7 +109,7 @@ namespace gargantua::physics
 		* Remove Position, Velocity, Force, Mass, RigidBody, QuadComponent, QuadCollision 
 		* from the entity.
 		*/
-		auto Unregister(ecs::entity_t e, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
+		auto Unregister(ecs::entity_t e, ecs::ECSSystem& ecs_s) -> void
 		{
 			ecs_s.Erase<PositionComponent>(e);
 			ecs_s.Erase<VelocityComponent>(e);
@@ -122,10 +130,12 @@ namespace gargantua::physics
 		/*
 		* Run physics simulation.
 		*/
-		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void;
+		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s) -> void;
 	
 	
 	private:
+		PhysicsSystem() = default;
+
 		auto DetectCollisions(ecs::ECSSystem& ecs_s) -> void;
 		auto ResolveCollisions(ecs::ECSSystem& ecs_s) -> void;
 	};

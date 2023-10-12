@@ -1,17 +1,16 @@
 /*
-gargantua/math/functions.ixx
-
-PURPOSE: Mathematical functions for different purposes.
-
-
-CLASSES:
-	Projection: Provide functions for projections.
-	Transform3d: Provide functions for 3d transformations. (really temporary, not so much useful for a 2d engine)
-	Transform2d: Functions for 2d transformations.
-	Angles: Conversion between angles.
-
-DESCRIPTION:
-
+* gargantua/math/functions.ixx
+* 
+* PURPOSE: Mathematical functions for different purposes.
+* 
+* CLASSES:
+* 	Projection: Provide functions for projections.
+* 	Transform3d: Provide functions for 3d transformations. (really temporary, not so much useful for a 2d engine)
+* 	Transform2d: Functions for 2d transformations.
+* 	Angles: Conversion between angles.
+* 
+* DESCRIPTION:
+*	Utility math functions.
 */
 
 export module gargantua.math.math_functions;

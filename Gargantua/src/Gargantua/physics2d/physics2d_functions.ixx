@@ -1,5 +1,5 @@
 /*
-* gargantua/physics/physics_functions.ixx
+* gargantua/physics2d/physics2d_functions.ixx
 * 
 * PURPOSE: Definition of physics functions.
 * 
@@ -20,17 +20,17 @@
 * 
 */
 
-export module gargantua.physics.physics_functions;
+export module gargantua.physics2d.functions;
 
 import <cmath>;
 import <algorithm>;
 import <utility>;
 
 import gargantua.types;
-import gargantua.physics.physics_components;
+import gargantua.physics2d.components;
 import gargantua.math.vec2d;
 
-export namespace gargantua::physics
+export namespace gargantua::physics2d
 {
 
 	struct Dynamics
@@ -109,10 +109,10 @@ export namespace gargantua::physics
 			const PositionComponent& p2, const QuadComponent& q2) -> bool
 		{
 			// Check if they do not intersect in the x direction.
-			if (p1.p.x + q1.size.x < p2.p.x || p1.p.x > p2.p.x + q2.size.x) return false;
+			if (std::fabs(p1.p.x - p2.p.x) > q1.r.x + q2.r.x) return false;
 			
 			// Check if they do not intersect in the y direction.
-			if (p1.p.y + q1.size.y < p2.p.y || p1.p.y > p2.p.y + q2.size.y) return false;
+			if (std::fabs(p1.p.y - p2.p.y) > q1.r.y + q2.r.y) return false;
 			
 			// No separating axis found, there is at least one overlapping axis.
 			return true;
@@ -128,11 +128,11 @@ export namespace gargantua::physics
 			// Vector from p1 to p2
 			auto diff = p2.p - p1.p;
 			
-			f32 a_x_extent = q1.size.x / 2.0f;
-			f32 b_x_extent = q2.size.x / 2.0f;
+			f32 a_x_extent = q1.r.x;
+			f32 b_x_extent = q2.r.x;
 
-			f32 a_y_extent = q1.size.y / 2.0f;
-			f32 b_y_extent = q2.size.y / 2.0f;
+			f32 a_y_extent = q1.r.y;
+			f32 b_y_extent = q2.r.y;
 
 			// Compute overlap on x and y axis to check for least penetration axis.
 			f32 x_overlap = a_x_extent + b_x_extent - std::abs(diff.x);

@@ -1,5 +1,5 @@
 /*
-* gargantua/physics/physics_components.ixx
+* gargantua/physics2d/physics2d_components.ixx
 * 
 * PURPSOSE: Define physical properties of an entity with components.
 *	
@@ -25,7 +25,7 @@
 *		logic is implemented.
 */
 
-export module gargantua.physics.physics_components;
+export module gargantua.physics2d.components;
 
 import <vector>;
 import <utility>;
@@ -35,8 +35,9 @@ import gargantua.math.vec2d;
 import gargantua.math.math_functions;
 import gargantua.ecs.entity;
 
-export namespace gargantua::physics
+export namespace gargantua::physics2d
 {
+	// Not used for now.
 	enum class BodyType : u8
 	{
 		Static,		// The body is still, no impulse.
@@ -45,7 +46,6 @@ export namespace gargantua::physics
 	};
 
 
- 
 	struct PositionComponent
 	{
 		PositionComponent() = default;
@@ -54,9 +54,10 @@ export namespace gargantua::physics
 
 		}
 
-		// Position referes to center of mass.
+		// Entity position in the world coordinate system.
 		math::Vec2df p;
 	};
+
 
 	struct VelocityComponent
 	{
@@ -88,11 +89,12 @@ export namespace gargantua::physics
 
 		}
 
+		// Force applied to the entity.
 		math::Vec2df f;
 	};
 
 
-	// Precondition: m > 0.
+	// Precondition: m >= 0.
 	struct MassComponent
 	{
 		MassComponent() = default;
@@ -228,36 +230,31 @@ export namespace gargantua::physics
 	{
 		QuadComponent() = default;
 
-		QuadComponent(f32 width, f32 height) : size(width, height)
+		QuadComponent(f32 half_width, f32 half_height) : r(half_width, half_height)
 		{
 
 		}
 
-		QuadComponent(const math::Vec2df& size_) : size(size_)
+		QuadComponent(const math::Vec2df& half_size_) : r(half_size_)
 		{
 
 		}
 
-		// width, height
-		math::Vec2df size{1.0f, 1.0f};
+		// For now it is assumed that the shape is positioned at the origin in the object
+		// coordinate system.
+		// radius of the quad shape. 
+		math::Vec2df r{1.0f, 1.0f};
 	};
-
 
 
 	struct RigidBodyComponent
 	{
 		RigidBodyComponent() = default;
 
-		RigidBodyComponent(f32 static_friction_, f32 dynamic_friction_, f32 restituition_, BodyType type_) : 
+		RigidBodyComponent(f32 static_friction_, f32 dynamic_friction_, f32 restituition_) :
 			static_friction(static_friction_),
 			dynamic_friction(dynamic_friction_),
-			restituition(restituition_), type(type_)
-		{
-
-		}
-
-		RigidBodyComponent(f32 static_friction_, f32 dynamic_friction_, f32 restituition_) :
-			RigidBodyComponent(static_friction_, dynamic_friction_, restituition_, BodyType::Dynamic)
+			restituition(restituition_)
 		{
 
 		}
@@ -267,7 +264,6 @@ export namespace gargantua::physics
 		f32 static_friction = 0.5f;
 		f32 dynamic_friction = 0.1f;
 		f32 restituition = 1.0f;
-		BodyType type = BodyType::Dynamic;
 	};
 
 

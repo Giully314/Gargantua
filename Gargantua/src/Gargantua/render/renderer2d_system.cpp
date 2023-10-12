@@ -15,7 +15,7 @@ import gargantua.render.renderer_command;
 
 import gargantua.math.math_functions;
 
-import gargantua.platform.platform;
+import gargantua.platform;
 
 namespace gargantua::render
 {

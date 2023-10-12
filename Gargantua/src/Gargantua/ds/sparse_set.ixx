@@ -264,4 +264,4 @@ export namespace gargantua::ds
 			sparse[value] = static_cast<T>(packed.size()) - 1;
 		}
 	};
-} //namespace gargantua::datastructures
+} //namespace gargantua::ds

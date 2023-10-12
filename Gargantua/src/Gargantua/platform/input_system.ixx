@@ -1,10 +1,10 @@
 /*
 * gargantua/platform/input_system.ixx
 * 
-* PURPOSE:
-* CLASSES:
-* DESCRIPTION:
+* PURPOSE: manage I/O.
 * 
+* CLASSES:
+*	InputSystem: Manage keyboard and mouse.
 */
 
 module;
@@ -25,9 +25,17 @@ import gargantua.math.vec2d;
 
 export namespace gargantua::platform
 {
-	class InputSystem : public Singleton<InputSystem>
+	class InputSystem : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> InputSystem&
+		{
+			static InputSystem sys;
+			return sys;
+		}
+
 		// Register listeners for all keyboard/mouse events.
 		auto Startup() -> void;
 
@@ -57,6 +65,8 @@ export namespace gargantua::platform
 			return mouse.GetPosition();
 		}
 
+	private:
+		InputSystem() = default;
 
 	private:
 		Keyboard keyboard;

@@ -2,7 +2,7 @@ export module gargantua.test.ecs.test_component_group;
 
 import gargantua.test.base_test;
 import gargantua.test.ecs.components;
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import <vector>;
 
 namespace gargantua::test

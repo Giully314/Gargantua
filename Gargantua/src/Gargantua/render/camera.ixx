@@ -2,20 +2,14 @@
 * gargantua/render/camera.ixx
 * 
 * PURPOSE: Camera projection used in game.
-* 
-* CLASSES:
-* 
-* DESCRIPTION:
-* 
-* USAGE:
-* 
 * TODO:
+*	This is a test file and it will probably be moved to another location.
 */
 
 export module gargantua.render.camera;
 
 import gargantua.types;
-import gargantua.math.math;
+import gargantua.math;
 
 namespace gargantua::render
 {

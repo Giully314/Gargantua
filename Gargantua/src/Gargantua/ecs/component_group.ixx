@@ -10,6 +10,9 @@
 * DESCRIPTION:
 *	A group allows to group entities with specific components and act on them.
 *	We can apply a function using ForEach(f) or just iterate the entities ids with View().
+*	
+*	One problem right now is the fact that we check if the entity has all the components;
+*	this problem will be solved with the introduction of sorting the entities.
 * 
 * TODO:
 *	- iterator.
@@ -99,7 +102,7 @@ namespace gargantua::ecs
 		* specified at the creation of the group.
 		*/
 		template <typename F>
-			//requires std::invocable<F
+			//requires std::invocable
 		auto ForEach(F&& f) -> void
 		{
 			auto m = GetMinComponentStorage();

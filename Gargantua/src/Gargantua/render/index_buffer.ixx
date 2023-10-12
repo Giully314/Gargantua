@@ -7,7 +7,7 @@
 *	IndexBuffer: abstraction of the EBO.
 * 
 * DESCRIPTION:
-*	Stores the information about the indexes of the vertecies to be used during draw.
+*	Stores the information about the indexes of the vertices to be used during draw.
 */
 
 export module gargantua.render.buffer:index_buffer;

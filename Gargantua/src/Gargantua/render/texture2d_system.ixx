@@ -1,18 +1,28 @@
 /*
-* gargantua/render/texture_system.ixx
+* gargantua/render/texture2d_system.ixx
 * 
-* PURPOSE:
-* 
+* PURPOSE: Manage 2d textures.
+*
 * CLASSES:
+*	Texture2dSystem: Singleton for create/destroy/access 2d textures by name.
 * 
 * DESCRIPTION:
+*	Manage Texture2d objects using shared_ptr. 
 * 
 * USAGE:	
+*	auto& ts = Texture2dSystem::Instance();
+*	auto my_texture = ts.GetFromFile("MyTexturePath");
+*	
+*	// later in another section of the program.
+*	auto my_texture = ts.Get("MyTexturePath");
 * 
+*	
+*	// If a texture is not present, create a new one with the name passed.
+*	auto white_texture = ts.Get("WhiteTexture");
 */
 
 
-export module gargantua.render.texture_system;
+export module gargantua.render.texture2d_system;
 
 import <unordered_map>;
 import <ranges>;
@@ -24,9 +34,17 @@ import gargantua.render.texture2d;
 namespace gargantua::render
 {
 	export 
-	class TextureSystem : public Singleton<TextureSystem>
+	class Texture2dSystem : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> Texture2dSystem&
+		{
+			static Texture2dSystem sys;
+			return sys;
+		}
+
 		/*
 		* Load the texture from a file if not present in the cache.
 		*/
@@ -70,6 +88,9 @@ namespace gargantua::render
 		{
 			return std::views::keys(textures);
 		}
+
+	private:
+		Texture2dSystem() = default;
 
 	private:
 		std::unordered_map<std::string, shared_res<Texture2d>> textures;

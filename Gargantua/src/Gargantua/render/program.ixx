@@ -1,15 +1,13 @@
 /*
 * gargantua/render/program.ixx
 * 
-* PURPOSE:
+* PURPOSE: Abstraction for OpenGL program.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
+*	Program: Manage an OpenGL program.
 * 
 * TODO:
-*	- cache the uniform for better performance.
-*	
+*	- cache the uniform?
 */
 
 module;

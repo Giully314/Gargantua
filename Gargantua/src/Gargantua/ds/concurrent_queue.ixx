@@ -11,10 +11,6 @@
 *	can be found on "C++ concurrency in action" (note that it's different from the book, I changed the API a  
 *	little bit using a more direct approach with returning values).
 * 
-* 
-* 
-* TODO:
-*	- non copyable queue?
 */
 
 export module gargantua.ds.concurrent_queue;
@@ -44,6 +40,10 @@ namespace gargantua::ds
 
 
 		ConcurrentQueue() = default;
+
+		ConcurrentQueue(ConcurrentQueue&&) = default;
+		auto operator=(ConcurrentQueue&&) -> ConcurrentQueue& = default;
+
 
 		template <typename U>
 			requires std::constructible_from<T, U>

@@ -1,13 +1,10 @@
 /*
 * gargantua/render/render_info.ixx
 * 
-* PURPOSE:
+* PURPOSE: define a mix of rendering info.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
-* 
-* 
+*	BufferDraw: specify if a buffer is static or dynamic.
 */
 
 module;

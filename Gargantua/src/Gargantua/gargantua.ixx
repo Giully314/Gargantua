@@ -2,11 +2,11 @@ export module gargantua;
 
 
 export import gargantua.types;
-export import gargantua.app.app;
-export import gargantua.log.log;
-export import gargantua.math.math;
-export import gargantua.platform.platform;
-export import gargantua.render.render;
+export import gargantua.app;
+export import gargantua.log;
+export import gargantua.math;
+export import gargantua.platform;
+export import gargantua.render;
 export import gargantua.time.time_step;
-export import gargantua.scene.scene;
-export import gargantua.physics.physics;
+export import gargantua.scene;
+export import gargantua.physics2d;

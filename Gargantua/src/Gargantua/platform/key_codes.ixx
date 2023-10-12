@@ -5,8 +5,6 @@
 * 
 * CLASSES:
 *	Key: enum for the key codes.
-* 
-* DESCRIPTION:
 */
 
 

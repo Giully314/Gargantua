@@ -1,9 +1,9 @@
 /*
 * gargantua/platform/keyboard.ixx
 * 
-* PURPOSE:
+* PURPOSE: Manage keyboard.
 * CLASSES:
-* DESCRIPTION:
+*	Keyboard: Manage all the functionalities and info about the keyboard.
 */
 
 export module gargantua.platform.keyboard;
@@ -23,7 +23,6 @@ export namespace gargantua::platform
 	public:
 		Keyboard()
 		{
-			//std::ranges::fill(keyboard_state, false); doesn't work, why? 
 			std::fill(keyboard_state.begin(), keyboard_state.end(), false);
 		}
 

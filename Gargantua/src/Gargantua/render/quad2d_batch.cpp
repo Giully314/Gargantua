@@ -7,36 +7,36 @@ module;
 
 #include <gargantua/log/logger_macro.hpp>
 
-module gargantua.render.batch;
+module gargantua.render.quad2d_batch;
 
-import gargantua.render.texture_system;
+import gargantua.render.texture2d_system;
 import gargantua.log.logger_system;
 
 
 namespace gargantua::render
 {
-	QuadBatch::QuadBatch() : QuadBatch(10000)
+	Quad2dBatch::Quad2dBatch() : Quad2dBatch(10000)
 	{
 
 	}
 
 
-	QuadBatch::QuadBatch(u32 max_num_of_quads) : max_quads_per_batch(max_num_of_quads),
+	Quad2dBatch::Quad2dBatch(u32 max_num_of_quads) : max_quads_per_batch(max_num_of_quads),
 		max_num_of_vertices(max_num_of_quads * 4), max_indices(max_num_of_quads * 6), current_num_of_quads(0),
 		current_num_of_textures(0)
 	{
 		SetupVertexArray();
 
-		// Load white texture
 
-		shared_res<Texture2d> texture = TextureSystem::Instance().Get("WhiteTexture");
+		// Load white texture
+		shared_res<Texture2d> texture = Texture2dSystem::Instance().Get("WhiteTexture");
 		texture->Fill(1, 1, &white_color);
 		texture_slots[0] = std::move(texture);
 		++current_num_of_textures;
 	}
 
 
-	auto QuadBatch::Add(const math::Mat4df& transform, const math::Vec4df& color) -> void
+	auto Quad2dBatch::Add(const math::Mat4df& transform, const math::Vec4df& color) -> void
 	{
 		const f32 tiling_factor = 1.0f;
 		const u32 texture_idx = 0; // White texture
@@ -54,7 +54,7 @@ namespace gargantua::render
 	}
 
 
-	auto QuadBatch::Add(const math::Mat4df& transform,  
+	auto Quad2dBatch::Add(const math::Mat4df& transform,
 		const shared_res<Texture2d>& texture, f32 tiling_factor) -> void
 	{
 		const math::Vec4df white{ 1.0f, 1.0f, 1.0f, 1.0f };
@@ -62,7 +62,7 @@ namespace gargantua::render
 	}
 
 
-	auto QuadBatch::Add(const math::Mat4df& transform, const math::Vec4df& color,
+	auto Quad2dBatch::Add(const math::Mat4df& transform, const math::Vec4df& color,
 		const shared_res<Texture2d>& texture, f32 tiling_factor) -> void
 	{
 		// Check if the texture is already present.
@@ -99,7 +99,7 @@ namespace gargantua::render
 
 
 
-	auto QuadBatch::Add(const math::Mat4df& transform, const SubTexture2d& subtexture,
+	auto Quad2dBatch::Add(const math::Mat4df& transform, const SubTexture2d& subtexture,
 		f32 tiling_factor) -> void
 	{
 		// Check if the texture is already present.
@@ -141,9 +141,8 @@ namespace gargantua::render
 
 	// ********************************** PRIVATE ********************************
 
-	auto QuadBatch::SetupVertexArray() -> void
+	auto Quad2dBatch::SetupVertexArray() -> void
 	{
-
 		data.position_vbo.SetLayout(VertexLayout{ 4, sizeof(f32) });
 		data.position_vbo.Empty(max_num_of_vertices);
 

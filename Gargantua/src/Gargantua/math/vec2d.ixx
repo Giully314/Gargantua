@@ -1,12 +1,10 @@
 /*
-gargantua/math/vec2d.ixx
-
-
-PURPOSE: Vector 2d.
-
-
-CLASSES:
-	Vec2d: vector 2d with x and y components.
+* gargantua/math/vec2d.ixx
+* 
+* PURPOSE: Vector 2d.
+* 
+* CLASSES:
+* 	Vec2d: vector 2d with x and y components.
 */
 
 export module gargantua.math.vec2d;

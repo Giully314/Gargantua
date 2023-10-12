@@ -19,11 +19,6 @@ export namespace gargantua::scene
 	{
 		TagComponent() = default;
 
-		/*TagComponent(const std::string& name_) : name(std::move(name_))
-		{
-
-		}*/
-
 		explicit TagComponent(std::string_view name_) : name(name_)
 		{
 

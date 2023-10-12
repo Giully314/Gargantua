@@ -27,7 +27,7 @@
 * will be ready to be used in the next cycle.
 */
 
-export module gargantua.ecs.ecs;
+export module gargantua.ecs;
 
 export import gargantua.ecs.entity;
 export import gargantua.ecs.entity_manager;

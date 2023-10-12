@@ -1,7 +1,7 @@
 /*
 * gargantua/render/renderer_system.ixx
 *
-* PURPOSE: run the rendering.
+* PURPOSE: run the ecs rendering system.
 *
 * CLASSES:
 *	RendererSystem: render all the entities that have TransformComponent and TextureComponent.
@@ -11,23 +11,31 @@
 export module gargantua.render.renderer_system;
 
 import gargantua.types;
-import gargantua.render.render_components;
-import gargantua.render.render_functions;
-import gargantua.ecs.ecs;
+import gargantua.render.components;
+import gargantua.render.functions;
+import gargantua.ecs;
 import gargantua.time.time_step;
-import gargantua.physics.physics_components;
+import gargantua.physics2d.components;
 
 namespace gargantua::render
 {
 	export
-	class RendererSystem : public Singleton<RendererSystem>
+	class RendererSystem : private NonCopyable, NonMovable
 	{
 	public:
+		[[nodiscard]]
+		static
+		auto Instance() -> RendererSystem&
+		{
+			static RendererSystem sys;
+			return sys;
+		}
+
 
 		/*
 		* Register all the render components.
 		*/
-		auto Startup(ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance())
+		auto Startup(ecs::ECSSystem& ecs_s)
 		{
 			ecs_s.Register<TransformComponent>();
 			ecs_s.Register<TextureComponent>();
@@ -38,7 +46,7 @@ namespace gargantua::render
 		* Attach TransformComponent, TextureComponent to the entity.
 		*/
 		auto Register(ecs::entity_t e,
-			ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
+			ecs::ECSSystem& ecs_s) -> void
 		{
 			ecs_s.Emplace<TransformComponent>(e);
 			ecs_s.Emplace<TextureComponent>(e);
@@ -48,7 +56,7 @@ namespace gargantua::render
 		/*
 		* Remove TransformComponent, TextureComponent from the entity.
 		*/
-		auto Unregister(ecs::entity_t e, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
+		auto Unregister(ecs::entity_t e, ecs::ECSSystem& ecs_s) -> void
 		{
 			ecs_s.Erase<TransformComponent>(e);
 			ecs_s.Erase<TextureComponent>(e);
@@ -58,13 +66,15 @@ namespace gargantua::render
 		/*
 		* Run rendering.
 		*/
-		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s = ecs::ECSSystem::Instance()) -> void
+		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s) -> void
 		{
-			using namespace physics;
-			UpdateTransform upt;
-			ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(upt);
-			ecs_s.ForEach<TransformComponent, TextureComponent>(DrawEntity::Draw);
+			using namespace physics2d;
+			ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(Render2d::UpdateTransform);
+			ecs_s.ForEach<TransformComponent, TextureComponent>(Render2d::Draw);
 		}	
+
+	private:
+		RendererSystem() = default;
 	};
 
 } // namespace gargantua::render

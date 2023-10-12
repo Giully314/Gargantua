@@ -14,12 +14,6 @@ import gargantua.platform.platform_events;
 
 namespace gargantua::platform
 {
-	/*Window::Window(const u16 width, const u16 height, std::string_view title) :
-		properties(width, height, title), window(nullptr)
-	{
-		
-	}*/
-
 	Window::Window(const u16 width, const u16 height, std::string_view title) 
 		: properties(width, height, title), window(nullptr)
 	{

@@ -4,15 +4,15 @@
 
 module gargantua.scene.editor_system;
 
-import gargantua.render.render_components;
-import gargantua.render.render_functions;
-import gargantua.physics.physics_components;
+import gargantua.render.components;
+import gargantua.render.functions;
+import gargantua.physics2d.components;
 
 namespace gargantua::scene
 {
 	auto EditorSystem::Run(ecs::ECSSystem& ecs_s) -> void
 	{
-		using namespace physics;
+		using namespace physics2d;
 		using namespace render;
 		ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(
 			[](PositionComponent& p, RotationComponent& r,
@@ -20,10 +20,10 @@ namespace gargantua::scene
 			{
 				p.p = { t.position.x, t.position.y };
 				r.theta = t.rotation;
-				q.size = { t.scale.x, t.scale.y };
+				q.r = { t.scale.x / 2.0f, t.scale.y / 2.0f };
 			});
 
-		ecs_s.ForEach<TransformComponent, TextureComponent>(render::DrawEntity::Draw);
+		ecs_s.ForEach<TransformComponent, TextureComponent>(render::Render2d::Draw);
 	}
 
 } // namespace gargantua::scene

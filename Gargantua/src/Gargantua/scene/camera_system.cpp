@@ -4,7 +4,7 @@
 
 module gargantua.scene.camera_system;
 
-import gargantua.render.render;
+import gargantua.render;
 
 namespace gargantua::scene
 {

@@ -12,6 +12,7 @@ module;
 export module gargantua.types;
 
 export import <memory>;
+import <concepts>;
 import <type_traits>;
 import <string>;
 import <utility>;
@@ -117,7 +118,8 @@ export namespace gargantua
 
 	// TODO: refactor the singletons to make the constructors private.
 	// Remove this after.
-	template<typename T>
+	template<std::default_initializable T>
+	//template<typename T>
 	class Singleton : private NonCopyable, private NonMovable
 	{
 	protected:

@@ -4,7 +4,7 @@
 * This module manages everything about time and timesteps.
 */
 
-export module gargantua.time.time;
+export module gargantua.time;
 
 
 export import gargantua.time.stopwatch;

@@ -21,9 +21,9 @@ import <concepts>;
 import <string_view>;
 
 import gargantua.types;
-import gargantua.log.log;
+import gargantua.log;
 import gargantua.app.application;
-import gargantua.time.time;
+import gargantua.time;
 
 
 namespace gargantua::core

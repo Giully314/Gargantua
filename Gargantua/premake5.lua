@@ -1,7 +1,7 @@
 project "Gargantua"
 	kind "StaticLib"
 	language "C++"
-	cppdialect "C++20"
+	cppdialect "C++latest"
 	systemversion "latest"
 
 

@@ -1,12 +1,10 @@
 /*
 * gargantua/render/renderer_command.ixx
 * 
-* PURPOSE:
+* PURPOSE: Abstract OpenGl commands.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
-* 
+*	RendererCommand: mix of static functions to invoke an OpenGL command. 
 * 
 * TODO:
 *	- for now it is only 2d oriented, update for 3d when supported.

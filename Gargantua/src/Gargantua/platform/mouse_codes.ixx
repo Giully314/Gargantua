@@ -5,8 +5,6 @@
 * 
 * CLASSES:
 *	MouseButton: enum for the codes of the buttons.
-* 
-* DESCRIPTION:
 */
 
 export module gargantua.platform.mouse_codes;

@@ -11,10 +11,10 @@ module;
 module gargantua.core.engine;
 
 import gargantua.render.renderer2d_system;
-import gargantua.render.texture_system;
-import gargantua.platform.platform;
-import gargantua.ecs.ecs;
-import gargantua.physics.physics;
+import gargantua.render.texture2d_system;
+import gargantua.platform;
+import gargantua.ecs;
+import gargantua.physics2d;
 
 namespace gargantua::core
 {
@@ -29,13 +29,9 @@ namespace gargantua::core
 		
 		// Platform system must be the first one to be initialized.
 		platform::PlatformSystem::Instance().Startup(width, height, title);
-		ecs::ECSSystem::Instance();
-		render::TextureSystem::Instance();
+		render::Texture2dSystem::Instance();
 		render::Renderer2dSystem::Instance().Startup();
-		physics::PhysicsSystem::Instance().Startup();
-
 		time_system.Startup();
-
 
 		// Register to the events after the initialization of platform system.
 		RegisterListenersToEvents();

@@ -1,7 +1,7 @@
 /*
 * gargantua/parallel/parallel.ixx
 * 
-* The module parallel has basic parallel algorithms using a thread pool.
+* The module parallel implements a basic thread pool.
 */
 
 export module gargantua.parallel.parallel;

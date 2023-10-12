@@ -1,7 +1,7 @@
 export module gargantua.test.ecs.test_ecs_system;
 
 import gargantua.test.base_test;
-import gargantua.ecs.ecs;
+import gargantua.ecs;
 import gargantua.test.ecs.components;
 
 namespace gargantua::test

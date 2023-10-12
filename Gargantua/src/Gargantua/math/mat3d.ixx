@@ -1,19 +1,19 @@
 /*
-gargantua/math/mat3d.ixx
-
-
-PURPOSE: Matrix 3x3.
-
-
-CLASSES:
-	Mat3d: matrix 3x3 with row representation.
-
-DESCRIPTION:
-	The internal format used is row-major order. Consider that this is only relevant in terms of
-	HOW operations are executed and not what they mean.
-	So for example C = A * B means that the matrix B is applied first and then A.
-
-	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
+* gargantua/math/mat3d.ixx
+* 
+* 
+* PURPOSE: Matrix 3x3.
+* 
+* 
+* CLASSES:
+* 	Mat3d: matrix 3x3 with row representation.
+* 
+* DESCRIPTION:
+* 	The internal format used is row-major order. Consider that this is only relevant in terms of
+* 	HOW operations are executed and not what they mean.
+* 	So for example C = A * B means that the matrix B is applied first and then A.
+* 
+* 	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
 */
 
 export module gargantua.math.mat3d;

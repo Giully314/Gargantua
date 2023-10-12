@@ -42,9 +42,15 @@ import gargantua.ecs.component_group;
 namespace gargantua::ecs
 {
 	export 
-	class ECSSystem : public Singleton<ECSSystem>
+	class ECSSystem : private NonCopyable
 	{
 	public:
+		ECSSystem() = default;
+
+		ECSSystem(ECSSystem&&) = default;
+		ECSSystem& operator=(ECSSystem&&) = default;
+
+
 		/*
 		* Get an id for an entity.
 		* Complexity: O(1).

@@ -1,11 +1,10 @@
 /*
 * gargantua/render/frame_buffer.ixx
 * 
-* PURPOSE:
+* PURPOSE: Abstraction for OpenGL frame buffer.
 * 
 * CLASSES:
-* 
-* DESCRIPTION:
+*	FrameBuffer: Manage an OpenGL frame buffer.
 */
 
 module;
