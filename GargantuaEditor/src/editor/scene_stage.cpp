@@ -42,8 +42,10 @@ namespace gargantua::editor
 	{
 		ImGui::Begin("Scene2d");
 
+		// The imgui window has size 0.
 		if (!HandleWindowResize())
-		{
+		{ 
+			ImGui::End();
 			return;
 		}
 
