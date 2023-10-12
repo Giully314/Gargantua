@@ -4,6 +4,13 @@ A 2d game engine under development.
 ![](images/editor2.gif)  
 
 
+# Installation
+Prerequisites: latest version of premake5 https://premake.github.io/ and VisualStudio with support for C++23.
+Run git clone --recurse-submodules https://github.com/Giully314/Gargantua.git  
+In the Gargantua directory run premake5.  
+Open visual studio and run.  
+
+
 
 # Project structure and directories
 ## Gargantua
@@ -23,15 +30,20 @@ resource:	Utility.
 scene:		Scene components.  
 time:		Manage time in the engine.  
 
+## GargantuaEditor
+editor: stages for the Editor application
+
+## Sandbox 
+Used for tests.
+
 
 
 # TODO
-https://trello.com/b/c2i4BD7O/gargantua
-
+https://trello.com/b/c2i4BD7O/gargantua  
 
 
 # Language 
-The project is based on C++20.
+The project is based on C++20/23.
 
 
 # Personal considerations
