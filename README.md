@@ -5,7 +5,7 @@ A 2d game engine under development.
 
 
 # Installation
-Prerequisites: latest version of premake5 https://premake.github.io/ and VisualStudio with support for C++23.
+Prerequisites: latest version of premake5 https://premake.github.io/ and VisualStudio with support for C++23.  
 Run git clone --recurse-submodules https://github.com/Giully314/Gargantua.git  
 In the Gargantua directory run premake5.  
 Open visual studio and run.  
