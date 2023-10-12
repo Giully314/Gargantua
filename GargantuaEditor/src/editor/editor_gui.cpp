@@ -128,7 +128,7 @@ namespace gargantua::editor
 
     auto EditorGUI::Startup() -> void
     {
-        using namespace physics;
+        using namespace physics2d;
         auto e1 = context->CreateEntity();
         context->RegisterToPhysics(e1, 0.5f, 0.5f, {1.0f, 1.0f});
         context->RegisterToRenderer(e1);
@@ -295,7 +295,7 @@ namespace gargantua::editor
 
     auto EditorGUI::ShowPhysicsComponents(scene::Entity entity) -> void
     {
-        using namespace physics;
+        using namespace physics2d;
         ShowComponent<MassComponent>("Mass", entity, [](MassComponent& c)
             {
                 f32 m = c.m;

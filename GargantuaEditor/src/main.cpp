@@ -2,6 +2,8 @@
 import gargantua.core.engine;
 import gargantua.editor.editor;
 
+//import gargantua.test.parallel.test_task_system;
+
 using namespace gargantua;
 
 int main()
@@ -10,6 +12,10 @@ int main()
 
 	engine.CreateApplication<editor::Editor>();
 	engine.Run();
+
+	//test::TestTaskSystem t;
+
+	//t.RunTest();
 
 	return 0;
 }

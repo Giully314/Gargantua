@@ -33,7 +33,7 @@ namespace gargantua::editor
 	{
 		// Begin renderer
 		auto proj_view = context.GetActiveCameraMatrix();
-		GRG_CORE_DEBUG("Editor\n{}\n", proj_view.ToString());
+		//GRG_CORE_DEBUG("Editor\n{}\n", proj_view.ToString());
 		render::Renderer2dSystem::Instance().BeginScene(proj_view);
 	}
 	
