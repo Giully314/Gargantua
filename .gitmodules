@@ -4,3 +4,4 @@
 [submodule "Gargantua/vendor/imgui"]
 	path = Gargantua/vendor/imgui
 	url = https://github.com/Giully314/imgui
+	branch = docking
