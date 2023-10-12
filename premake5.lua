@@ -4,7 +4,7 @@ workspace "Gargantua"
 	
 	toolset	'msc'
 
-	startproject "Sandbox"
+	startproject "GargantuaEditor"
 
 outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
