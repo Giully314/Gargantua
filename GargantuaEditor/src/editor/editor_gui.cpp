@@ -326,7 +326,7 @@ namespace gargantua::editor
 
 
         // Right click on a blank space in scene manager open a popup.
-        if (ImGui::BeginPopupContextWindow(0, 1, false))
+        if (ImGui::BeginPopupContextWindow(0, 1))
         {
             if (ImGui::MenuItem("Create empty entity"))
             {
