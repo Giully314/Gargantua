@@ -163,6 +163,7 @@ namespace gargantua::editor
         scene::Entity entity_to_be_deleted;
         if (ImGui::TreeNode("Entities"))
         {
+            // TODO: maybe it's not necessary to do this transformation?
             auto& ecs_s = context->ECS();
             auto entities_view = context->GetEntities() | 
                 std::views::transform([&](auto e)
@@ -181,25 +182,39 @@ namespace gargantua::editor
                 if (e.Has<scene::TagComponent>())
                 {
                     tag = e.Get<scene::TagComponent>().name;
+                    
+                    // TODO: Do not display the entity associated with the camera
+                    // editor because in case of delete the editor crashes.
+                    if (tag == "Editor")
+                    {
+                        continue;
+                    }
                 }
                 else
                 {
                     tag = "Entity";
                 }
 
-                bool opened = ImGui::TreeNodeEx((void*)(e.ID()), node_flags, tag.data());
+                // TODO: Is this popup necessary? Maybe it's better a list of entities without
+                // treenode? 
+                if (ImGui::TreeNodeEx((void*)(e.ID()), node_flags, tag.data()))
+                {
+                    ImGui::TreePop();
+                }
                 
+
                 if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
                 {
                     entity_selected = e;
                 }
 
-                bool entity_deleted = false;
+                // Right click on an entity to open a popup for delete.
                 if (ImGui::BeginPopupContextItem())
                 {
                     if (ImGui::MenuItem("Delete entity"))
                     {
                         entity_to_be_deleted = e;
+                        entity_selected = {};
                     }
                     ImGui::EndPopup();
                 }
@@ -325,8 +340,8 @@ namespace gargantua::editor
         }
 
 
-        // Right click on a blank space in scene manager open a popup.
-        if (ImGui::BeginPopupContextWindow(0, 1))
+        // Right click on a blank space in scene manager open a popup for the creation of a new entity.
+        if (ImGui::BeginPopupContextWindow(0, ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_MouseButtonRight))
         {
             if (ImGui::MenuItem("Create empty entity"))
             {
