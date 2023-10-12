@@ -16,4 +16,3 @@ include "Gargantua/vendor/stb_image"
 include "Gargantua"
 include "GargantuaEditor"
 include "Sandbox"
-
