@@ -14,7 +14,7 @@ uniform mat4 u_view_proj;
 
 void main()
 {
-    gl_Position = u_view_proj * position;
+    gl_Position =  u_view_proj * position;
     f_color = in_color;
     f_texture_position = texture_position;
     f_texture_slot = texture_slot;
