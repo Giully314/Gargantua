@@ -17,7 +17,10 @@ namespace gargantua::editor
 	{
 		GRG_CORE_LOGGER_FILTER(log::Level::debug);
 		context.Startup();
-		//pipeline.AddStage<DemoStage>();
+
+		// Demo stage is used to explore the imgui library and add functionalities on the go.
+		// pipeline.AddStage<DemoStage>();
+		
 		pipeline.AddStage<EditorGUI>(&context);
 		pipeline.AddStage<SceneStage>(&context);
 		
