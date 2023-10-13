@@ -1,9 +1,11 @@
 /*
 * gargantua/render/render.ixx
 * 
-* The module render defines the layer of interface for OpenGL. The implementation tries to not 
-* be object oriented for the problems pointed out here (https://www.khronos.org/opengl/wiki/Common_Mistakes#The_Object_Oriented_Language_Problem).
-* 
+* The module render defines the layer of interface for OpenGL. The implementation tries to keep in mind the 
+* problems pointed out here (specially for RAII approach):
+* https://www.khronos.org/opengl/wiki/Common_Mistakes#The_Object_Oriented_Language_Problem.
+* One way to do that is to use unique_res/shared_res when creating OpenGL objects that must be passed around
+* and use the stack for local usage.
 */
 
 export module gargantua.render;

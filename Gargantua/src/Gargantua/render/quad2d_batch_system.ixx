@@ -9,6 +9,12 @@
 * DESCRIPTION:
 *	The batch system handles all the operations on a batch. If the batch is full, create a new one; setup
 *	the batches for the draw. For more info about batch check quad2d_batch.ixx.
+* 
+* 
+* TODO:
+*	- creation/destruction of batches could be expansive for the create/destroy of opengl buffers; 
+*		there could be an option of setting a minimum of batches to be reused instead of clearing the vector
+*		at the end of each frame.
 */
 
 export module gargantua.render.quad2d_batch_system;
