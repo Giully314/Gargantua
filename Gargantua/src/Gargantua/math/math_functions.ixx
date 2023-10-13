@@ -25,12 +25,12 @@ import gargantua.math.vector;
 import gargantua.math.matrix;
 
 
-export namespace gargantua::math
+namespace gargantua::math
 {
-
 	template <typename T>
 	concept Number = std::is_arithmetic_v<T>;
 
+	export 
 	struct Product
 	{
 		template <Number T>
@@ -57,7 +57,7 @@ export namespace gargantua::math
 
 
 	//*********************** PROJECTION *********************************************
-
+	export
 	struct Projection
 	{
 
@@ -105,7 +105,7 @@ export namespace gargantua::math
 
 
 	//*********************** TRANSFORM 3D *****************************************
-
+	export
 	struct Transform3d
 	{
 		template <Number T>
@@ -182,7 +182,7 @@ export namespace gargantua::math
 
 
 	//*********************** TRANSFORM 2D *****************************************
-
+	export
 	struct Transform2d
 	{
 		//Positive theta values rotate counter clockwise.
@@ -245,7 +245,7 @@ export namespace gargantua::math
 
 
 	//*************************** ANGLES ********************************************
-
+	export
 	struct Angles
 	{
 		template <Number T>
