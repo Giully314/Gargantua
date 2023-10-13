@@ -29,7 +29,7 @@ export namespace gargantua::math
 {
 
 	template <typename T>
-	concept Number = std::integral<T> && std::floating_point<T>;
+	concept Number = std::is_arithmetic_v<T>;
 
 	struct Product
 	{
@@ -40,12 +40,18 @@ export namespace gargantua::math
 		}
 
 
-		template <typename T>
-		static Vec2d<T> Hadamard(const Vec2d<T>& v1, const Vec2d<T>& v2)
+		template <Number T>
+		static auto Hadamard(const Vec2d<T>& v1, const Vec2d<T>& v2) -> Vec2d<T>
 		{
 			return { v1.x * v2.x, v1.y * v2.y };
 		}
 
+
+		template <Number T>
+		static auto Cross(const Vec2d<T>& v1, const Vec2d<T>& v2) -> T
+		{
+			return v1.x * v2.y - v1.y * v2.x;
+		}
 	};
 
 
@@ -56,7 +62,7 @@ export namespace gargantua::math
 	{
 
 		// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> Orthographic(const T l, const T b, const T r, const T t, const T n, const T f)
 		{
 			Mat4d<T> ortho;
@@ -75,7 +81,7 @@ export namespace gargantua::math
 			return ortho;
 		}
 
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> Orthographic(const T l, const T b, const T r, const T t)
 		{
 			Mat4d<T> ortho;
@@ -102,7 +108,7 @@ export namespace gargantua::math
 
 	struct Transform3d
 	{
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> Translate(const Vec3d<T>& v)
 		{
 			Mat4d<T> translation;
@@ -122,7 +128,7 @@ export namespace gargantua::math
 		}
 
 		/*Angle in radians*/
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> RotateZ(const T a)
 		{
 			T c = std::cos(a);
@@ -143,7 +149,7 @@ export namespace gargantua::math
 		}
 
 
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> Scale(const T c)
 		{
 			Mat4d<T> scale{ c };
@@ -153,7 +159,7 @@ export namespace gargantua::math
 			return scale;
 		}
 
-		template <typename T>
+		template <Number T>
 		static Mat4d<T> Scale(const Vec3d<T>& v)
 		{
 			Mat4d<T> scale;
@@ -180,8 +186,7 @@ export namespace gargantua::math
 	struct Transform2d
 	{
 		//Positive theta values rotate counter clockwise.
-		template <typename T>
-			requires std::is_arithmetic_v<T>
+		template <Number T>
 		static Mat2d<T> Rotate(const T theta)
 		{
 			Mat2d<T> rotation;
@@ -198,7 +203,7 @@ export namespace gargantua::math
 			return rotation;
 		}
 
-		template <typename T>
+		template <Number T>
 		static Mat2d<T> Scale(const T c)
 		{
 			Mat2d<T> scale{ c };
@@ -207,7 +212,7 @@ export namespace gargantua::math
 		}
 
 
-		template <typename T>
+		template <Number T>
 		static Mat2d<T> Scale(const Vec2d<T>& v)
 		{
 			Mat2d<T> scale;
@@ -220,13 +225,13 @@ export namespace gargantua::math
 		}
 
 
-		template <typename T>
+		template <Number T>
 		static Vec2d<T> RotateCounterClock90(const Vec2d<T>& v)
 		{
 			return Vec2d<T>{-v.y, v.x};
 		}
 
-		template <typename T>
+		template <Number T>
 		static Vec2d<T> RotateClock90(const Vec2d<T>& v)
 		{
 			return Vec2d<T>{v.y, -v.x};
@@ -243,14 +248,13 @@ export namespace gargantua::math
 
 	struct Angles
 	{
-		template <typename T>
-			requires std::is_arithmetic_v<T>
+		template <Number T>
 		static T ToRad(const T a)
 		{
 			return static_cast<T>(a * std::numbers::pi / 180.0);
 		}
 
-		template <typename T>
+		template <Number T>
 			requires std::is_arithmetic_v<T>
 		static T ToDeg(const T a)
 		{
