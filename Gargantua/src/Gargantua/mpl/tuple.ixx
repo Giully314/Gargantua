@@ -61,11 +61,11 @@ namespace gargantua::mpl
 	constexpr auto Perform(TTuple&& t, u32 idx, TAction action) -> void
 	{
 		u32 current_idx = 0;
-		ForEach(t, [action = std::move(action), idx, &current_idx](auto&& value)
+		ForEach(t, [action = std::move(action), idx, &current_idx]<typename T>(T&& value)
 			{
 				if (current_idx == idx)
 				{
-					action(std::forward<decltype(value)>(value));
+					action(std::forward<T>(value));
 				}
 				++current_idx;
 			});
