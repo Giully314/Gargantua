@@ -109,7 +109,7 @@ namespace gargantua::render
 		auto SetUniform2f(std::string_view name, const math::Vec2df& v) const -> void
 		{
 			GLint location = glGetUniformLocation(id, name.data());
-			glUniform2f(location, v[0], v[1]);
+			glUniform2f(location, v.x, v.y);
 		}
 
 
@@ -122,7 +122,7 @@ namespace gargantua::render
 		auto SetUniform3f(std::string_view name, const math::Vec3df& v) const -> void
 		{
 			GLint location = glGetUniformLocation(id, name.data());
-			glUniform3f(location, v[0], v[1], v[2]);
+			glUniform3f(location, v.x, v.y, v.z);
 		}
 
 
@@ -135,7 +135,7 @@ namespace gargantua::render
 		auto SetUniform4f(std::string_view name, const math::Vec4df& v) const -> void
 		{
 			GLint location = glGetUniformLocation(id, name.data());
-			glUniform4f(location, v[0], v[1], v[2], v[3]);
+			glUniform4f(location, v.x, v.y, v.z, v.w);
 		}
 
 
