@@ -142,7 +142,8 @@ export namespace gargantua::generator
 
         }
 
-        Generator(Generator&& rhs) : coro_hdl{ std::exchange(rhs.coro_hdl, nullptr) }
+        Generator(Generator&& rhs) noexcept(noexcept(std::exchange(rhs.coro_hdl, nullptr))) : 
+            coro_hdl{std::exchange(rhs.coro_hdl, nullptr)}
         {
 
         }
