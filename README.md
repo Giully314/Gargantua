@@ -17,7 +17,7 @@ Open visual studio and run.
 app:		Application API for the engine.  
 core:		Core components of the engine.    
 ds:			Implementation of data structures.  
-ecs:		Implementation of the entity component system.
+ecs:		Implementation of the entity component system.  
 generator:	Generators using coroutines.  
 log:		Basic logging system.  
 math:		Vector and Matrices definitions (2d, 3d, 4d). Various math utility functions.  
@@ -73,7 +73,7 @@ Ogre engine source code.
 
 
 ## Books
-Large scale C++ volume 1 by John Lakos.
+Large scale C++ volume 1 by John Lakos.  
 Game engine architecture by Jason Gregory.  
 Game Physics by David H. Eberly.  
 Real-time collision detection by Christer Ericson.  
