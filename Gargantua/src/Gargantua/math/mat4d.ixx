@@ -14,9 +14,6 @@
 * 	So for example C = A * B means that the matrix B is applied first and then A.
 * 
 * 	The Inverse and the Determinant are calculated by writing the explicit formula based on cofactors.
-* 
-* TODO:
-* 	is the static variable dim necessary?
 * 	
 */
 
@@ -25,6 +22,7 @@ export module gargantua.math.mat4d;
 import <type_traits>;
 import <string>;
 import <format>;
+import <compare>;
 
 import gargantua.types;
 import gargantua.math.vec4d;
@@ -41,12 +39,11 @@ export namespace gargantua::math
 		using value_type = T;
 		using col_t = Vec4d<T>; //column type
 		using row_t = Vec4d<T>; //row type
-		inline static constexpr u32 dim = 4;
 
-		Mat4d() = default;
+		constexpr Mat4d() noexcept = default;
 
 		//Initialize the diagonal of the matrix with the value d
-		Mat4d(const T& d)
+		constexpr Mat4d(const T& d) noexcept
 		{
 			m[0][0] = d;
 			m[1][1] = d;
@@ -54,40 +51,49 @@ export namespace gargantua::math
 			m[3][3] = d;
 		}
 
-		Mat4d(row_t row0, row_t row1, row_t row2, row_t row3)
+
+		constexpr Mat4d(const row_t& row0, const row_t& row1, const row_t& row2, const row_t& row3) noexcept 
 		{
-			m[0] = std::move(row0);
-			m[1] = std::move(row1);
-			m[2] = std::move(row2);
-			m[3] = std::move(row3);
+			m[0] = row0;
+			m[1] = row1;
+			m[2] = row2;
+			m[3] = row3;
 		}
 
 
-		auto operator()(const u32 i, const u32 j) -> T&
+		constexpr auto operator==(const Mat4d&) const -> bool = default;
+
+
+		[[nodiscard]]
+		constexpr auto operator()(const u32 i, const u32 j) -> T&
 		{
 			return m[i][j];
 		}
 
-		auto operator()(const u32 i, const u32 j) const -> T
+
+		[[nodiscard]]
+		constexpr auto operator()(const u32 i, const u32 j) const -> T
 		{
 			return m[i][j];
 		}
 
 
 		//return row i
-		auto operator()(const u32 i) -> row_t&
+		[[nodiscard]]
+		constexpr auto operator()(const u32 i) -> row_t&
 		{
 			return m[i];
 		}
 
-		auto operator()(const u32 i) const -> const row_t&
+
+		[[nodiscard]]
+		constexpr auto operator()(const u32 i) const -> const row_t&
 		{
 			return m[i];
 		}
 
 
-
-		auto operator+=(const Mat4d& rhs) -> Mat4d&
+		constexpr auto operator+=(const Mat4d& rhs) noexcept -> Mat4d&
 		{
 			m[0] += rhs.m[0];
 			m[1] += rhs.m[1];
@@ -97,7 +103,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator-=(const Mat4d& rhs) -> Mat4d&
+		constexpr auto operator-=(const Mat4d& rhs) noexcept -> Mat4d&
 		{
 			m[0] -= rhs.m[0];
 			m[1] -= rhs.m[1];
@@ -107,7 +113,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator*=(const T c) -> Mat4d&
+		constexpr auto operator*=(const T c) noexcept -> Mat4d&
 		{
 			m[0] *= c;
 			m[1] *= c;
@@ -117,7 +123,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator*=(const Mat4d& rhs) -> Mat4d&
+		constexpr auto operator*=(const Mat4d& rhs) noexcept -> Mat4d&
 		{
 			m[0] = m[0][0] * rhs.m[0] + m[0][1] * rhs.m[1] + m[0][2] * rhs.m[2] + m[0][3] * rhs.m[3];
 			m[1] = m[1][0] * rhs.m[0] + m[1][1] * rhs.m[1] + m[1][2] * rhs.m[2] + m[1][3] * rhs.m[3];
@@ -128,7 +134,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator/=(const T c) -> Mat4d&
+		constexpr auto operator/=(const T c) -> Mat4d&
 		{
 			m[0] /= c;
 			m[1] /= c;
@@ -138,9 +144,7 @@ export namespace gargantua::math
 		}
 
 
-
-
-		auto Zero() noexcept -> void
+		constexpr auto Zero() noexcept -> void
 		{
 			m[0].Zero();
 			m[1].Zero();
@@ -148,7 +152,7 @@ export namespace gargantua::math
 			m[3].Zero();
 		}
 
-		auto Identity() noexcept -> void
+		constexpr auto Identity() noexcept -> void
 		{
 			m[0].x = T{ 1 };
 			m[0].y = T{ 0 };
@@ -172,8 +176,8 @@ export namespace gargantua::math
 		}
 
 
-
-		auto Determinant() const noexcept -> void
+		[[nodiscard]]
+		constexpr auto Determinant() const noexcept -> T
 		{
 			T determinant{ 0 };
 			T s00 = m[2][2] * m[3][3] - m[2][3] * m[3][2];
@@ -192,7 +196,8 @@ export namespace gargantua::math
 		}
 
 
-		auto Inverse() const -> Mat4d
+		[[nodiscard]]
+		constexpr auto Inverse() const -> Mat4d
 		{
 			Mat4d inverse;
 
@@ -247,18 +252,22 @@ export namespace gargantua::math
 		}
 
 
-		auto GetAddress() const -> const T*
+		[[nodiscard]]
+		constexpr auto GetAddress() const noexcept -> const T*
 		{
 			return &(m[0].x);
 		}
 
-		auto GetAddress() -> T*
+
+		[[nodiscard]]
+		constexpr auto GetAddress() noexcept -> T*
 		{
 			return &(m[0].x);
 		}
 
 
-		auto ToString() const -> std::string
+		[[nodiscard]]
+		constexpr auto ToString() const -> std::string
 		{
 			return std::format("{}\n{}\n{}\n{}", m[0].ToString(), m[1].ToString(),
 				m[2].ToString(), m[3].ToString());
@@ -266,7 +275,7 @@ export namespace gargantua::math
 
 	private:
 		row_t m[4];
-	}; //class Mat4d
+	}; 
 
 
 	/**************** TYPE ALIAS ************************/
@@ -279,56 +288,45 @@ export namespace gargantua::math
 	/*****************************************************************/
 	//                  INLINE OPERATORS 
 	/*****************************************************************/
+
+
 	template <typename T>
-	inline auto operator==(const Mat4d<T>& lhs, const Mat4d<T>& rhs) -> bool
+	[[nodiscard]]
+	constexpr auto operator+(const Mat4d<T>& lhs, const Mat4d<T>& rhs) noexcept -> Mat4d<T>
 	{
-		return lhs(0) == rhs(0) && lhs(1) == rhs(1) && lhs(2) == rhs(2) && lhs(3) == rhs(3);
+		return { lhs(0) + rhs(0), lhs(1) + rhs(1), lhs(2) + rhs(2), lhs(3) + rhs(3) };
 	}
 
 
 	template <typename T>
-	inline auto operator!=(const Mat4d<T>& lhs, const Mat4d<T>& rhs) -> bool
+	[[nodiscard]]
+	constexpr auto operator-(Mat4d<T> lhs, const Mat4d<T>& rhs) noexcept -> Mat4d<T>
 	{
-		return !(lhs == rhs);
-	}
-
-
-	template <typename T>
-	inline auto operator+(Mat4d<T> lhs, const Mat4d<T>& rhs) -> Mat4d<T>
-	{
-		lhs += rhs;
-		return lhs;
-	}
-
-
-	template <typename T>
-	inline auto operator-(Mat4d<T> lhs, const Mat4d<T>& rhs) -> Mat4d<T>
-	{
-		lhs -= rhs;
-		return lhs;
+		return { lhs(0) - rhs(0), lhs(1) - rhs(1), lhs(2) - rhs(2), lhs(3) - rhs(3) };
 	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator*(Mat4d<T> lhs, const T c) -> Mat4d<T>
+	[[nodiscard]]
+	constexpr auto operator*(Mat4d<T> lhs, const T c) noexcept -> Mat4d<decltype(lhs(0).x * c)>
 	{
-		lhs *= static_cast<T>(c);
-		return lhs;
+		return { lhs(0) * c, lhs(1) * c, lhs(2) * c, lhs(3) * c };
 	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator/(Mat4d<T> lhs, const U c) -> Mat4d<T>
+	[[nodiscard]]
+	constexpr auto operator/(Mat4d<T> lhs, const U c) -> Mat4d<decltype(lhs(0).x / c)>
 	{
-		lhs /= static_cast<T>(c);
-		return lhs;
+		return { lhs(0) / c, lhs(1) / c, lhs(2) / c, lhs(3) / c };
 	}
 
 
 	template <typename T>
-	inline auto operator*(Mat4d<T> lhs, const Mat4d<T>& rhs) -> Mat4d<T>
+	[[nodiscard]]
+	constexpr auto operator*(Mat4d<T> lhs, const Mat4d<T>& rhs) noexcept -> Mat4d<T>
 	{
 		lhs *= rhs;
 		return lhs;
@@ -336,14 +334,10 @@ export namespace gargantua::math
 
 
 	template <typename T, typename U>
-	inline auto operator*(const Mat4d<T>& lhs, const Vec4d<U>& rhs) -> Vec4d<std::common_type_t<T, U>>
+	[[nodiscard]]
+	constexpr auto operator*(const Mat4d<T>& lhs, const Vec4d<U>& rhs) noexcept -> Vec4d<decltype(lhs(0).x * rhs.x)>
 	{
-		using com_t = std::common_type_t<T, U>;
-		com_t x = lhs(0).Dot(rhs);
-		com_t y = lhs(1).Dot(rhs);
-		com_t z = lhs(2).Dot(rhs);
-		com_t w = lhs(3).Dot(rhs);
-		return Vec4d<com_t>{x, y, z, w};
+		return { lhs(0).Dot(rhs), lhs(1).Dot(rhs), lhs(2).Dot(rhs), lhs(3).Dot(rhs) };
 	}
 
 } //namespace gargantua::math

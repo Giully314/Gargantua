@@ -17,17 +17,23 @@
 * 
 */
 
+module;
+
+#include <gargantua/log/logger_macro.hpp>
+
 export module gargantua.math.vec4d;
 
 import <type_traits>;
+import <concepts>;
 import <cmath>;
 import <string>;
 import <format>;
+import <compare>;
 
+import gargantua.types;
 import gargantua.math.vec2d;
 import gargantua.math.vec3d;
-import gargantua.types;
-
+import gargantua.log;
 
 export namespace gargantua::math
 {
@@ -39,37 +45,81 @@ export namespace gargantua::math
 	public:
 		using value_type = T;
 
-		Vec4d() = default;
+		constexpr Vec4d() noexcept = default;
 
-		Vec4d(const T x_, const T y_, const T z_, const T w_) : x(x_), y(y_), z(z_), w(w_)
+		constexpr Vec4d(const T x_, const T y_, const T z_, const T w_) noexcept : x(x_), y(y_), z(z_), w(w_)
 		{
 
 		}
 
-		Vec4d(const Vec2d<T>& v, const T z_, const T w_) : x(v.x), y(v.y), z(z_), w(w_)
+
+		constexpr Vec4d(const Vec2d<T>& v, const T z_, const T w_) noexcept : x(v.x), y(v.y), z(z_), w(w_)
 		{
 
 		}
 
-		Vec4d(const Vec3d<T>& v, const T w_) : x(v.x), y(v.y), z(v.z), w(w_)
+
+		constexpr Vec4d(const Vec3d<T>& v, const T w_) noexcept : x(v.x), y(v.y), z(v.z), w(w_)
 		{
 
 		}
 
-		// TODO: this is so unsafe.
-		auto operator[](u32 idx) -> T&
-		{ 
-			return reinterpret_cast<T*>(&x)[idx]; 
+
+		constexpr auto operator==(const Vec4d&) const -> bool = default;
+
+
+		template <std::convertible_to<T> U>
+		constexpr operator Vec4d<U>() const noexcept
+		{
+			return Vec4d<U>{static_cast<U>(x), static_cast<U>(y), static_cast<U>(z), static_cast<U>(w)};
 		}
 
 
-		auto operator[](u32 idx) const -> T
-		{ 
-			return reinterpret_cast<const T*>(&x)[idx]; 
+		// https://developercommunity.visualstudio.com/t/ICE-when-using-explicit-this-parameterD/10236618
+		// almost 1 year for this bug. :D 
+		/*constexpr auto&& operator[](this auto&& self, const u32 idx)
+		{
+			switch (idx)
+			{
+				case 0: return x;
+				case 1: return y;
+				case 2: return z;
+				case 3: return w;
+			}
+			GRG_CORE_ERROR("Vec4d access with idx {}", idx);
+			throw std::out_of_range{ "Vec4d access error" };
+		}*/
+		[[nodiscard]]
+		constexpr auto operator[](const u32 idx) const -> T
+		{
+			switch (idx)
+			{
+			case 0: return x;
+			case 1: return y;
+			case 2: return z;
+			case 3: return w;
+			}
+			GRG_CORE_ERROR("Vec3d access with idx {}", idx);
+			throw std::out_of_range{ "Vec3d access error" };
 		}
 
 
-		auto operator+=(const Vec4d& rhs) -> Vec4d&
+		[[nodiscard]]
+		constexpr auto operator[](const u32 idx) -> T&
+		{
+			switch (idx)
+			{
+			case 0: return x;
+			case 1: return y;
+			case 2: return z;
+			case 3: return w;
+			}
+			GRG_CORE_ERROR("Vec4d access with idx {}", idx);
+			throw std::out_of_range{ "Vec4d access error" };
+		}
+
+
+		constexpr auto operator+=(const Vec4d& rhs) noexcept -> Vec4d&
 		{
 			x += rhs.x;
 			y += rhs.y;
@@ -79,7 +129,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator-=(const Vec4d& rhs) -> Vec4d&
+		constexpr auto operator-=(const Vec4d& rhs) noexcept -> Vec4d&
 		{
 			x -= rhs.x;
 			y -= rhs.y;
@@ -89,7 +139,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator*=(const T c) -> Vec4d&
+		constexpr auto operator*=(const T c) noexcept -> Vec4d&
 		{
 			x *= c;
 			y *= c;
@@ -99,7 +149,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator/=(const T c) -> Vec4d&
+		constexpr auto operator/=(const T c) -> Vec4d&
 		{
 			x /= c;
 			y /= c;
@@ -109,8 +159,7 @@ export namespace gargantua::math
 		}
 
 
-
-		auto Zero() -> void
+		constexpr auto Zero() noexcept -> void
 		{
 			x = T{ 0 };
 			y = T{ 0 };
@@ -119,7 +168,7 @@ export namespace gargantua::math
 		}
 
 
-		auto Normalize() -> void
+		constexpr auto Normalize() -> void
 		{
 			T l = x * x + y * y + z * z;
 			if (l != 0)
@@ -131,7 +180,9 @@ export namespace gargantua::math
 			}
 		}
 
-		auto Normalized() -> Vec4d
+
+		[[nodiscard]]
+		constexpr auto Normalized() const -> Vec4d
 		{
 			Vec4d copy = *this;
 			copy.Normalize();
@@ -139,24 +190,29 @@ export namespace gargantua::math
 		}
 
 
-		auto Length() const -> T
+		[[nodiscard]]
+		constexpr auto Length() const noexcept -> T
 		{
 			return std::sqrt(x * x + y * y + z * z);
 		}
 
-		auto LengthSqr() const noexcept -> T
+
+		[[nodiscard]]
+		constexpr auto LengthSqr() const noexcept -> T
 		{
 			return x * x + y * y + z * z + w * w;
 		}
 
 
-		auto Dot(const Vec4d& rhs) const noexcept -> T
+		[[nodiscard]]
+		constexpr auto Dot(const Vec4d& rhs) const noexcept -> T
 		{
 			return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
 		}
 
 
-		auto ToString() const -> std::string
+		[[nodiscard]]
+		constexpr auto ToString() const -> std::string
 		{
 			return std::format("( {}  {}  {}  {} )", x, y, z, w);
 		}
@@ -181,66 +237,48 @@ export namespace gargantua::math
 	//                  INLINE OPERATORS 
 	/*****************************************************************/
 
-	template <typename T>
-	inline auto operator==(const Vec4d<T>& lhs, const Vec4d<T>& rhs) -> bool
-	{
-		return (lhs.x == rhs.x) && (lhs.y == rhs.y) && (lhs.z == rhs.z) && (lhs.w == rhs.w);
-	}
 
 	template <typename T>
-	inline auto operator!=(const Vec4d<T>& lhs, const Vec4d<T>& rhs) -> bool
+	[[nodiscard]]
+	constexpr auto operator+(const Vec4d<T>& lhs, const Vec4d<T>& rhs) noexcept -> Vec4d<T>
 	{
-		return !(lhs == rhs);
+		return { lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z, lhs.w + rhs.w };
 	}
 
 
 	template <typename T>
-	inline auto operator+(Vec4d<T> lhs, const Vec4d<T>& rhs) -> Vec4d<T>
+	[[nodiscard]]
+	constexpr auto operator-(Vec4d<T> lhs, const Vec4d<T>& rhs) noexcept -> Vec4d<T>
 	{
-		lhs += rhs;
-		return lhs;
-	}
-
-
-	template <typename T>
-	inline auto operator-(Vec4d<T> lhs, const Vec4d<T>& rhs) -> Vec4d<T>
-	{
-		lhs -= rhs;
-		return lhs;
+		return { lhs.x - rhs.x, lhs.y - rhs.y, lhs.z - rhs.z, lhs.w - rhs.w };
 	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator*(Vec4d<T> lhs, const U c) -> Vec4d<T>
+	[[nodiscard]]
+	constexpr auto operator*(const Vec4d<T>& lhs, const U c) noexcept -> Vec4d<decltype(c * lhs.x)>
 	{
-		lhs *= (T)c;
-		return lhs;
+		return { c * lhs.x, c * lhs.y, c * lhs.z, c * lhs.w };
 	}
 
-	template <typename T, typename U>
-		requires std::is_arithmetic_v<U>
-	inline auto operator*(const U c, Vec4d<T> lhs) -> Vec4d<T>
-	{
-		lhs *= (T)c;
-		return lhs;
-	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator/(Vec4d<T> lhs, const U c) -> Vec4d<T>
+	[[nodiscard]]
+	constexpr auto operator*(const U c, const Vec4d<T>& lhs) noexcept -> Vec4d<decltype(c* lhs.x)>
 	{
-		lhs /= (T)c;
-		return lhs;
+		return { c * lhs.x, c * lhs.y, c * lhs.z, c * lhs.w };
 	}
+
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator/(const U c, Vec4d<T> lhs) -> Vec4d<T>
+	[[nodiscard]]
+	constexpr auto operator/(Vec4d<T> lhs, const U c) -> Vec4d<decltype(c* lhs.x)>
 	{
-		lhs /= (T)c;
-		return lhs;
+		return { lhs.x / c, lhs.y / c, lhs.z / c, lhs.w / c };
 	}
 
 } //namespace gargantua::math

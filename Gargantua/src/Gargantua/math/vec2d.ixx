@@ -7,14 +7,22 @@
 * 	Vec2d: vector 2d with x and y components.
 */
 
+module;
+
+#include <gargantua/log/logger_macro.hpp>
+
 export module gargantua.math.vec2d;
 
 import <type_traits>;
+import <concepts>;
 import <cmath>;
 import <string>;
 import <format>;
+import <compare>;
+import <stdexcept>;
 
 import gargantua.types;
+import gargantua.log;
 
 
 export namespace gargantua::math
@@ -27,28 +35,64 @@ export namespace gargantua::math
 	public:
 		using value_type = T;
 
-		Vec2d() = default;
+		constexpr Vec2d() noexcept = default;
 
-		Vec2d(const T x_, const T y_) : x(x_), y(y_)
+
+		constexpr Vec2d(const T x_, const T y_) noexcept : x(x_), y(y_)
 		{
 
 		}
 
 
-		//TODO: CHANGE THIS CODE. DON'T USE REINTERPRET_CAST
-		auto operator[](u32 idx) -> T& 
-		{ 
-			return reinterpret_cast<T*>(&x)[idx]; 
+		constexpr auto operator==(const Vec2d&) const -> bool = default;
+	
+		
+		template <std::convertible_to<T> U> 
+		constexpr operator Vec2d<U>() const noexcept 
+		{
+			return Vec2d<U>{static_cast<U>(x), static_cast<U>(y)};
+		}
+
+		// https://developercommunity.visualstudio.com/t/ICE-when-using-explicit-this-parameterD/10236618
+		// almost 1 year for this bug. :D 
+		/*constexpr auto&& operator[](this auto&& self, const u32 idx) 
+		{
+			switch (idx)
+			{
+				case 0: return x;
+				case 1: return y;
+			}
+			GRG_CORE_ERROR("Vec2d access with idx {}", idx);
+			throw std::out_of_range{ "Vec2d access error" };
+		}*/
+
+		[[nodiscard]]
+		constexpr auto operator[](const u32 idx) const -> T
+		{
+			switch (idx)
+			{
+				case 0: return x;
+				case 1: return y;
+			}
+			GRG_CORE_ERROR("Vec2d access with idx {}", idx);
+			throw std::out_of_range{ "Vec2d access error" };
 		}
 
 
-		auto operator[](u32 idx) const -> T
-		{ 
-			return reinterpret_cast<const T*>(&x)[idx]; 
+		[[nodiscard]]
+		constexpr auto operator[](const u32 idx) -> T&
+		{
+			switch (idx)
+			{
+			case 0: return x;
+			case 1: return y;
+			}
+			GRG_CORE_ERROR("Vec2d access with idx {}", idx);
+			throw std::out_of_range{ "Vec2d access error" };
 		}
 
 
-		auto operator+=(const Vec2d& rhs) -> Vec2d&
+		constexpr auto operator+=(const Vec2d& rhs) noexcept -> Vec2d&
 		{
 			x += rhs.x;
 			y += rhs.y;
@@ -56,7 +100,7 @@ export namespace gargantua::math
 		}
 
 
-		auto operator-=(const Vec2d& rhs) -> Vec2d&
+		constexpr auto operator-=(const Vec2d& rhs) noexcept -> Vec2d&
 		{
 			x -= rhs.x;
 			y -= rhs.y;
@@ -64,15 +108,15 @@ export namespace gargantua::math
 		}
 
 
-		auto operator*=(const T c) -> Vec2d&
+		constexpr auto operator*=(const T c) noexcept -> Vec2d&
 		{
 			x *= c;
 			y *= c;
 			return *this;
 		}
 
-
-		auto operator/=(const T c) -> Vec2d&
+		
+		constexpr auto operator/=(const T c) noexcept -> Vec2d&
 		{
 			x /= c;
 			y /= c;
@@ -80,16 +124,14 @@ export namespace gargantua::math
 		}
 
 
-
-		auto Zero() -> void
+		auto Zero() noexcept -> void
 		{
 			x = T{ 0 };
 			y = T{ 0 };
 		}
 
 
-
-		auto Normalize() -> void
+		constexpr auto Normalize() -> void
 		{
 			T l = x * x + y * y;
 			if (l != 0)
@@ -101,7 +143,8 @@ export namespace gargantua::math
 		}
 
 
-		auto Normalized() -> Vec2d
+		[[nodiscard]]
+		constexpr auto Normalized() const -> Vec2d
 		{
 			Vec2d copy = *this;
 			copy.Normalize();
@@ -109,34 +152,37 @@ export namespace gargantua::math
 		}
 
 
-		auto Length() const -> T
+		[[nodiscard]]
+		constexpr auto Length() const noexcept -> T
 		{
 			return std::sqrt(x * x + y * y);
 		}
 
 
-		auto LengthSqr() const -> T
+		[[nodiscard]]
+		constexpr auto LengthSqr() const noexcept -> T
 		{
 			return x * x + y * y;
 		}
 
 
-		auto Dot(const Vec2d& rhs) const -> T
+		[[nodiscard]]
+		constexpr auto Dot(const Vec2d& rhs) const noexcept -> T
 		{
 			return x * rhs.x + y * rhs.y;
 		}
 
 
-		auto ToString() const -> std::string
+		[[nodiscard]]
+		constexpr auto ToString() const -> std::string
 		{
 			return std::format("( {}  {} )", x, y);
 		}
 
-
 	public:
 		T x{ 0 };
 		T y{ 0 };
-	}; //class Vec2d
+	}; 
 
 	/**************** TYPE ALIAS ************************/
 	using Vec2di = Vec2d<i32>;
@@ -146,74 +192,56 @@ export namespace gargantua::math
 
 
 	/*****************************************************************/
-	//                  INLINE OPERATORS 
+	//                  OPERATORS 
 	/*****************************************************************/
 
-	template <typename T>
-	inline auto operator==(const Vec2d<T>& lhs, const Vec2d<T>& rhs) -> bool
-	{
-		return (lhs.x == rhs.x) && (lhs.y == rhs.y);
-	}
 
 	template <typename T>
-	inline auto operator!=(const Vec2d<T>& lhs, const Vec2d<T>& rhs) -> bool
+	[[nodiscard]]
+	constexpr auto operator+(const Vec2d<T>& lhs, const Vec2d<T>& rhs) noexcept -> Vec2d<T>
 	{
-		return !(lhs == rhs);
+		return { lhs.x + rhs.x, lhs.y + rhs.y };
 	}
 
 
 	template <typename T>
-	inline auto operator+(Vec2d<T> lhs, const Vec2d<T>& rhs) -> Vec2d<T>
+	[[nodiscard]]
+	constexpr auto operator-(const Vec2d<T>& lhs, const Vec2d<T>& rhs) noexcept -> Vec2d<T>
 	{
-		lhs += rhs;
-		return lhs;
-	}
-
-
-	template <typename T>
-	inline auto operator-(Vec2d<T> lhs, const Vec2d<T>& rhs) -> Vec2d<T>
-	{
-		lhs -= rhs;
-		return lhs;
+		return { lhs.x - rhs.x, lhs.y - rhs.y };
 	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator*(Vec2d<T> lhs, const U c) -> Vec2d<T>
+	[[nodiscard]]
+	constexpr auto operator*(const Vec2d<T>& lhs, const U c) noexcept -> Vec2d<decltype(c * lhs.x)>
 	{
-		lhs *= (T)c;
-		return lhs;
-	}
-
-	template <typename T, typename U>
-		requires std::is_arithmetic_v<U>
-	inline auto operator*(const U c, Vec2d<T> lhs) -> Vec2d<T>
-	{
-		lhs *= (T)c;
-		return lhs;
+		return { c * lhs.x, c * lhs.y };
 	}
 
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator/(Vec2d<T> lhs, const U c) -> Vec2d<T>
+	[[nodiscard]]
+	constexpr auto operator*(const U c, const Vec2d<T>& lhs) noexcept -> Vec2d<decltype(c * lhs.x)>
 	{
-		lhs /= (T)c;
-		return lhs;
+		return { c * lhs.x, c * lhs.y };
 	}
+
 
 	template <typename T, typename U>
 		requires std::is_arithmetic_v<U>
-	inline auto operator/(const U c, Vec2d<T> lhs) -> Vec2d<T>
+	[[nodiscard]]
+	constexpr auto operator/(const Vec2d<T>& lhs, const U c) -> Vec2d<decltype(c / lhs.x)>
 	{
-		lhs /= (T)c;
-		return lhs;
+		return { lhs.x / c, lhs.y / c };
 	}
 
 
 	template <typename T>
-	inline auto operator-(const Vec2d<T>& v) -> Vec2d<T>
+	[[nodiscard]]
+	constexpr auto operator-(const Vec2d<T>& v) noexcept -> Vec2d<T>
 	{
 		return Vec2d<T>{-v.x, -v.y};
 	}

@@ -34,21 +34,24 @@ namespace gargantua::math
 	struct Product
 	{
 		template <Number T>
-		static auto Dot(const Vec2d<T>& v1, const Vec2d<T>& v2) -> T
+		[[nodiscard]]
+		static constexpr auto Dot(const Vec2d<T>& v1, const Vec2d<T>& v2) noexcept -> T
 		{
 			return v1.Dot(v2);
 		}
 
 
 		template <Number T>
-		static auto Hadamard(const Vec2d<T>& v1, const Vec2d<T>& v2) -> Vec2d<T>
+		[[nodiscard]]
+		static constexpr auto Hadamard(const Vec2d<T>& v1, const Vec2d<T>& v2) noexcept -> Vec2d<T>
 		{
 			return { v1.x * v2.x, v1.y * v2.y };
 		}
 
 
 		template <Number T>
-		static auto Cross(const Vec2d<T>& v1, const Vec2d<T>& v2) -> T
+		[[nodiscard]]
+		static constexpr auto Cross(const Vec2d<T>& v1, const Vec2d<T>& v2) noexcept -> T
 		{
 			return v1.x * v2.y - v1.y * v2.x;
 		}
@@ -63,7 +66,9 @@ namespace gargantua::math
 
 		// https://www.scratchapixel.com/lessons/3d-basic-rendering/perspective-and-orthographic-projection-matrix/orthographic-projection-matrix
 		template <Number T>
-		static Mat4d<T> Orthographic(const T l, const T b, const T r, const T t, const T n, const T f)
+		[[nodiscard]]
+		static constexpr auto Orthographic(const T l, const T b, const T r, const T t, 
+											const T n, const T f) -> Mat4d<T>
 		{
 			Mat4d<T> ortho;
 
@@ -81,8 +86,10 @@ namespace gargantua::math
 			return ortho;
 		}
 
+
 		template <Number T>
-		static Mat4d<T> Orthographic(const T l, const T b, const T r, const T t)
+		[[nodiscard]]
+		static constexpr auto Orthographic(const T l, const T b, const T r, const T t) -> Mat4d<T>
 		{
 			Mat4d<T> ortho;
 
@@ -109,7 +116,8 @@ namespace gargantua::math
 	struct Transform3d
 	{
 		template <Number T>
-		static Mat4d<T> Translate(const Vec3d<T>& v)
+		[[nodiscard]]
+		static constexpr auto Translate(const Vec3d<T>& v) noexcept -> Mat4d<T>
 		{
 			Mat4d<T> translation;
 
@@ -129,7 +137,8 @@ namespace gargantua::math
 
 		/*Angle in radians*/
 		template <Number T>
-		static Mat4d<T> RotateZ(const T a)
+		[[nodiscard]]
+		static constexpr auto RotateZ(const T a) noexcept -> Mat4d<T>
 		{
 			T c = std::cos(a);
 			T s = std::sin(a);
@@ -150,7 +159,8 @@ namespace gargantua::math
 
 
 		template <Number T>
-		static Mat4d<T> Scale(const T c)
+		[[nodiscard]]
+		static constexpr auto Scale(const T c) noexcept -> Mat4d<T>
 		{
 			Mat4d<T> scale{ c };
 
@@ -159,16 +169,18 @@ namespace gargantua::math
 			return scale;
 		}
 
+
 		template <Number T>
-		static Mat4d<T> Scale(const Vec3d<T>& v)
+		[[nodiscard]]
+		static constexpr auto Scale(const Vec3d<T>& v) noexcept -> Mat4d<T>
 		{
 			Mat4d<T> scale;
 
-			scale(0, 0) = v[0];
+			scale(0, 0) = v.x;
 
-			scale(1, 1) = v[1];
+			scale(1, 1) = v.y;
 
-			scale(2, 2) = v[2];
+			scale(2, 2) = v.z;
 
 			scale(3, 3) = static_cast<T>(1);
 
@@ -187,7 +199,8 @@ namespace gargantua::math
 	{
 		//Positive theta values rotate counter clockwise.
 		template <Number T>
-		static Mat2d<T> Rotate(const T theta)
+		[[nodiscard]]
+		static constexpr auto Rotate(const T theta) noexcept -> Mat2d<T>
 		{
 			Mat2d<T> rotation;
 
@@ -203,36 +216,39 @@ namespace gargantua::math
 			return rotation;
 		}
 
+
 		template <Number T>
-		static Mat2d<T> Scale(const T c)
+		[[nodiscard]]
+		static constexpr auto Scale(const T c) -> Mat2d<T>
 		{
 			Mat2d<T> scale{ c };
-
 			return scale;
 		}
 
 
 		template <Number T>
-		static Mat2d<T> Scale(const Vec2d<T>& v)
+		[[nodiscard]]
+		static constexpr auto Scale(const Vec2d<T>& v) noexcept -> Mat2d<T>
 		{
 			Mat2d<T> scale;
 
-			scale(0, 0) = v[0];
-
-			scale(1, 1) = v[1];
+			scale(0, 0) = v.x;
+			scale(1, 1) = v.y;
 
 			return scale;
 		}
 
 
 		template <Number T>
-		static Vec2d<T> RotateCounterClock90(const Vec2d<T>& v)
+		[[nodiscard]]
+		static constexpr auto RotateCounterClock90(const Vec2d<T>& v) noexcept -> Vec2d<T>
 		{
 			return Vec2d<T>{-v.y, v.x};
 		}
 
 		template <Number T>
-		static Vec2d<T> RotateClock90(const Vec2d<T>& v)
+		[[nodiscard]]
+		static constexpr auto RotateClock90(const Vec2d<T>& v) noexcept -> Vec2d<T>
 		{
 			return Vec2d<T>{v.y, -v.x};
 		}
@@ -249,14 +265,16 @@ namespace gargantua::math
 	struct Angles
 	{
 		template <Number T>
-		static T ToRad(const T a)
+		[[nodiscard]]
+		static constexpr auto ToRad(const T a) -> T
 		{
 			return static_cast<T>(a * std::numbers::pi / 180.0);
 		}
 
 		template <Number T>
 			requires std::is_arithmetic_v<T>
-		static T ToDeg(const T a)
+		[[nodiscard]]
+		static constexpr auto ToDeg(const T a) -> T
 		{
 			return static_cast<T>(a * 180.0 / std::numbers::pi);
 		}
