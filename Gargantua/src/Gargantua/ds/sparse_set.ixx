@@ -54,13 +54,10 @@ export namespace gargantua::ds
 		using value_type = T;
 		using reference = T&;
 		using const_reference = const T&;
-
-		using iterator = std::vector<T>::iterator;
-		using const_iterator = std::vector<T>::const_iterator;
-
-		using difference_type = std::vector<T>::difference_type;
-
-		using size_type = std::vector<T>::size_type;
+		using iterator = typename std::vector<T>::iterator;
+		using const_iterator = typename std::vector<T>::const_iterator;
+		using difference_type = typename std::vector<T>::difference_type;
+		using size_type = typename std::vector<T>::size_type;
 
 
 	public:

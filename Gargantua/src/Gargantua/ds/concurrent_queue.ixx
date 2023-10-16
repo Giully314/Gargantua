@@ -33,10 +33,10 @@ namespace gargantua::ds
 		using value_type = T;
 		using reference = T&;
 		using const_reference = const T&;
-		using iterator = std::deque<T>::iterator;
-		using const_iterator = std::deque<T>::const_iterator;
-		using difference_type = std::deque<T>::difference_type;
-		using size_type = std::deque<T>::size_type;
+		using iterator = typename std::deque<T>::iterator;
+		using const_iterator = typename std::deque<T>::const_iterator;
+		using difference_type = typename std::deque<T>::difference_type;
+		using size_type = typename std::deque<T>::size_type;
 
 
 		ConcurrentQueue() = default;
