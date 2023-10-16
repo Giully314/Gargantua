@@ -298,7 +298,7 @@ export namespace gargantua::physics2d
 
 		}
 
-
+		//TODO: for better cache maybe use one vector of pair <entity_t, CollisionInfo>? 
 		// These 2 vectors are aligned: info[0] are the info about collision with the entities_in_collision[0]
 		std::vector<ecs::entity_t> entities_in_collision;
 		std::vector<CollisionInfoComponent> collisions_info;

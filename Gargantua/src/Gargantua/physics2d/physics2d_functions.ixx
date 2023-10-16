@@ -79,7 +79,7 @@ export namespace gargantua::physics2d
 
 	
 	/*
-	* Gravity is the first force applied. This function is also to reset the force before
+	* Gravity is the first force applied. This function is used to reset the force before
 	* applying the gravity.
 	*/
 	struct ApplyGravity
@@ -233,8 +233,8 @@ export namespace gargantua::physics2d
 			* I tested different values of percent and everything below 0.6 has problems due to single precision
 			* floating point.
 			*/
-			const f32 percent = 0.6f; // from 0.2 to 0.8
-			const f32 slop = 0.01f; // from 0.01 to 0.1
+			constexpr f32 percent = 0.6f; // from 0.2 to 0.8
+			constexpr f32 slop = 0.01f; // from 0.01 to 0.1
 			auto correction = (std::max(info.penetration - slop, 0.0f) / inv_m_sum) * percent * info.normal;
 			p1.p -= m1.inv_m * correction;
 			p2.p += m2.inv_m * correction;
