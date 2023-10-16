@@ -115,6 +115,6 @@ namespace gargantua::app
 		}
 
 	protected:
-		const std::string stage_name{ "DefaultStageName" };
+		std::string stage_name{ "DefaultStageName" };
 	}; 
 } //namespace gargantua::app
