@@ -114,23 +114,4 @@ export namespace gargantua
 		NonMovable(const NonMovable&) = default;
 		NonMovable& operator=(const NonMovable&) = default;
 	};
-
-
-	// TODO: refactor the singletons to make the constructors private.
-	// Remove this after.
-	template<std::default_initializable T>
-	//template<typename T>
-	class Singleton : private NonCopyable, private NonMovable
-	{
-	protected:
-		Singleton() = default;
-	
-	public:
-		static auto Instance() -> T&
-		{
-			static T instance;
-			return instance;
-		}
-	};
-
 } //namespace gargantua
