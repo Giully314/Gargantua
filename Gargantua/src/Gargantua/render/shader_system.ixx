@@ -39,7 +39,8 @@ namespace gargantua::render
 		}
 
 
-		// name is the path of the shader. If not present, the shader will be loaded.
+		// name is the path of the shader. 
+		// The shader must be already in the cache or nullptr will be returned.
 		[[nodiscard]]
 		auto Get(std::string_view name) -> non_owned_res<Shader>
 		{
