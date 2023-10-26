@@ -129,21 +129,27 @@ namespace gargantua::editor
     auto EditorGUI::Startup() -> void
     {
         using namespace physics2d;
+        using namespace render;
         auto e1 = context->CreateEntity();
         context->RegisterToPhysics(e1, 0.5f, 0.5f, {1.0f, 1.0f});
         context->RegisterToRenderer(e1);
         e1.Emplace<scene::TagComponent>("Square");
         e1.Get<RigidBodyComponent>().restituition = 0.5f;
-        //e1.Get<VelocityComponent>().v.x += 2.0f;
-        //e1.Get<AngularVelocityComponent>().omega += 2.0f;
+        e1.Get<MassComponent>().SetInfinite();
+     
 
-        /*auto e2 = context->CreateEntity();
+        auto e2 = context->CreateEntity();
         
-        context->RegisterToPhysics(e2, 1.0f, {15.0f, 1.0f});
+        context->RegisterToPhysics(e2, 1.0f, 0.5f, {15.0f, 1.0f});
         context->RegisterToRenderer(e2);
         e2.Emplace<scene::TagComponent>("Square floor");
-        e2.Get<MassComponent>().InfiniteMass();
-        e2.Get<PositionComponent>().p = { 0.0f, -3.0f };*/
+        e2.Get<MassComponent>().SetInfinite();
+
+        auto& e2_t = e2.Get<TransformComponent>();
+        e2_t.position = { 0.0f, -3.0f, 0.0f };
+        e2_t.scale = { 5.0f, 1.0f, 1.0f };
+
+        e2.Get<TextureComponent>().color = { 0.0f, 0.1f, 1.0f, 1.0f };
     }
 
 	auto EditorGUI::RenderGUI() -> void 
