@@ -12,6 +12,7 @@ module gargantua.render.renderer2d_system;
 import <numeric>;
 
 import gargantua.render.renderer_command;
+import gargantua.render.shader_system;
 
 import gargantua.math.math_functions;
 
@@ -50,9 +51,43 @@ namespace gargantua::render
 		fb_data.vao.AddBuffer(fb_data.screen_vbo, 0);
 		fb_data.vao.AddBuffer(fb_data.texture_vbo, 1);
 
-		Shader fb_vert_shader{ "assets/shaders/fb_shader.vert", ShaderType::Vertex };
-		Shader fb_frag_shader{ "assets/shaders/fb_shader.frag", ShaderType::Fragment };
-		fb_data.program.LinkShaders(fb_vert_shader, fb_frag_shader);
+		// Shader fb_vert_shader{ "assets/shaders/fb_shader.vert", ShaderType::Vertex };
+		// Shader fb_frag_shader{ "assets/shaders/fb_shader.frag", ShaderType::Fragment };
+		
+		// TODO: the name of the shaders shouldn't be hardcoded in this way.
+		// TODO: if the shader aren't loaded, signal errors.
+		auto& shader_sys = ShaderSystem::Instance();
+		
+		non_owned_res<Shader> fb_vert_shader = nullptr;
+		non_owned_res<Shader> fb_frag_shader = nullptr;
+		if (auto s = shader_sys.Load("assets/shaders/fb_shader.vert"); s)
+		{
+			fb_vert_shader = *s;
+		}
+		
+		if (auto s = shader_sys.Load("assets/shaders/fb_shader.frag"); s)
+		{
+			fb_frag_shader = *s;
+		}
+		
+		non_owned_res<Shader> vert_shader = nullptr;
+		non_owned_res<Shader> frag_shader = nullptr;
+		if (auto s = shader_sys.Load("assets/shaders/quad_shader.vert"); s)
+		{
+			vert_shader = *s;
+		}
+
+		if (auto s = shader_sys.Load("assets/shaders/quad_shader.frag"); s)
+		{
+			frag_shader = *s;
+		}
+
+
+		shader_sys.Load("assets/shaders/lighting_shader.frag");
+		shader_sys.Load("assets/shaders/light_source_shader.frag");
+		
+
+		fb_data.program.LinkShaders(*fb_vert_shader, *fb_frag_shader);
 		fb_data.program.SetUniform1i("screen_texture", 0);
 
 		const auto& props = platform::PlatformSystem::Instance().GetWindowProperties();
@@ -60,9 +95,9 @@ namespace gargantua::render
 		RendererCommand::SetViewport(0, 0, props.width, props.height);
 
 		// Setup Quad2dData
-		Shader vert_shader{ "assets/shaders/quad_shader.vert", ShaderType::Vertex };
-		Shader frag_shader{ "assets/shaders/quad_shader.frag", ShaderType::Fragment };
-		data.program.LinkShaders(vert_shader, frag_shader);
+		/*Shader vert_shader{ "assets/shaders/quad_shader.vert", ShaderType::Vertex };
+		Shader frag_shader{ "assets/shaders/quad_shader.frag", ShaderType::Fragment };*/
+		data.program.LinkShaders(*vert_shader, *frag_shader);
 
 		data.program.Bind();
 		std::array<int, 16> textures;

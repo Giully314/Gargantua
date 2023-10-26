@@ -18,6 +18,8 @@ export module gargantua.render.shader;
 import <utility>;
 import <string>;
 import <string_view>;
+import <stdexcept>;
+import <filesystem>;
 
 import gargantua.log.logger_system;
 import gargantua.render.opengl_object;
@@ -56,14 +58,23 @@ namespace gargantua::render
 	public:
 
 		// Precondition: an opengl context must exist.
-		Shader(std::string_view filename, ShaderType type_) : type(type_)
+		Shader(std::filesystem::path filename, ShaderType type_) : type(type_)
 		{
 			id = glCreateShader(ShaderTypeToGL(type));
 
-			source = resource::FileReader::ReadFile(filename);
-
-			const char* c = source.c_str();
-			Compile(c);
+			if (auto source = resource::FileReader::ReadFile(filename); source)
+			{
+				const char* c = source->c_str();
+				
+				if (!Compile(c))
+				{
+					throw std::runtime_error{ "Error while compiling shader." };
+				}
+			} 
+			else
+			{
+				throw std::invalid_argument{ "Error while loading file." };
+			}
 		}
 		
 
@@ -95,10 +106,8 @@ namespace gargantua::render
 	
 	private:
 		ShaderType type;
-		std::string source;
 
-
-		auto Compile(const char* source_code) -> void
+		auto Compile(const char* source_code) -> bool 
 		{
 			//GRG_CORE_DEBUG("Source code\n{}", source_code);
 			glShaderSource(id, 1, &source_code, nullptr);
@@ -114,8 +123,9 @@ namespace gargantua::render
 				glGetShaderInfoLog(id, 512, nullptr, info_log);
 				GRG_CORE_ERROR("Error compile shader. {}", info_log);
 
-				// TODO: set an invalid state.
+				return false;
 			}
+			return true;
 		}
 	};
 } // namespace gargantua::render
