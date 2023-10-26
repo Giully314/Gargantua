@@ -99,8 +99,8 @@ export namespace gargantua::math
 			case 2: return z;
 			case 3: return w;
 			}
-			GRG_CORE_ERROR("Vec3d access with idx {}", idx);
-			throw std::out_of_range{ "Vec3d access error" };
+			GRG_CORE_ERROR("Vec4d access with idx {}", idx);
+			throw std::out_of_range{ "Vec4d access error" };
 		}
 
 
