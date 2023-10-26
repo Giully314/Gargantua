@@ -4,11 +4,10 @@
 * PURPOSE: Manage shaders.
 * 
 * CLASSES:
-*	ShaderSystem: 
+*	ShaderSystem: Load and manage shaders lifetime.
 * 
 * DESCRIPTION:
-* 
-* 
+*	This system provides a cache for shaders to avoid recompilation in case of multiple usages.
 */
 
 export module gargantua.render.shader_system;
