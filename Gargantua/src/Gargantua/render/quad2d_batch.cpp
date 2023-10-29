@@ -15,12 +15,6 @@ import gargantua.log.logger_system;
 
 namespace gargantua::render
 {
-	Quad2dBatch::Quad2dBatch() : Quad2dBatch(10000)
-	{
-
-	}
-
-
 	Quad2dBatch::Quad2dBatch(u32 max_num_of_quads) : max_quads_per_batch(max_num_of_quads),
 		max_num_of_vertices(max_num_of_quads * 4), max_indices(max_num_of_quads * 6), current_num_of_quads(0),
 		current_num_of_textures(0)

@@ -77,10 +77,10 @@ namespace gargantua::render
 	public:
 		friend class Renderer2dSystem;
 
-		// NOTE: the default constructor must not be used so why it is defined? Because visual studio doesn't allow the usage of vector
-		// if there isn't the default constructor, clearly this is a "scam" because in the standard is not specified this requirement 
-		// on the type (with clang it works in the expected way).
-		Quad2dBatch();
+		Quad2dBatch() : Quad2dBatch(10000)
+		{
+
+		}
 
 		Quad2dBatch(u32 max_num_of_quads_);
 
