@@ -11,6 +11,9 @@
 *	The Editor is the application executed by the engine. The main goal is to register the stages
 *	in the pipeline and to provide the basic implementations of the Application base class.
 * 
+* 
+* TODO: 
+*	- add intrusctions on how to perform actions in the editor like creating a new entity or add a component.
 */
 
 module;
