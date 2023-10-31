@@ -89,6 +89,8 @@ https://sites.psu.edu/ist446/2015/04/16/so-you-want-to-make-a-game-engine-part-6
 About engines:  
 https://www.gamedeveloper.com/programming/writing-a-game-engine-from-scratch---part-1-messaging  
 https://ourmachinery.com/post/   
+Game engine architecture talk: https://www.youtube.com/watch?v=mUeNqLcx4eI   
+
 
 
 Memory management: https://gist.github.com/simonrenger/d1da2a10d11f8a971fc6f1b574ab3e99  
