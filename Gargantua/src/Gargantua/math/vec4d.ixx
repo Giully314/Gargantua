@@ -228,6 +228,7 @@ export namespace gargantua::math
 
 	/**************** TYPE ALIAS ************************/
 	using Vec4di = Vec4d<i32>;
+	using Vec4du = Vec4d<u32>;
 	using Vec4df = Vec4d<f32>;
 	/**************** TYPE ALIAS ************************/
 

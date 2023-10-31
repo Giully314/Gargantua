@@ -61,6 +61,17 @@ namespace gargantua::render
 		Quad2dBatchSystem batch_system;
 	};
 
+	
+	// Info about the (for now unique) source of light + ambient light.
+	struct LightData
+	{
+		// program is the shader used to render the light source if visible.
+		Program program;
+		f32 ambient_strength{ 0.1f };
+		math::Vec3df position;
+		math::Vec4df color{ 1.0f, 1.0f, 1.0f, 1.0f };
+	};
+
 
 	export
 	class Renderer2dSystem : private NonCopyable, NonMovable
@@ -134,6 +145,14 @@ namespace gargantua::render
 			const shared_res<Texture2d>& texture, const f32 tiling_factor = 1.0f) -> void;
 
 
+		auto RegisterLight(const math::Vec3df& position, const math::Vec4df color, f32 ambient_strength) -> void
+		{
+			light_data.position = position;
+			light_data.color = color;
+			light_data.ambient_strength = ambient_strength;
+		}
+
+
 		auto GetFrameBuffer() -> FrameBuffer&
 		{
 			return fb_data.screen_fb;
@@ -145,6 +164,7 @@ namespace gargantua::render
 	private:
 		FrameBufferData fb_data;
 		Quad2dData data;
+		LightData light_data;
 		math::Mat4df camera;
 	};
 

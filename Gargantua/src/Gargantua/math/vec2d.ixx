@@ -186,6 +186,7 @@ export namespace gargantua::math
 
 	/**************** TYPE ALIAS ************************/
 	using Vec2di = Vec2d<i32>;
+	using Vec2du = Vec2d<u32>;
 	using Vec2df = Vec2d<f32>;
 	/**************** TYPE ALIAS ************************/
 

@@ -82,9 +82,21 @@ namespace gargantua::render
 			frag_shader = *s;
 		}
 
+		non_owned_res<Shader> light_source_shader = nullptr;
+		non_owned_res<Shader> lighting_shader = nullptr;
+		if (auto s = shader_sys.Load("assets/shaders/lighting_shader.frag"); s)
+		{
+			lighting_shader = *s;
+		}
 
-		shader_sys.Load("assets/shaders/lighting_shader.frag");
-		shader_sys.Load("assets/shaders/light_source_shader.frag");
+		if (auto s = shader_sys.Load("assets/shaders/light_source_shader.frag"); s)
+		{
+			light_source_shader = *s;
+		}
+
+
+		// Setup light data program
+		light_data.program.LinkShaders(*vert_shader, *light_source_shader);
 		
 
 		fb_data.program.LinkShaders(*fb_vert_shader, *fb_frag_shader);
@@ -107,7 +119,7 @@ namespace gargantua::render
 		// Register events
 		auto& event_dispatcher = platform::PlatformEventDispatcher::Instance();
 		
-		// THIS IS WRONG, now we are using imgui panels, so resize must be done in terms of that.
+		// TODO: THIS IS WRONG, now we are using imgui panels, so resize must be done in terms of that.
 		event_dispatcher.RegisterListener<platform::WindowResizeEvent>(
 			[this](const platform::WindowResizeEvent& event)
 			{
@@ -261,5 +273,4 @@ namespace gargantua::render
 			math::Transform3d::Scale(size);
 		data.batch_system.Add(transform, color, texture, tiling_factor);
 	}
-
 } // namespace gargantua::render

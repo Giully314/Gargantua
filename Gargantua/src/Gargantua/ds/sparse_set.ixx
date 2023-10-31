@@ -51,13 +51,14 @@ export namespace gargantua::ds
 	class SparseSet
 	{
 	public:
+		// TODO: this section is not completed.
 		using value_type = T;
 		using reference = T&;
 		using const_reference = const T&;
-		using iterator = typename std::vector<T>::iterator;
-		using const_iterator = typename std::vector<T>::const_iterator;
-		using difference_type = typename std::vector<T>::difference_type;
-		using size_type = typename std::vector<T>::size_type;
+		using iterator = typename std::vector<T, TAlloc>::iterator;
+		using const_iterator = typename std::vector<T, TAlloc>::const_iterator;
+		using difference_type = typename std::vector<T, TAlloc>::difference_type;
+		using size_type = typename std::vector<T, TAlloc>::size_type;
 
 
 	public:
