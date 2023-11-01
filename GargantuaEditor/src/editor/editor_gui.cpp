@@ -131,16 +131,16 @@ namespace gargantua::editor
         using namespace physics2d;
         using namespace render;
         auto e1 = context->CreateEntity();
-        context->RegisterToPhysics(e1, 0.5f, 0.5f, {1.0f, 1.0f});
+        context->RegisterToPhysics(e1, 0.5f, {1.0f, 1.0f});
         context->RegisterToRenderer(e1);
         e1.Emplace<scene::TagComponent>("Square");
         e1.Get<RigidBodyComponent>().restituition = 0.5f;
-        e1.Get<MassComponent>().SetInfinite();
+        //e1.Get<MassComponent>().SetInfinite();
      
 
         auto e2 = context->CreateEntity();
         
-        context->RegisterToPhysics(e2, 1.0f, 0.5f, {15.0f, 1.0f});
+        context->RegisterToPhysics(e2, 1.0f, {15.0f, 1.0f});
         context->RegisterToRenderer(e2);
         e2.Emplace<scene::TagComponent>("Square floor");
         e2.Get<MassComponent>().SetInfinite();
@@ -154,6 +154,12 @@ namespace gargantua::editor
         tilemap.SetECS(&context->ECS());
         tilemap.Position() = { -2.0f, -2.0f };
         tilemap.SetBlockAtPoint({ 0, 0 });
+
+        //context->SimulationMode();
+        ////tilemap.SetBlockAtPoint({ 1, 0 });
+        //tilemap.SetBlockAtPoint({ 2, 0 });
+        ////tilemap.SetBlockAtPoint({ 3, 0 });
+        //tilemap.SetBlockAtPoint({ 4, 0 });
     }
 
 	auto EditorGUI::RenderGUI() -> void 
@@ -256,7 +262,7 @@ namespace gargantua::editor
         }
         else if (ImGui::MenuItem("Physics"))
         {
-            context->RegisterToPhysics(entity_selected, 0.5f, 0.5f, { 1.0f, 1.0f });
+            context->RegisterToPhysics(entity_selected, 0.5f, { 1.0f, 1.0f });
             ImGui::CloseCurrentPopup();
         }
     }
