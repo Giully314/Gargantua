@@ -150,6 +150,10 @@ namespace gargantua::editor
         e2_t.scale = { 5.0f, 1.0f, 1.0f };
 
         e2.Get<TextureComponent>().color = { 0.0f, 0.1f, 1.0f, 1.0f };
+
+        tilemap.SetECS(&context->ECS());
+        tilemap.Position() = { -2.0f, -2.0f };
+        tilemap.SetBlockAtPoint({ 0, 0 });
     }
 
 	auto EditorGUI::RenderGUI() -> void 
