@@ -10,3 +10,4 @@ export import gargantua.render;
 export import gargantua.time.time_step;
 export import gargantua.scene;
 export import gargantua.physics2d;
+export import gargantua.level;

@@ -23,6 +23,7 @@ import gargantua.ds.grid;
 import gargantua.level.tileblock;
 import gargantua.render;
 import gargantua.ecs;
+import gargantua.physics2d;
 
 
 export namespace gargantua::level
@@ -30,7 +31,7 @@ export namespace gargantua::level
 	class TileMap
 	{
 	public:
-		//constexpr TileMap() = default;
+		explicit constexpr TileMap() : TileMap(30, 30, 16) { }
 
 		// Precondition: parameters must be greater than 0.
 		explicit constexpr TileMap(u32 width, u32 height, u32 block_size_,
@@ -65,11 +66,28 @@ export namespace gargantua::level
 			};
 		}
 
-		// Given a position in the world, set the grid block associated to that position.
-		constexpr auto SetBlockAtPoint(const math::Vec2df& point, TileBlock block) -> math::Vec2du
+		// Set the grid block associated to that position in the map and create/update the ecs entity associated.
+		constexpr auto SetBlockAtPoint(const math::Vec2du& idx) -> void
 		{
-			auto pos = GetBlockAtPoint(point);
-			map(pos.x, pos.y) = block;
+			using namespace physics2d;
+			using namespace render;
+
+			if (auto e = map(idx.x, idx.y); e == ecs::null_entity)
+			{
+				// Create the entity
+				e = ecs_system->Create();
+				map(idx.x, idx.y) = e;
+
+				auto& p = ecs_system->Emplace<PositionComponent>(e);
+				p.p = position + idx * (block_size * 0.01f);
+
+				auto& t = ecs_system->Emplace<TransformComponent>(e);
+				auto& r = ecs_system->Emplace<TextureComponent>(e);
+			}
+			else
+			{
+				// Update the entity
+			}
 		}
 
 
@@ -81,7 +99,7 @@ export namespace gargantua::level
 
 
 
-		constexpr auto Block(const math::Vec2du& idx) -> TileBlock&
+		/*constexpr auto Block(const math::Vec2du& idx) -> TileBlock&
 		{
 			return map(idx.x, idx.y);
 		}
@@ -99,13 +117,27 @@ export namespace gargantua::level
 		constexpr auto Block(const u32 x, const u32 y) const -> const TileBlock&
 		{
 			return map(x, y);
+		}*/
+
+
+		auto Position() -> math::Vec2df&
+		{
+			return position;
+		}
+
+		auto Position() const -> const math::Vec2df&
+		{
+			return position;
 		}
 		
+	private:
+		auto RegisterBlockToECS(ecs::entity_t e) -> void;
 
+		auto UpdateBlockECS(ecs::entity_t e) -> void;
 		
 
 	private:
-		ds::Grid<TileBlock> map;
+		ds::Grid<ecs::entity_t> map;
 		u32 block_size;
 		math::Vec2df position;
 		non_owned_res<ecs::ECSSystem> ecs_system;
