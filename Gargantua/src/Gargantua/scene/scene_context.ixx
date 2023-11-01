@@ -153,7 +153,8 @@ namespace gargantua::scene
 		* Register an entity to the physics system; basically attaches all the physics 
 		* components to the entity.
 		*/
-		auto RegisterToPhysics(const Entity e, const f32 mass, const f32 inertia, const math::Vec2df& size) -> void;
+		auto RegisterToPhysics(const Entity e, const f32 mass, const math::Vec2df& size) -> void;
+
 		
 		/*
 		* Register an entity to the rendering system; basically attaches all the render

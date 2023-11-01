@@ -191,6 +191,13 @@ export namespace gargantua::physics2d
 			f32 e = std::min(b1.restituition, b2.restituition);
 			f32 inv_m_sum = m1.inv_m + m2.inv_m;
 
+			// This code is temporary because it checks if 2 static objects are colliding.
+			// That's no sense. I need to refactor this code.
+			if (inv_m_sum == 0.0f)
+			{
+				return;
+			}
+
 			// Compute impulse scalar
 			f32 j = -(1.0f + e) * vel_along_normal;
 			j /= inv_m_sum;

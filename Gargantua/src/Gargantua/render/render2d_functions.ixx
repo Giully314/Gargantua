@@ -23,20 +23,19 @@ namespace gargantua::render
 	struct Render2d
 	{
 		// Update the transform component with the info from physics components.
-		static
-		auto UpdateTransform(const physics2d::PositionComponent& p,
-			const physics2d::RotationComponent& r,
-			const physics2d::QuadComponent& q,
-			TransformComponent& t) -> void
+		static auto UpdateTransformPosition(const physics2d::PositionComponent& p, TransformComponent& t) -> void
 		{
 			t.position = math::Vec3df{ p.p, 0.0f };
-			t.scale = { q.r * 2, 0.0f };
-			t.rotation = r.theta;
 		}
 
 
-		static
-		auto Draw(const TransformComponent& transf, const TextureComponent& t) -> void
+		static auto UpdateTransformSize( const physics2d::QuadComponent& q, TransformComponent& t) -> void
+		{
+			t.scale = { q.r * 2, 0.0f };
+		}
+
+
+		static auto Draw(const TransformComponent& transf, const TextureComponent& t) -> void
 		{
 			Renderer2dSystem::Instance().DrawRotatedQuad(transf.position, transf.scale,
 				transf.rotation,

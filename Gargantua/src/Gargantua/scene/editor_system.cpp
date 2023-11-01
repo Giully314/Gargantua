@@ -14,12 +14,10 @@ namespace gargantua::scene
 	{
 		using namespace physics2d;
 		using namespace render;
-		ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(
-			[](PositionComponent& p, RotationComponent& r,
-				QuadComponent& q, const TransformComponent& t)
+		ecs_s.ForEach<PositionComponent, QuadComponent, TransformComponent>(
+			[](PositionComponent& p, QuadComponent& q, const TransformComponent& t)
 			{
 				p.p = { t.position.x, t.position.y };
-				r.theta = t.rotation;
 				q.r = { t.scale.x / 2.0f, t.scale.y / 2.0f };
 			});
 

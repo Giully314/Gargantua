@@ -70,10 +70,10 @@ namespace gargantua::physics2d
 			ecs_s.Register<ForceComponent>();
 			ecs_s.Register<MassComponent>();
 			
-			ecs_s.Register<RotationComponent>();
+		/*	ecs_s.Register<RotationComponent>();
 			ecs_s.Register<AngularVelocityComponent>();
 			ecs_s.Register<TorqueComponent>();
-			ecs_s.Register<MomentInertiaComponent>();
+			ecs_s.Register<MomentInertiaComponent>();*/
 
 			ecs_s.Register<QuadComponent>();
 			ecs_s.Register<QuadCollisionComponent>();
@@ -85,7 +85,7 @@ namespace gargantua::physics2d
 		* Attach Position, Velocity, Force, Mass, RigidBody, QuadComponent, QuadCollision
 		* to the entity.
 		*/
-		auto Register(ecs::entity_t e, const f32 mass, const f32 inertia, 
+		auto Register(ecs::entity_t e, const f32 mass, /*const f32 inertia, */
 			const math::Vec2df& size,
 			ecs::ECSSystem& ecs_s) -> void
 		{
@@ -94,10 +94,10 @@ namespace gargantua::physics2d
 			ecs_s.Emplace<ForceComponent>(e);
 			ecs_s.Emplace<MassComponent>(e, mass);
 
-			ecs_s.Emplace<RotationComponent>(e);
+			/*ecs_s.Emplace<RotationComponent>(e);
 			ecs_s.Emplace<AngularVelocityComponent>(e);
 			ecs_s.Emplace<TorqueComponent>(e);
-			ecs_s.Emplace<MomentInertiaComponent>(e, inertia);
+			ecs_s.Emplace<MomentInertiaComponent>(e, inertia);*/
 
 			ecs_s.Emplace<QuadComponent>(e, size);
 			ecs_s.Emplace<RigidBodyComponent>(e);
@@ -116,10 +116,10 @@ namespace gargantua::physics2d
 			ecs_s.Erase<ForceComponent>(e);
 			ecs_s.Erase<MassComponent>(e);
 
-			ecs_s.Erase<RotationComponent>(e);
+			/*ecs_s.Erase<RotationComponent>(e);
 			ecs_s.Erase<AngularVelocityComponent>(e);
 			ecs_s.Erase<TorqueComponent>(e);
-			ecs_s.Erase<MomentInertiaComponent>(e);
+			ecs_s.Erase<MomentInertiaComponent>(e);*/
 
 			ecs_s.Erase<QuadComponent>(e);
 			ecs_s.Erase<RigidBodyComponent>(e);

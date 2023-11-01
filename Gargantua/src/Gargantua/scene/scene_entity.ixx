@@ -138,6 +138,7 @@ namespace gargantua::scene
 
 	private:
 		ecs::entity_t id{ ecs::null_entity };
+		//TODO: the dependency on SceneContext could cause circular dependency problems.
 		non_owned_res<SceneContext> context{ nullptr };
 	};
 } // namespace gargantua::scene

@@ -36,10 +36,19 @@ export namespace gargantua::ds
 
 		constexpr Grid() = default;
 		
+
 		/*
 		* Construct a grid width * height.
 		*/
 		constexpr Grid(u32 width_, u32 height_) : data(width_* height_), w(width_), h(height_)
+		{
+
+		}
+
+		/*
+		* Construct a grid width * height.
+		*/
+		constexpr Grid(u32 width_, u32 height_, const T& default_value) : data(width_* height_, default_value), w(width_), h(height_)
 		{
 
 		}

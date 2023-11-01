@@ -16,6 +16,7 @@ export module gargantua.level.tilemap;
 
 import <vector>;
 import <memory>;
+import <format>;
 
 import gargantua.types;
 import gargantua.math.vec2d;
@@ -24,6 +25,11 @@ import gargantua.level.tileblock;
 import gargantua.render;
 import gargantua.ecs;
 import gargantua.physics2d;
+
+// Note that this create a circular dependency on a module level. What I mean is that level is used by the 
+// scene module and using one of the scene component create a circular dependency. This can be solved by moving
+// all the ecs components into a separate module.
+import gargantua.scene.scene_components; 
 
 
 export namespace gargantua::level
@@ -35,7 +41,7 @@ export namespace gargantua::level
 
 		// Precondition: parameters must be greater than 0.
 		explicit constexpr TileMap(u32 width, u32 height, u32 block_size_,
-			non_owned_res<ecs::ECSSystem> ecs_s) : map(width, height),
+			non_owned_res<ecs::ECSSystem> ecs_s) : map(width, height, ecs::null_entity),
 			block_size(block_size_), ecs_system(ecs_s)
 		{
 
@@ -78,11 +84,17 @@ export namespace gargantua::level
 				e = ecs_system->Create();
 				map(idx.x, idx.y) = e;
 
-				auto& p = ecs_system->Emplace<PositionComponent>(e);
-				p.p = position + idx * (block_size * 0.01f);
+				PhysicsSystem::Instance().Register(e, 0.0f, { 1.0f, 1.0f }, *ecs_system);
+				auto& p = ecs_system->Get<PositionComponent>(e);
+				p.p = position + static_cast<math::Vec2df>(idx);
 
-				auto& t = ecs_system->Emplace<TransformComponent>(e);
-				auto& r = ecs_system->Emplace<TextureComponent>(e);
+				RendererSystem::Instance().Register(e, *ecs_system);
+				auto& t = ecs_system->Get<TransformComponent>(e);
+				t.position = { p.p, 0.0f };
+				auto& r = ecs_system->Get<TextureComponent>(e);
+				r.color = { 1.0f, 0.0f, 0.0f, 1.0f };
+
+				auto& s = ecs_system->Emplace<scene::TagComponent>(e, std::format("Block {} {}", idx.x, idx.y));
 			}
 			else
 			{
@@ -118,6 +130,12 @@ export namespace gargantua::level
 		{
 			return map(x, y);
 		}*/
+
+
+		constexpr auto Block(const u32 x, const u32 y) const -> ecs::entity_t
+		{
+			return map(x, y);
+		}
 
 
 		auto Position() -> math::Vec2df&

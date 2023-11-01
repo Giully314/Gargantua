@@ -69,7 +69,8 @@ namespace gargantua::render
 		auto Run(const time::TimeStep& ts, ecs::ECSSystem& ecs_s) -> void
 		{
 			using namespace physics2d;
-			ecs_s.ForEach<PositionComponent, RotationComponent, QuadComponent, TransformComponent>(Render2d::UpdateTransform);
+			ecs_s.ForEach<PositionComponent,TransformComponent>(Render2d::UpdateTransformPosition);
+			ecs_s.ForEach<QuadComponent,TransformComponent>(Render2d::UpdateTransformSize);
 			ecs_s.ForEach<TransformComponent, TextureComponent>(Render2d::Draw);
 		}	
 

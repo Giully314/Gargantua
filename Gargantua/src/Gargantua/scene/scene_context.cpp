@@ -80,11 +80,9 @@ namespace gargantua::scene
 	}
 
 
-	auto SceneContext::RegisterToPhysics(const Entity e, const f32 mass, 
-		const f32 inertia,
-		const math::Vec2df& size) -> void
+	auto SceneContext::RegisterToPhysics(const Entity e, const f32 mass, const math::Vec2df& size) -> void
 	{
-		physics2d::PhysicsSystem::Instance().Register(e.id, mass, inertia, size, ecs_system);
+		physics2d::PhysicsSystem::Instance().Register(e.id, mass, size, ecs_system);
 	}
 
 

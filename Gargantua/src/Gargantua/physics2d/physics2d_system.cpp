@@ -26,8 +26,8 @@ namespace gargantua::physics2d
 		ecs_s.ForEach<VelocityComponent, ForceComponent, MassComponent>(dynamics);
 		ecs_s.ForEach<PositionComponent, VelocityComponent>(dynamics);
 		
-		ecs_s.ForEach<AngularVelocityComponent, TorqueComponent, MomentInertiaComponent>(dynamics);
-		ecs_s.ForEach<RotationComponent, AngularVelocityComponent>(dynamics);
+	/*	ecs_s.ForEach<AngularVelocityComponent, TorqueComponent, MomentInertiaComponent>(dynamics);
+		ecs_s.ForEach<RotationComponent, AngularVelocityComponent>(dynamics);*/
 
 		
 		DetectCollisions(ecs_s);
