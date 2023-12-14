@@ -1,17 +1,15 @@
 project "Sandbox"
 	kind "ConsoleApp"
 	language "C++"
-	cppdialect "C++20"
-	compileas "Module"
+	cppdialect "C++latest"
 	systemversion "latest"
+	-- compileas "Module"
 
 
 	targetdir ("%{wks.location}/bin/" .. outputdir .. "/%{prj.name}")
 	objdir ("%{wks.location}/bin-int/" .. outputdir .. "/%{prj.name}")
 
 	files {"src/**.ixx", "src/**.cpp"}
-
-
 
 
 	includedirs 
@@ -26,11 +24,11 @@ project "Sandbox"
 	links {"Gargantua"}
 
 
-	filter "files:**.cpp"
-		compileas "C++"
+	--filter "files:**.cpp"
+		--compileas "C++"
 
-	filter "files:**.ixx"
-		compileas "Module"
+	--filter "files:**.ixx"
+		--compileas "Module"
 
 	filter "configurations:Debug"
 		symbols "On"
