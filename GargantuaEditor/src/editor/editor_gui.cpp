@@ -128,11 +128,16 @@ namespace gargantua::editor
 
     auto EditorGUI::Startup() -> void
     {
-        using namespace physics2d;
+        using namespace physics;
         using namespace render;
+        using namespace math;
+        
+        auto& texture_sys = TextureSystem::Instance();
+
         auto e1 = context->CreateEntity();
-        context->RegisterToPhysics(e1, 0.5f, {1.0f, 1.0f});
+        context->RegisterToPhysics(e1, 0.5f,Vec2df{1.0f, 1.0f});
         context->RegisterToRenderer(e1);
+        e1.Get<TextureComponent>().texture = texture_sys.Get("WhiteTexture");
         e1.Emplace<scene::TagComponent>("Square");
         e1.Get<RigidBodyComponent>().restituition = 0.5f;
         //e1.Get<MassComponent>().SetInfinite();
@@ -140,26 +145,17 @@ namespace gargantua::editor
 
         auto e2 = context->CreateEntity();
         
-        context->RegisterToPhysics(e2, 1.0f, {15.0f, 1.0f});
+        context->RegisterToPhysics(e2, 1.0f, Vec2df{15.0f, 1.0f});
         context->RegisterToRenderer(e2);
         e2.Emplace<scene::TagComponent>("Square floor");
+        e2.Get<TextureComponent>().texture = texture_sys.Get("WhiteTexture");
         e2.Get<MassComponent>().SetInfinite();
 
         auto& e2_t = e2.Get<TransformComponent>();
-        e2_t.position = { 0.0f, -3.0f, 0.0f };
-        e2_t.scale = { 5.0f, 1.0f, 1.0f };
+        e2_t.position = Vec3df{ 0.0f, -3.0f, 0.0f };
+        e2_t.scale = Vec3df{ 5.0f, 1.0f, 1.0f };
 
-        e2.Get<TextureComponent>().color = { 0.0f, 0.1f, 1.0f, 1.0f };
-
-        tilemap.SetECS(&context->ECS());
-        tilemap.Position() = { -2.0f, -2.0f };
-        tilemap.SetBlockAtPoint({ 0, 0 });
-
-        //context->SimulationMode();
-        ////tilemap.SetBlockAtPoint({ 1, 0 });
-        //tilemap.SetBlockAtPoint({ 2, 0 });
-        ////tilemap.SetBlockAtPoint({ 3, 0 });
-        //tilemap.SetBlockAtPoint({ 4, 0 });
+        e2.Get<TextureComponent>().color = Vec4df{ 0.0f, 0.1f, 1.0f, 1.0f };
     }
 
 	auto EditorGUI::RenderGUI() -> void 
@@ -230,7 +226,7 @@ namespace gargantua::editor
                     if (ImGui::MenuItem("Delete entity"))
                     {
                         entity_to_be_deleted = e;
-                        entity_selected = {};
+                        entity_selected = scene::Entity{};
                     }
                     ImGui::EndPopup();
                 }
@@ -257,12 +253,12 @@ namespace gargantua::editor
         }
         else if (ImGui::MenuItem("Texture"))
         {
-            entity_selected.Emplace<render::TextureComponent>();
+            entity_selected.Emplace<render::TextureComponent>(render::TextureSystem::Instance().Get("WhiteTexture"));
             ImGui::CloseCurrentPopup();
         }
         else if (ImGui::MenuItem("Physics"))
         {
-            context->RegisterToPhysics(entity_selected, 0.5f, { 1.0f, 1.0f });
+            context->RegisterToPhysics(entity_selected, 0.5f, math::Vec2df{ 1.0f, 1.0f });
             ImGui::CloseCurrentPopup();
         }
     }
@@ -326,7 +322,7 @@ namespace gargantua::editor
 
     auto EditorGUI::ShowPhysicsComponents(scene::Entity entity) -> void
     {
-        using namespace physics2d;
+        using namespace physics;
         ShowComponent<MassComponent>("Mass", entity, [](MassComponent& c)
             {
                 f32 m = c.m;

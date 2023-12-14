@@ -9,13 +9,13 @@ namespace gargantua::editor
 {
 	auto EditorCamera::Run(const time::TimeStep& ts) -> void
 	{
-		using namespace platform;
+		using namespace input;
 		using namespace render;
 		auto& inp = InputSystem::Instance();
 		auto& t = camera.Get<TransformComponent>();
 		auto& pos = t.position;
 		auto& rot = t.rotation;
-		auto upd = velocity * static_cast<f32>(ts.GetInSec());
+		auto upd = velocity * static_cast<f32>(ts.Seconds());
 
 
 		if (inp.IsPressed(Key::W))
@@ -36,11 +36,11 @@ namespace gargantua::editor
 		}
 
 
-		if (inp.IsPressed(Key::RIGHT))
+		if (inp.IsPressed(Key::Right))
 		{
 			rot -= upd;
 		}
-		if (inp.IsPressed(Key::LEFT))
+		if (inp.IsPressed(Key::Left))
 		{
 			rot += upd;
 		}

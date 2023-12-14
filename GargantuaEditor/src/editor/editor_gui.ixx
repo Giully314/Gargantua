@@ -116,9 +116,6 @@ namespace gargantua::editor
 		const std::array<const std::string_view, 4> component_names = {
 			"Tag", "Transform", "Camera", "Texture",
 		};
-
-
-		level::TileMap tilemap;
 	};
 } // namespace gargantua
 

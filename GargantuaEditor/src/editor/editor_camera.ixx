@@ -7,13 +7,11 @@
 
 export module gargantua.editor.editor_camera;
 
-
 import gargantua;
 
 namespace gargantua::editor
 {
-	export 
-	class EditorCamera
+	export class EditorCamera
 	{
 	public:
 		auto Run(const time::TimeStep& ts) -> void;

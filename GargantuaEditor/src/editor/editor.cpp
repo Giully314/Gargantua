@@ -19,10 +19,10 @@ namespace gargantua::editor
 		context.Startup();
 
 		// Demo stage is used to explore the imgui library and add functionalities on the go.
-		// pipeline.AddStage<DemoStage>();
+		// pipeline.AppendStage<DemoStage>();
 		
-		pipeline.AddStage<EditorGUI>(&context);
-		pipeline.AddStage<SceneStage>(&context);
+		pipeline.AppendStage<EditorGUI>(&context);
+		pipeline.AppendStage<SceneStage>(&context);
 		
 		pipeline.Startup();
 	}
@@ -37,13 +37,13 @@ namespace gargantua::editor
 		// Begin renderer
 		auto proj_view = context.GetActiveCameraMatrix();
 		//GRG_CORE_DEBUG("Editor\n{}\n", proj_view.ToString());
-		render::Renderer2dSystem::Instance().BeginScene(proj_view);
+		render::RendererSystem::Instance().BeginScene(proj_view);
 	}
 	
 	auto Editor::End() -> void 
 	{
 		// End renderer
-		render::Renderer2dSystem::Instance().EndScene();
+		render::RendererSystem::Instance().EndScene();
 	}
 	
 	auto Editor::Run(const time::TimeStep& ts) -> app::ApplicationState 

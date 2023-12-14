@@ -49,10 +49,10 @@ namespace gargantua::editor
 			return;
 		}
 
-		auto& renderer = render::Renderer2dSystem::Instance();
-		unsigned int fbid = renderer.GetFrameBuffer().GetBufferId();
-		auto& fb = renderer.GetFrameBuffer();
-		ImGui::Image((void*)fbid, { (float)fb.GetWidth(), (float)fb.GetHeight() }, 
+		auto& renderer = render::RendererSystem::Instance();
+		unsigned int fbid = renderer.FrameBuffer().BufferID();
+		auto& fb = renderer.FrameBuffer();
+		ImGui::Image((void*)fbid, { (float)fb.Width(), (float)fb.Height() }, 
 			ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 		ImGui::End();
 	}
@@ -75,7 +75,7 @@ namespace gargantua::editor
 			u32 new_width = static_cast<u32>(view.x);
 			u32 new_height = static_cast<u32>(view.y);
 			context->SetViewport(new_width, new_height);
-			render::Renderer2dSystem::Instance().Resize(new_width, new_height);
+			render::RendererSystem::Instance().Resize(new_width, new_height);
 
 			// The window state has been successfully changed.
 			return true;
