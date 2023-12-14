@@ -9,4 +9,5 @@ export module gargantua.scene;
 export import gargantua.scene.scene_entity;
 export import gargantua.scene.scene_context;
 export import gargantua.scene.camera_system;
-export import gargantua.scene.scene_components;
+export import gargantua.scene.editor_system;
+export import gargantua.scene.ecs_components;

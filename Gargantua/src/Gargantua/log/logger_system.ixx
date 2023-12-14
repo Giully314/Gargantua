@@ -13,8 +13,7 @@ import gargantua.log.console_stream;
 
 namespace gargantua::log
 {
-	export
-	class LoggerSystem
+	export class LoggerSystem
 	{
 	public:
 		static auto GetEngineLogger() -> Logger<ConsoleStream>&

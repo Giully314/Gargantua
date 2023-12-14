@@ -32,22 +32,21 @@ import gargantua.scene.scene_context;
 
 namespace gargantua::scene
 {
-	export
-	class Entity
+	export class Entity
 	{
 	public:
 		friend class SceneContext;
 
-		Entity() = default;
+		explicit Entity() = default;
 
-		Entity(const ecs::entity_t id_, non_owned_res<SceneContext> context_) : id(id_),
+		explicit Entity(const ecs::entity_t id_, non_owned_res<SceneContext> context_) : id(id_),
 			context(context_)
 		{
 
 		}
 
 
-		auto operator==(const Entity& e) const noexcept -> bool = default;
+		constexpr auto operator==(const Entity& e) const noexcept -> bool = default;
 
 		/*
 		* Attach the component T to the entity by constructing it using Args.

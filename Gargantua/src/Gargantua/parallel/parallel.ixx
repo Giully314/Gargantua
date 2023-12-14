@@ -4,7 +4,7 @@
 * The module parallel implements a basic thread pool.
 */
 
-export module gargantua.parallel.parallel;
+export module gargantua.parallel;
 
 export import gargantua.parallel.task;
 export import gargantua.parallel.task_system;
